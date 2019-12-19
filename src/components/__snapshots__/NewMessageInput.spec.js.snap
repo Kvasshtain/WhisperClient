@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NewMessageInput should render correctly 1`] = `
+<div>
+  <input
+    name="userMessage"
+    onChange={[Function]}
+    type="text"
+  />
+  <button
+    onClick={[Function]}
+    type="submit"
+  >
+    Send message
+  </button>
+</div>
+`;
+
+exports[`NewMessageInput should render correctly 2`] = `
+<div>
+  <input
+    name="userMessage"
+    onChange={[Function]}
+    type="text"
+  />
+  <button
+    onClick={[Function]}
+    type="submit"
+  >
+    Send message
+  </button>
+</div>
+`;
+
+exports[`when typing new message should render correctly 1`] = `
+<div>
+  <input
+    name="userMessage"
+    onChange={[Function]}
+    type="text"
+  />
+  <button
+    onClick={[Function]}
+    type="submit"
+  >
+    Send message
+  </button>
+</div>
+`;
