@@ -7,9 +7,9 @@ class MessageList extends React.Component {
         const {messages} = this.props;
 
         if (messages.length) {
-            return messages.map(function (item) {
+            return messages.map(function (item, index) {
                 return (
-                    <p>{item.messages}</p>
+                    <p key = {index}>{item.messages}</p>
                 )
             })
         }
@@ -25,7 +25,7 @@ class MessageList extends React.Component {
 }
 
 MessageList.propTypes = {
-    messages: PropTypes.arrayOf(PropTypes.string)
+    messages: PropTypes.arrayOf(PropTypes.string.isRequired)
 }
 
 export {MessageList}

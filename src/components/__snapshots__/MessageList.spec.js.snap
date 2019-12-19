@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MessageList should render correctly 1`] = `
+<div
+  className="MessageList"
+>
+  <p
+    key="0"
+  />
+</div>
+`;
