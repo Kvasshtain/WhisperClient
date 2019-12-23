@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types'
 
 class MessageList extends React.Component {
@@ -6,10 +7,10 @@ class MessageList extends React.Component {
     renderMessageList = () => {
         const {messages} = this.props;
 
-        if (messages.length) {
+        if (messages && messages.length) {
             return messages.map(function (item, index) {
                 return (
-                    <p key = {index}>{item.messages}</p>
+                    <p key = {index}>{item}</p>
                 )
             })
         }
@@ -24,8 +25,15 @@ class MessageList extends React.Component {
     }
 }
 
+const mapStateToProps = (state) => {
+    return {
+        messages: state.messages,
+        wasMessageReceived: state.wasMessageReceived,
+    };
+};
+
 MessageList.propTypes = {
     messages: PropTypes.arrayOf(PropTypes.string.isRequired)
 }
 
-export {MessageList}
+export default connect(mapStateToProps)(MessageList);

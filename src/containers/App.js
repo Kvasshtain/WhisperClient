@@ -1,30 +1,28 @@
 import React from 'react';
 import { NewMessageInput } from '../components/NewMessageInput'
-import { MessageList } from '../components/MessageList'
+import MessageList from './MessageList'
+import { connect } from 'react-redux';
+import { sendNewMessage } from '../actions/messageListActions';
 import './App.css';
 
 class App extends React.Component {
 
-  state = {
-    messageArray: []
-  }
-
-  onSubmitNewMessage=(message) => {
-    console.log(message)
-  }
-
   render() {
     return (
       <React.Fragment>
-        <MessageList
-          messages={this.state.messageArray}
-        />
+        <MessageList/>
         <NewMessageInput
-          onSubmitNewMessage={this.onSubmitNewMessage}
+          onSubmitNewMessage = {this.props.sendNewMessage}
         />
       </React.Fragment>
     );
   }
 }
 
-export default App;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    sendNewMessage: (message) => dispatch(sendNewMessage(message))
+  };
+};
+
+export default connect(null, mapDispatchToProps)(App);
