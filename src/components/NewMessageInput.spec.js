@@ -21,12 +21,12 @@ describe('when typing new message', () => {
     const mockOnSubmitNewMessage = jest.fn()
     const newTestMessage = 'Some new message'
 
-    const myComponent = shallow(<NewMessageInput
+    const testedComponent = shallow(<NewMessageInput
         onSubmitNewMessage={mockOnSubmitNewMessage}
     />)
 
     beforeEach(() => {
-        myComponent.find('input').simulate('change', {
+        testedComponent.find('input').simulate('change', {
             target: {
                 value : newTestMessage,
             }
@@ -34,7 +34,7 @@ describe('when typing new message', () => {
     })
 
     it('updates inputValue field in state', () => {
-        expect(myComponent.state().inputValue).toEqual(newTestMessage);
+        expect(testedComponent.state().inputValue).toEqual(newTestMessage);
     })
 
 })

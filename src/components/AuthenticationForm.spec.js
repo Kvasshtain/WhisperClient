@@ -8,11 +8,11 @@ describe('NewMessageInput', () => {
     const mockOnSubmit = jest.fn()
 
     it ('should render correctly', () => {
-        const myComponent = shallow(<AuthenticationForm 
+        const testedComponent = shallow(<AuthenticationForm 
             onSubmit = {mockOnSubmit}
         />)
 
-        expect(shallowToJson(myComponent)).toMatchSnapshot();
+        expect(shallowToJson(testedComponent)).toMatchSnapshot();
       })
 
 })

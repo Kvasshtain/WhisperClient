@@ -35,5 +35,8 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "eslint-plugin-react-hooks": "^2.3.0",
+    "redux-mock-store": "^1.5.4"
+  }
 }

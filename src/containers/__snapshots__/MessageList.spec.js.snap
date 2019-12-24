@@ -6,6 +6,8 @@ exports[`MessageList should render correctly 1`] = `
 >
   <p
     key="0"
-  />
+  >
+    test message
+  </p>
 </div>
 `;

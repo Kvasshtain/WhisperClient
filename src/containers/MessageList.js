@@ -36,4 +36,5 @@ MessageList.propTypes = {
     messages: PropTypes.arrayOf(PropTypes.string.isRequired)
 }
 
+export {MessageList}
 export default connect(mapStateToProps)(MessageList);
