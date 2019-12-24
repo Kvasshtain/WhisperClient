@@ -1,13 +1,15 @@
 export const ADD_NEW_MESSAGE = 'ADD_NEW_MESSAGE'
 export const MESSAGE_WAS_RECEIVED = 'MESSAGE_WAS_RECEIVED'
+export const REFRESH_MESSAGES_LIST = 'REFRESH_MESSAGES_LIST'
 
-const serverLocation = 'http://localhost:3000/'
-const messageReceivePath = 'messageReceive/';
+const serverLocation = 'http://localhost:5000/'
+const messageSendPath = 'messageReceive/';
+const messageGetPath = 'messageListRequest/';
 
 export function addNewMessage(message) {
     return {
         type: ADD_NEW_MESSAGE,
-        payload: message,
+        payload: {message},
     }
 }
 
@@ -18,15 +20,19 @@ export function messageWasReceived(bool) {
     };
 }
 
-export function sendNewMessage(message) {
-    return (dispatch, getState) => {
+export function refreshMessagesList(messages) {
+    return {
+        type: REFRESH_MESSAGES_LIST,
+        payload: messages
+    }
+}
 
-        let state = getState()
-        console.log(state)
+export function sendNewMessage(message) {
+    return (dispatch) => {
 
         dispatch(messageWasReceived(false))
 
-        fetch(serverLocation + messageReceivePath, {
+        fetch(serverLocation + messageSendPath, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -45,4 +51,23 @@ export function sendNewMessage(message) {
                 dispatch(messageWasReceived(true));
             })
     };
+}
+
+export function fetchMessagesList() {
+    return (dispatch) => {
+
+        fetch(serverLocation + messageGetPath, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            }
+        })
+            .then(response => {
+                return response.json()
+            })
+            .then((json) => {
+                dispatch(refreshMessagesList(json))
+            })
+    }
 }
