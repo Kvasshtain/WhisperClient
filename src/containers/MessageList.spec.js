@@ -8,7 +8,7 @@ import ConnectedMessageList from './MessageList'
 
 describe('MessageList', () => {
     const mockMessages = [{message: 'test message'}]
-    const mockFetchMessagesList = () => {}
+    const mockFetchMessagesList = jest.fn()
     let testedComponent
 
     beforeEach(() => {

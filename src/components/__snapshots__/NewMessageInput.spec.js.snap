@@ -6,6 +6,7 @@ exports[`NewMessageInput should render correctly 1`] = `
     name="userMessage"
     onChange={[Function]}
     type="text"
+    value=""
   />
   <button
     onClick={[Function]}

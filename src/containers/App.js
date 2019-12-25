@@ -8,14 +8,21 @@ import './App.css';
 class App extends React.Component {
 
   render() {
+
     return (
       <React.Fragment>
         <MessageList />
         <NewMessageInput
-          onSubmitNewMessage={this.props.sendNewMessage}
+          onSubmitNewMessage = { this.props.sendNewMessage }
         />
       </React.Fragment>
     );
+  }
+}
+
+const mapStateToProps = (state) => {
+  return {
+    wasMessageReceived: state.wasMessageReceived,
   }
 }
 
@@ -25,4 +32,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -4,10 +4,14 @@ import PropTypes from 'prop-types'
 class NewMessageInput extends React.Component {
 
     state = {
-        inputValue : ''
+        inputValue: ''
     }
 
     onSubmit = () => {
+        this.setState({
+            inputValue: ''
+        })
+        
         this.props.onSubmitNewMessage(this.state.inputValue)
     }
 
@@ -20,15 +24,15 @@ class NewMessageInput extends React.Component {
     render() {
         return (
             <div>
-                <input type="text" onChange={this.updateInputValue} name="userMessage" />
-                <button type="submit" onClick = {this.onSubmit}>Send message</button>
+                <input type="text" onChange={this.updateInputValue} name = "userMessage" value = { this.state.inputValue }/>
+                <button type="submit" onClick={this.onSubmit}>Send message</button>
             </div>
         )
     }
 }
 
 NewMessageInput.propTypes = {
-    onSubmitNewMessage : PropTypes.func.isRequired
+    onSubmitNewMessage: PropTypes.func.isRequired
 }
 
-export {NewMessageInput}
+export { NewMessageInput }
