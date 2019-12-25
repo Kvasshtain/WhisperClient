@@ -7,11 +7,12 @@ import { MessageList } from './MessageList'
 import ConnectedMessageList from './MessageList'
 
 describe('MessageList', () => {
-    const mockMessages = ['test message']
+    const mockMessages = [{message: 'test message'}]
+    const mockFetchMessagesList = () => {}
     let testedComponent
 
     beforeEach(() => {
-        testedComponent = shallow(<MessageList messages={mockMessages} />)
+        testedComponent = shallow(<MessageList messages={ mockMessages } fetchMessagesList = { mockFetchMessagesList }/>)
     })
 
     it('should render correctly', () => {

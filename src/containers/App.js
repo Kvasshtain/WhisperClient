@@ -10,9 +10,9 @@ class App extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <MessageList/>
+        <MessageList />
         <NewMessageInput
-          onSubmitNewMessage = {this.props.sendNewMessage}
+          onSubmitNewMessage={this.props.sendNewMessage}
         />
       </React.Fragment>
     );
@@ -21,8 +21,8 @@ class App extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    sendNewMessage: (message) => dispatch(sendNewMessage(message))
-  };
-};
+    sendNewMessage: (message) => dispatch(sendNewMessage(message)),
+  }
+}
 
 export default connect(null, mapDispatchToProps)(App);

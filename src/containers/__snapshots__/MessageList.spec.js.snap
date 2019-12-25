@@ -4,10 +4,9 @@ exports[`MessageList should render correctly 1`] = `
 <div
   className="MessageList"
 >
-  <p
+  <MessageFrame
     key="0"
-  >
-    test message
-  </p>
+    message="test message"
+  />
 </div>
 `;

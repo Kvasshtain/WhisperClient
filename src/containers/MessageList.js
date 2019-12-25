@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types'
 import { fetchMessagesList } from '../actions/messageListActions';
+import { MessageFrame } from '../components/MessageFrame'
 
 class MessageList extends React.Component {
 
@@ -10,12 +11,12 @@ class MessageList extends React.Component {
     }
 
     renderMessageList = () => {
-        const {messages} = this.props;
+        const { messages } = this.props;
 
         if (messages && messages.length) {
             return messages.map(function (item, index) {
                 return (
-                    <p key = {index}>{item.message}</p>
+                    <MessageFrame key={index} message={item.message} />
                 )
             })
         }
@@ -34,18 +35,21 @@ const mapStateToProps = (state) => {
     return {
         messages: state.messages,
         wasMessageReceived: state.wasMessageReceived,
-    };
-};
+    }
+}
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchMessagesList: () => dispatch(fetchMessagesList())
-    };
-  };
-
-MessageList.propTypes = {
-    messages: PropTypes.arrayOf(PropTypes.string.isRequired)
+        fetchMessagesList: () => dispatch(fetchMessagesList()),
+    }
 }
 
-export {MessageList}
+MessageList.propTypes = {
+    messages: PropTypes.arrayOf(PropTypes.shape({
+        message: PropTypes.string.isRequired
+    })
+    )
+}
+
+export { MessageList }
 export default connect(mapStateToProps, mapDispatchToProps)(MessageList);

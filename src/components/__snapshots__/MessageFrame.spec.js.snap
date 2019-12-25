@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MessageFrame should render correctly 1`] = `
+<div
+  className="MessageFrame"
+>
+  <p>
+    test message
+  </p>
+</div>
+`;
