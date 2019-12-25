@@ -46,7 +46,12 @@ const mapDispatchToProps = (dispatch) => {
 
 MessageList.propTypes = {
     messages: PropTypes.arrayOf(PropTypes.shape({
-        message: PropTypes.string.isRequired
+        message: PropTypes.exact({
+            author: PropTypes.string.isRequired,
+            time: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]).isRequired,
+            text: PropTypes.string.isRequired,
+            wasMessageReceived: PropTypes.bool.isRequired
+        })
     })
     )
 }

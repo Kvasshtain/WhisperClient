@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NewMessageInput should render correctly 1`] = `
+<div>
+  <p>
+    21
+    :
+    2
+     
+    25
+    .
+    12
+    .
+    2019
+  </p>
+</div>
+`;

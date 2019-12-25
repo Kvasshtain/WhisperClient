@@ -6,7 +6,6 @@ exports[`MessageList should render correctly 1`] = `
 >
   <MessageFrame
     key="0"
-    message="test message"
   />
 </div>
 `;

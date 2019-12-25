@@ -9,7 +9,7 @@ const messageGetPath = 'messageListRequest/';
 export function addNewMessage(message) {
     return {
         type: ADD_NEW_MESSAGE,
-        payload: {message},
+        payload: message,
     }
 }
 
@@ -27,10 +27,20 @@ export function refreshMessagesList(messages) {
     }
 }
 
-export function sendNewMessage(message) {
-    return (dispatch) => {
+export function sendNewMessage(text) {
+    return (dispatch, getState) => {
 
         dispatch(messageWasReceived(false))
+
+        let time = new Date()
+        let author = getState().chatUser
+
+        let message = {
+            time,
+            author,
+            text,
+            wasMessageReceived: true
+        }
 
         fetch(serverLocation + messageSendPath, {
             method: 'POST',
@@ -43,11 +53,12 @@ export function sendNewMessage(message) {
             })
         })
             .then((response) => {
-                // if (!response.ok) {
-                //     throw Error(response.statusText);
-                // }
+                
+                if (!response.ok) {
+                    message.wasMessageReceived = false;
+                }
 
-                dispatch(addNewMessage(message))
+                dispatch(addNewMessage({message}))
                 dispatch(messageWasReceived(true));
             })
     };

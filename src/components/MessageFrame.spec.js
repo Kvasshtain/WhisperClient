@@ -5,12 +5,15 @@ import { shallowToJson } from 'enzyme-to-json';
 import { MessageFrame } from './MessageFrame'
 
 describe('MessageFrame', () => {
-    const mockMessage = 'test message'
-    const mockIndex = 100500
+    const mockMessage = {
+        author: 'captain Nemo',
+        time: '2019-12-25T16:40:12.526Z',
+        text: 'some message',
+        wasMessageReceived: true,
+    }
 
     it ('should render correctly', () => {
         const testComponent = shallow(<MessageFrame 
-            index = { mockIndex }
             message = { mockMessage }
         />)
 

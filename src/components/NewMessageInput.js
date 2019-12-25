@@ -11,7 +11,7 @@ class NewMessageInput extends React.Component {
         this.setState({
             inputValue: ''
         })
-        
+
         this.props.onSubmitNewMessage(this.state.inputValue)
     }
 
@@ -24,8 +24,8 @@ class NewMessageInput extends React.Component {
     render() {
         return (
             <div>
-                <input type="text" onChange={this.updateInputValue} name = "userMessage" value = { this.state.inputValue }/>
-                <button type="submit" onClick={this.onSubmit}>Send message</button>
+                <input type="text" onChange = {this.updateInputValue} name = "userMessage" value = { this.state.inputValue }/>
+                <button type="submit" onClick = {this.onSubmit}>Send message</button>
             </div>
         )
     }

@@ -1,18 +1,18 @@
 import React from 'react'
-import {shallow} from 'enzyme'
-import {shallowToJson} from 'enzyme-to-json';
+import { shallow } from 'enzyme'
+import { shallowToJson } from 'enzyme-to-json';
 
-import {NewMessageInput} from './NewMessageInput'
+import { NewMessageInput } from './NewMessageInput'
 
 describe('NewMessageInput', () => {
     const mockOnSubmitNewMessage = jest.fn()
 
     it ('should render correctly', () => {
-        const myComponent = shallow(<NewMessageInput 
+        const testedComponent = shallow(<NewMessageInput 
             onSubmitNewMessage = {mockOnSubmitNewMessage}
         />)
 
-        expect(shallowToJson(myComponent)).toMatchSnapshot();
+        expect(shallowToJson(testedComponent)).toMatchSnapshot();
       })
 
 })

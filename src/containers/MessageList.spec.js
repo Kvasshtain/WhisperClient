@@ -7,7 +7,12 @@ import { MessageList } from './MessageList'
 import ConnectedMessageList from './MessageList'
 
 describe('MessageList', () => {
-    const mockMessages = [{message: 'test message'}]
+    const mockMessages = [{
+        author: 'captain Nemo',
+        time: '2019-12-25T16:40:12.526Z',
+        text: 'some message',
+        wasMessageReceived: true,
+    }]
     const mockFetchMessagesList = jest.fn()
     let testedComponent
 
