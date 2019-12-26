@@ -6,6 +6,15 @@ exports[`MessageList should render correctly 1`] = `
 >
   <MessageFrame
     key="0"
+    message={
+      Object {
+        "author": "captain Nemo",
+        "chatId": 0,
+        "text": "some message",
+        "time": "2019-12-25T16:40:12.526Z",
+        "wasMessageReceived": true,
+      }
+    }
   />
 </div>
 `;
