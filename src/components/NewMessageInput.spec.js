@@ -9,7 +9,7 @@ describe('NewMessageInput', () => {
 
     it ('should render correctly', () => {
         const testedComponent = shallow(<NewMessageInput 
-            onSubmitNewMessage = {mockOnSubmitNewMessage}
+            onSubmitNewMessage = { mockOnSubmitNewMessage }
         />)
 
         expect(shallowToJson(testedComponent)).toMatchSnapshot();

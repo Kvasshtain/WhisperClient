@@ -8,6 +8,7 @@ import ConnectedMessageList from './MessageList'
 
 describe('MessageList', () => {
     const mockMessages = [{
+        chatId: 0,
         author: 'captain Nemo',
         time: '2019-12-25T16:40:12.526Z',
         text: 'some message',

@@ -16,7 +16,7 @@ class MessageList extends React.Component {
         if (messages && messages.length) {
             return messages.map(function (item, index) {
                 return (
-                    <MessageFrame key={index} message={item.message} />
+                    <MessageFrame key = { index } message = { item } />
                 )
             })
         }
@@ -34,7 +34,6 @@ class MessageList extends React.Component {
 const mapStateToProps = (state) => {
     return {
         messages: state.messages,
-        wasMessageReceived: state.wasMessageReceived,
     }
 }
 
@@ -47,6 +46,7 @@ const mapDispatchToProps = (dispatch) => {
 MessageList.propTypes = {
     messages: PropTypes.arrayOf(PropTypes.shape({
         message: PropTypes.exact({
+            chatId: PropTypes.number.isRequired,
             author: PropTypes.string.isRequired,
             time: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]).isRequired,
             text: PropTypes.string.isRequired,

@@ -1,10 +1,8 @@
+import { serverLocation, messageSendPath, messageGetPath } from '../applicationSettings'
+
 export const ADD_NEW_MESSAGE = 'ADD_NEW_MESSAGE'
 export const MESSAGE_WAS_RECEIVED = 'MESSAGE_WAS_RECEIVED'
 export const REFRESH_MESSAGES_LIST = 'REFRESH_MESSAGES_LIST'
-
-const serverLocation = 'http://localhost:5000/'
-const messageSendPath = 'messageReceive/';
-const messageGetPath = 'messageListRequest/';
 
 export function addNewMessage(message) {
     return {
@@ -32,10 +30,12 @@ export function sendNewMessage(text) {
 
         dispatch(messageWasReceived(false))
 
-        let time = new Date()
+        let time = (new Date()).getTime();
         let author = getState().chatUser
+        let chatId = getState().currentChat
 
         let message = {
+            chatId,
             time,
             author,
             text,
@@ -48,9 +48,9 @@ export function sendNewMessage(text) {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
+            body: JSON.stringify(
                 message
-            })
+            )
         })
             .then((response) => {
                 
@@ -58,7 +58,7 @@ export function sendNewMessage(text) {
                     message.wasMessageReceived = false;
                 }
 
-                dispatch(addNewMessage({message}))
+                dispatch(addNewMessage(message))
                 dispatch(messageWasReceived(true));
             })
     };
