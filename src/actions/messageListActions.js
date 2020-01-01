@@ -36,13 +36,15 @@ export function sendNewMessage(text) {
             dispatch(messageWasReceived(false))
 
             let time = (new Date()).getTime();
-            let author = getState().chatUser.userEmail
+            let authorEmail = getState().chatUser.userEmail
+            let authorName = getState().chatUser.userName
             let chatId = getState().currentChat
     
             let message = {
                 chatId,
                 time,
-                author,
+                authorEmail,
+                authorName,
                 text,
             }
     

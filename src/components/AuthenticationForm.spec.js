@@ -69,7 +69,7 @@ describe('when push the button', () => {
     />)
 
     beforeEach(() => {
-        myComponent.find('button').simulate('click', {
+        myComponent.find('form').simulate('submit', {
             preventDefault: () => { },
         })
     })

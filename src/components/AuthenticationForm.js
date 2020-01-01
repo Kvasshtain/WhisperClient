@@ -4,11 +4,18 @@ import PropTypes from 'prop-types'
 class AuthenticationForm extends React.Component {
 
     state = {
-        email : '',
-        password : ''
+        email: '',
+        password: ''
     }
 
-    onSubmit = () => {
+    onSubmit = (event) => {
+        event.preventDefault()
+
+        this.setState({
+            email: '',
+            password: '',
+        })
+
         this.props.onSubmit(this.state.email, this.state.password)
     }
 
@@ -26,17 +33,34 @@ class AuthenticationForm extends React.Component {
 
     render() {
         return (
-            <div>
-                <input type="text" onChange = { this.updateUserEmailValue } name = "userEmail"/>
-                <input type="text" onChange = { this.updateUserPasswordValue } name = "userPassword"/>
-                <button type="submit" onClick = {this.onSubmit}>Send email and password</button>
-            </div>
+            <form onSubmit={this.onSubmit}>
+                <h1>Login</h1>
+                <label>User email</label>
+                <input
+                    name='userEmail'
+                    placeholder='User email'
+                    type='text'
+                    value={this.state.email}
+                    onChange={this.updateUserEmailValue}
+                /><br />
+                <label>User password</label>
+                <input
+                    name='userPassword'
+                    placeholder='User password'
+                    type='text'
+                    value={this.state.password}
+                    onChange={this.updateUserPasswordValue}
+                /><br />
+                <button type="submit">
+                    Submit
+                </button>
+            </form>
         )
     }
 }
 
 AuthenticationForm.propTypes = {
-    onSubmit : PropTypes.func.isRequired
+    onSubmit: PropTypes.func.isRequired
 }
 
 export { AuthenticationForm }

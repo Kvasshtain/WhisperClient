@@ -9,7 +9,10 @@ function MessageFrame(props) {
     return (
         <div className="MessageFrame">
             <div>
-                <p>{message.author}</p>
+                <p>{message.authorName}</p>
+            </div>
+            <div>
+                <p>{message.authorEmail}</p>
             </div>
             <div>
                 <p>{message.text}</p>

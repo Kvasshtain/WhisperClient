@@ -4,29 +4,40 @@ import PropTypes from 'prop-types'
 class NewMessageInput extends React.Component {
 
     state = {
-        inputValue: ''
+        newMessage: ''
     }
 
-    onSubmit = () => {
+    onSubmit = (event) => {
+        event.preventDefault()
+        
         this.setState({
-            inputValue: ''
+            newMessage: ''
         })
 
-        this.props.onSubmitNewMessage(this.state.inputValue)
+        this.props.onSubmitNewMessage(this.state.newMessage)
     }
 
     updateInputValue = (eventArg) => {
         this.setState({
-            inputValue: eventArg.target.value
+            newMessage: eventArg.target.value
         })
     }
 
     render() {
         return (
-            <div>
-                <input type="text" onChange = {this.updateInputValue} name = "userMessage" value = { this.state.inputValue }/>
-                <button type="submit" onClick = {this.onSubmit}>Send message</button>
-            </div>
+            <form onSubmit={this.onSubmit}>
+                <h1>Send new message</h1>
+                <input
+                    name='userMessage'
+                    placeholder='message text'
+                    type='text'
+                    value={this.state.newMessage}
+                    onChange={this.updateInputValue}
+                />
+                <button type='submit'>
+                    Send message
+                </button>
+            </form>
         )
     }
 }

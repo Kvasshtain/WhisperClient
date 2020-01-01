@@ -4,12 +4,20 @@ import PropTypes from 'prop-types'
 class RegistrationForm extends React.Component {
 
     state = {
-        email : '',
-        name : '',
-        password : '',
+        email: '',
+        name: '',
+        password: '',
     }
 
-    onSubmit = () => {
+    onSubmit = (event) => {
+        event.preventDefault()
+
+        this.setState({
+            email: '',
+            name: '',
+            password: '',
+        })
+
         this.props.onSubmit(this.state.email, this.state.name, this.state.password)
     }
 
@@ -33,18 +41,42 @@ class RegistrationForm extends React.Component {
 
     render() {
         return (
-            <div>
-                <input type="text" onChange = { this.updateUserEmailValue } name = "userEmail"/>
-                <input type="text" onChange = { this.updateUserNameValue } name = "userName"/>
-                <input type="text" onChange = { this.updateUserPasswordValue } name = "userPassword"/>
-                <button type="submit" onClick = { this.onSubmit }>Send new user registration data</button>
-            </div>
+            <form onSubmit={this.onSubmit}>
+                <h1>New user registration</h1>
+                <label>User email</label>
+                <input
+                    name="userEmail"
+                    placeholder='User email'
+                    type='text'
+                    value={this.state.email}
+                    onChange={this.updateUserEmailValue}
+                /><br />
+                <label>User name</label>
+                <input
+                    name='userName'
+                    placeholder='User name'
+                    type='text'
+                    value={this.state.name}
+                    onChange={this.updateUserNameValue}
+                /><br />
+                <label>User password</label>
+                <input
+                    name='userPassword'
+                    placeholder='User password'
+                    type='text'
+                    value={this.state.password}
+                    onChange={this.updateUserPasswordValue}
+                /><br />
+                <button type='submit'>
+                    Send new user registration data
+                </button>
+            </form>
         )
     }
 }
 
 RegistrationForm.propTypes = {
-    onSubmit : PropTypes.func.isRequired
+    onSubmit: PropTypes.func.isRequired
 }
 
 export { RegistrationForm }

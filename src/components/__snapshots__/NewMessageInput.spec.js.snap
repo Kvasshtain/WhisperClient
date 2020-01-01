@@ -1,18 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`NewMessageInput should render correctly 1`] = `
-<div>
+<form
+  onSubmit={[Function]}
+>
+  <h1>
+    Send new message
+  </h1>
   <input
     name="userMessage"
     onChange={[Function]}
+    placeholder="message text"
     type="text"
     value=""
   />
   <button
-    onClick={[Function]}
     type="submit"
   >
     Send message
   </button>
-</div>
+</form>
 `;

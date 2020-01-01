@@ -1,27 +1,49 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AuthenticationForm should render correctly 1`] = `
-<div>
+<form
+  onSubmit={[Function]}
+>
+  <h1>
+    New user registration
+  </h1>
+  <label>
+    User email
+  </label>
   <input
     name="userEmail"
     onChange={[Function]}
+    placeholder="User email"
     type="text"
+    value=""
   />
+  <br />
+  <label>
+    User name
+  </label>
   <input
     name="userName"
     onChange={[Function]}
+    placeholder="User name"
     type="text"
+    value=""
   />
+  <br />
+  <label>
+    User password
+  </label>
   <input
     name="userPassword"
     onChange={[Function]}
+    placeholder="User password"
     type="text"
+    value=""
   />
+  <br />
   <button
-    onClick={[Function]}
     type="submit"
   >
     Send new user registration data
   </button>
-</div>
+</form>
 `;

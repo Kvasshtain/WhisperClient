@@ -5,9 +5,10 @@ exports[`MessageFrame should render correctly 1`] = `
   className="MessageFrame"
 >
   <div>
-    <p>
-      captain Nemo
-    </p>
+    <p />
+  </div>
+  <div>
+    <p />
   </div>
   <div>
     <p>

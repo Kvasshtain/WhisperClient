@@ -34,7 +34,7 @@ describe('when typing new message', () => {
     })
 
     it('updates inputValue field in state', () => {
-        expect(testedComponent.state().inputValue).toEqual(newTestMessage);
+        expect(testedComponent.state().newMessage).toEqual(newTestMessage);
     })
 
 })
@@ -47,7 +47,7 @@ describe('when push the button', () => {
     />)
 
     beforeEach(() => {
-        myComponent.find('button').simulate('click', {
+        myComponent.find('form').simulate('submit', {
             preventDefault: () => { },
         })
     })
