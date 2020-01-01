@@ -28,57 +28,91 @@ export function refreshMessagesList(messages) {
 export function sendNewMessage(text) {
     return (dispatch, getState) => {
 
-        dispatch(messageWasReceived(false))
+        const token = localStorage.token
 
-        let time = (new Date()).getTime();
-        let author = getState().chatUser
-        let chatId = getState().currentChat
+        if(token){
+            dispatch(messageWasReceived(false))
 
-        let message = {
-            chatId,
-            time,
-            author,
-            text,
-            wasMessageReceived: true
-        }
-
-        fetch(serverLocation + messageSendPath, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(
-                message
-            )
-        })
-            .then((response) => {
-                
-                if (!response.ok) {
-                    message.wasMessageReceived = false;
-                }
-
-                dispatch(addNewMessage(message))
-                dispatch(messageWasReceived(true));
+            let time = (new Date()).getTime();
+            let author = getState().chatUser.userEmail
+            let chatId = getState().currentChat
+    
+            let message = {
+                chatId,
+                time,
+                author,
+                text,
+                wasMessageReceived: true
+            }
+    
+            fetch(serverLocation + messageSendPath, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: JSON.stringify(
+                    message
+                )
             })
+                .then((response) => {
+                    
+                    if (!response.ok) {
+                        message.wasMessageReceived = false
+
+                        localStorage.removeItem('token')
+                    }
+    
+                    return response.json()
+                })
+                .then((data) => {
+
+                    if (data.message) {
+                        //!!!!! Логика обработки ошибок
+
+                        localStorage.removeItem('token')
+                    } else {
+                        dispatch(addNewMessage(message))
+                        dispatch(messageWasReceived(true));
+                    }
+                })
+        }
     };
 }
 
 export function fetchMessagesList() {
     return (dispatch) => {
 
-        fetch(serverLocation + messageGetPath, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            }
-        })
-            .then(response => {
-                return response.json()
+        const token = localStorage.token
+
+        if(token){
+            fetch(serverLocation + messageGetPath, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                }
             })
-            .then((json) => {
-                dispatch(refreshMessagesList(json))
-            })
+                .then(response => {
+
+                    if (!response.ok) {
+                        localStorage.removeItem('token')
+                    }
+
+                    return response.json()
+                })
+                .then((data) => {
+
+                    if (data.message) {
+                        //!!!!! Логика обработки ошибок
+
+                        localStorage.removeItem('token')
+                    } else {
+                        dispatch(refreshMessagesList(data))
+                    }
+                })
+        }
     }
 }

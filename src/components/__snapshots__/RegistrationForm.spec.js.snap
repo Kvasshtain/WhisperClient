@@ -8,6 +8,11 @@ exports[`AuthenticationForm should render correctly 1`] = `
     type="text"
   />
   <input
+    name="userName"
+    onChange={[Function]}
+    type="text"
+  />
+  <input
     name="userPassword"
     onChange={[Function]}
     type="text"
@@ -16,7 +21,7 @@ exports[`AuthenticationForm should render correctly 1`] = `
     onClick={[Function]}
     type="submit"
   >
-    Send email and password
+    Send new user registration data
   </button>
 </div>
 `;

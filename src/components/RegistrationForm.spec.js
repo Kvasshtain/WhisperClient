@@ -2,13 +2,13 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {shallowToJson} from 'enzyme-to-json';
 
-import { AuthenticationForm } from './AuthenticationForm'
+import { RegistrationForm } from './RegistrationForm'
 
 describe('AuthenticationForm', () => {
     const mockOnSubmit = jest.fn()
 
     it ('should render correctly', () => {
-        const testedComponent = shallow(<AuthenticationForm 
+        const testedComponent = shallow(<RegistrationForm 
             onSubmit = { mockOnSubmit }
         />)
 
@@ -17,11 +17,11 @@ describe('AuthenticationForm', () => {
 
 })
 
-describe('when typing name', () => {
+describe('when typing email', () => {
     const mockOnSubmit = jest.fn()
     const newTestUserEmail = 'capitan-nemo@google.com'
 
-    const myComponent = shallow(<AuthenticationForm
+    const myComponent = shallow(<RegistrationForm
         onSubmit = { mockOnSubmit }
     />)
 
@@ -39,11 +39,33 @@ describe('when typing name', () => {
 
 })
 
-describe('when typing email', () => {
+describe('when typing name', () => {
+    const mockOnSubmit = jest.fn()
+    const newTestUserName = 'Capitan Nemo'
+
+    const myComponent = shallow(<RegistrationForm
+        onSubmit = { mockOnSubmit }
+    />)
+
+    beforeEach(() => {
+        myComponent.find('[name="userName"]').simulate('change', {
+            target: {
+                value : newTestUserName,
+            }
+        })
+    })
+
+    it('updates inputValue field in state', () => {
+        expect(myComponent.state().name).toEqual(newTestUserName);
+    })
+
+})
+
+describe('when typing name', () => {
     const mockOnSubmit = jest.fn()
     const newTestUserPassword = 'root'
 
-    const myComponent = shallow(<AuthenticationForm
+    const myComponent = shallow(<RegistrationForm
         onSubmit = { mockOnSubmit }
     />)
 
@@ -64,7 +86,7 @@ describe('when typing email', () => {
 describe('when push the button', () => {
     const mockOnSubmit = jest.fn()
 
-    const myComponent = shallow(<AuthenticationForm
+    const myComponent = shallow(<RegistrationForm
         onSubmit = { mockOnSubmit }
     />)
 

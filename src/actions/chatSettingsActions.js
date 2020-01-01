@@ -1,13 +1,17 @@
-import { serverLocation, chatsListGetPath } from '../applicationSettings'
+import { serverLocation, chatsListGetPath, submitUserNameAndPasswordPath, submitNewUserPath } from '../applicationSettings'
 
 export const CHANGE_CHAT_USER = 'CHANGE_CHAT_USER'
 export const CHANGE_CHAT = 'CHANGE_CHAT'
 export const REFRESH_CHATS_LIST = 'REFRESH_CHATS_LIST'
+export const SET_AUTHENTICATION_RESULT = 'SET_AUTHENTICATION_RESULT'
 
-export function changeChatUser(userName) {
+export function changeChatUser(userEmail, userName) {
     return {
         type: CHANGE_CHAT_USER,
-        payload: userName,
+        payload: {
+            userName,
+            userEmail,
+        }
     }
 }
 
@@ -21,25 +25,138 @@ export function changeChat(chatId) {
 export function refreshChatsList(chats) {
     return {
         type: REFRESH_CHATS_LIST,
-        payload: chats
+        payload: chats,
     }
 }
 
 export function fetchChatsList() {
     return (dispatch) => {
 
-        fetch(serverLocation + chatsListGetPath, {
-            method: 'GET',
+        const token = localStorage.token
+
+        if(token) {
+            fetch(serverLocation + chatsListGetPath, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                }
+            })
+                .then(response => {
+
+                    if (!response.ok) {
+                        localStorage.removeItem('token')
+                    }
+
+                    return response.json()
+                })
+                .then((data) => {
+                    if (data.message) {
+                        //!!!!! Логика обработки ошибок
+
+                        localStorage.removeItem('token')
+                    } else {
+                        dispatch(refreshChatsList(data))
+                    }
+                })
+        }
+    }
+}
+
+export function setAuthenticationResult(result) {
+    return {
+        type: SET_AUTHENTICATION_RESULT,
+        payload: result,
+    }
+}
+
+export function submitUserNameAndPassword(email, password) {
+    return (dispatch) => {
+
+        let userAuthenticationData = {
+            user: {
+                email,
+                name: '',
+                password,
+            }
+        }
+
+        fetch(serverLocation + submitUserNameAndPasswordPath, {
+            method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-            }
+            },
+            body: JSON.stringify(
+                userAuthenticationData
+            )
         })
-            .then(response => {
+            .then((response) => {
+                
+                if (!response.ok) {
+                    dispatch(setAuthenticationResult(false))
+                }
+                
                 return response.json()
             })
-            .then((json) => {
-                dispatch(refreshChatsList(json))
+            .then((data) => {
+
+                if (data.message) {
+                    //!!!!! Логика обработки ошибок
+                } else {
+                    let { email, name, token } = data.user
+
+                    localStorage.setItem('token', token)
+
+                    dispatch(changeChatUser(email, name))
+                    dispatch(setAuthenticationResult(true))
+                }
+            })
+    }
+}
+
+export function submitNewUser(email, name, password) {
+    return (dispatch) => {
+
+        let userRegistrationData = {
+            user: {
+                email,
+                name,
+                password,
+            }
+        }
+
+        fetch(serverLocation + submitNewUserPath, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(
+                userRegistrationData
+            )
+        })
+            .then((response) => {
+                
+                if (!response.ok) {
+                    dispatch(setAuthenticationResult(false))
+                }
+                
+                return response.json()
+            })
+            .then((data) => {
+
+                if (data.message) {
+                    //!!!!! Логика обработки ошибок
+                } else {
+                    let { email, name, token } = data.user
+
+                    localStorage.setItem('token', token)
+
+                    dispatch(changeChatUser(email, name))
+                    dispatch(setAuthenticationResult(true))
+                }
             })
     }
 }
