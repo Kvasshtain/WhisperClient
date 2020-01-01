@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 import { messages, wasMessageReceived } from './messageListData'
-import { chatUser, currentChat, isUserAuthenticated } from './chatSettings'
+import { chatUser, currentChat, isUserAuthenticated, lastError } from './chatSettings'
 
 export default combineReducers({
     messages,
@@ -8,4 +8,5 @@ export default combineReducers({
     chatUser,
     currentChat,
     isUserAuthenticated,
+    lastError,
 })

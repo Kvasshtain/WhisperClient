@@ -1,5 +1,7 @@
 import { serverLocation, messageSendPath, messageGetPath } from '../applicationSettings'
 
+import { setLastError } from './chatSettingsActions'
+
 export const ADD_NEW_MESSAGE = 'ADD_NEW_MESSAGE'
 export const MESSAGE_WAS_RECEIVED = 'MESSAGE_WAS_RECEIVED'
 export const REFRESH_MESSAGES_LIST = 'REFRESH_MESSAGES_LIST'
@@ -42,7 +44,6 @@ export function sendNewMessage(text) {
                 time,
                 author,
                 text,
-                wasMessageReceived: true
             }
     
             fetch(serverLocation + messageSendPath, {
@@ -60,8 +61,12 @@ export function sendNewMessage(text) {
                     
                     if (!response.ok) {
                         message.wasMessageReceived = false
-
                         localStorage.removeItem('token')
+
+                        return {
+                            status: response.status,
+                            message: response.statusText,
+                        }
                     }
     
                     return response.json()
@@ -69,13 +74,18 @@ export function sendNewMessage(text) {
                 .then((data) => {
 
                     if (data.message) {
-                        //!!!!! Логика обработки ошибок
-
+                        dispatch(setLastError(data.status, data.message))
+                        message.wasMessageReceived = false
+                        dispatch(addNewMessage(message))
                         localStorage.removeItem('token')
                     } else {
+                        message.wasMessageReceived = true
                         dispatch(addNewMessage(message))
                         dispatch(messageWasReceived(true));
                     }
+                })
+                .catch(function (error) {
+                    console.log('error', error)
                 })
         }
     };
@@ -99,6 +109,11 @@ export function fetchMessagesList() {
 
                     if (!response.ok) {
                         localStorage.removeItem('token')
+
+                        return {
+                            status: response.status,
+                            message: response.statusText,
+                        }
                     }
 
                     return response.json()
@@ -106,12 +121,14 @@ export function fetchMessagesList() {
                 .then((data) => {
 
                     if (data.message) {
-                        //!!!!! Логика обработки ошибок
-
+                        dispatch(setLastError(data.status, data.message))
                         localStorage.removeItem('token')
                     } else {
                         dispatch(refreshMessagesList(data))
                     }
+                })
+                .catch(function (error) {
+                    console.log('error', error)
                 })
         }
     }

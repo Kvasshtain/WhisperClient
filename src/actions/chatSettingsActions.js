@@ -4,6 +4,7 @@ export const CHANGE_CHAT_USER = 'CHANGE_CHAT_USER'
 export const CHANGE_CHAT = 'CHANGE_CHAT'
 export const REFRESH_CHATS_LIST = 'REFRESH_CHATS_LIST'
 export const SET_AUTHENTICATION_RESULT = 'SET_AUTHENTICATION_RESULT'
+export const SET_LAST_ERROR = 'SET_LAST_ERROR'
 
 export function changeChatUser(userEmail, userName) {
     return {
@@ -29,6 +30,23 @@ export function refreshChatsList(chats) {
     }
 }
 
+export function setAuthenticationResult(result) {
+    return {
+        type: SET_AUTHENTICATION_RESULT,
+        payload: result,
+    }
+}
+
+export function setLastError(status, message) {
+    return {
+        type: SET_LAST_ERROR,
+        payload: {
+            status,
+            message,
+        }
+    }
+}
+
 export function fetchChatsList() {
     return (dispatch) => {
 
@@ -46,28 +64,30 @@ export function fetchChatsList() {
                 .then(response => {
 
                     if (!response.ok) {
+
                         localStorage.removeItem('token')
+
+                        return {
+                            status: response.status,
+                            message: response.statusText,
+                        }
                     }
 
                     return response.json()
                 })
                 .then((data) => {
                     if (data.message) {
-                        //!!!!! Логика обработки ошибок
+                        dispatch(setLastError(data.status, data.message))
 
                         localStorage.removeItem('token')
                     } else {
                         dispatch(refreshChatsList(data))
                     }
                 })
+                .catch(function (error) {
+                    console.log('error', error)
+                })
         }
-    }
-}
-
-export function setAuthenticationResult(result) {
-    return {
-        type: SET_AUTHENTICATION_RESULT,
-        payload: result,
     }
 }
 
@@ -95,7 +115,10 @@ export function submitUserNameAndPassword(email, password) {
             .then((response) => {
                 
                 if (!response.ok) {
-                    dispatch(setAuthenticationResult(false))
+                    return {
+                        status: response.status,
+                        message: response.statusText,
+                    }
                 }
                 
                 return response.json()
@@ -103,7 +126,8 @@ export function submitUserNameAndPassword(email, password) {
             .then((data) => {
 
                 if (data.message) {
-                    //!!!!! Логика обработки ошибок
+                    dispatch(setLastError(data.status, data.message))
+                    dispatch(setAuthenticationResult(false))
                 } else {
                     let { email, name, token } = data.user
 
@@ -112,6 +136,9 @@ export function submitUserNameAndPassword(email, password) {
                     dispatch(changeChatUser(email, name))
                     dispatch(setAuthenticationResult(true))
                 }
+            })
+            .catch(function (error) {
+                console.log('error', error)
             })
     }
 }
@@ -140,7 +167,10 @@ export function submitNewUser(email, name, password) {
             .then((response) => {
                 
                 if (!response.ok) {
-                    dispatch(setAuthenticationResult(false))
+                    return {
+                        status: response.status,
+                        message: response.statusText,
+                    }
                 }
                 
                 return response.json()
@@ -148,7 +178,8 @@ export function submitNewUser(email, name, password) {
             .then((data) => {
 
                 if (data.message) {
-                    //!!!!! Логика обработки ошибок
+                    dispatch(setLastError(data.status, data.message))
+                    dispatch(setAuthenticationResult(false))
                 } else {
                     let { email, name, token } = data.user
 
@@ -157,6 +188,9 @@ export function submitNewUser(email, name, password) {
                     dispatch(changeChatUser(email, name))
                     dispatch(setAuthenticationResult(true))
                 }
+            })
+            .catch(function (error) {
+                console.log('error', error)
             })
     }
 }
