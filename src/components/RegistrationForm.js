@@ -9,16 +9,16 @@ class RegistrationForm extends React.Component {
         password: '',
     }
 
-    onSubmit = (event) => {
-        event.preventDefault()
+    onSubmit = (eventArg) => {
+        eventArg.preventDefault()
+
+        this.props.onSubmit(this.state.email, this.state.name, this.state.password)
 
         this.setState({
             email: '',
             name: '',
             password: '',
         })
-
-        this.props.onSubmit(this.state.email, this.state.name, this.state.password)
     }
 
     updateUserEmailValue = (eventArg) => {
@@ -45,29 +45,29 @@ class RegistrationForm extends React.Component {
                 <h1>New user registration</h1>
                 <label>User email</label>
                 <input
-                    name="userEmail"
-                    placeholder='User email'
-                    type='text'
-                    value={this.state.email}
-                    onChange={this.updateUserEmailValue}
+                    name = "userEmail"
+                    placeholder = 'User email'
+                    type = 'text'
+                    value = { this.state.email }
+                    onChange = { this.updateUserEmailValue }
                 /><br />
                 <label>User name</label>
                 <input
-                    name='userName'
-                    placeholder='User name'
-                    type='text'
-                    value={this.state.name}
-                    onChange={this.updateUserNameValue}
+                    name = 'userName'
+                    placeholder = 'User name'
+                    type = 'text'
+                    value = { this.state.name }
+                    onChange = { this.updateUserNameValue }
                 /><br />
                 <label>User password</label>
                 <input
-                    name='userPassword'
-                    placeholder='User password'
-                    type='text'
-                    value={this.state.password}
-                    onChange={this.updateUserPasswordValue}
+                    name = 'userPassword'
+                    placeholder = 'User password'
+                    type = 'text'
+                    value = { this.state.password }
+                    onChange = { this.updateUserPasswordValue }
                 /><br />
-                <button type='submit'>
+                <button type = 'submit'>
                     Send new user registration data
                 </button>
             </form>

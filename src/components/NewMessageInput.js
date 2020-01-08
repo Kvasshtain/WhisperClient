@@ -10,11 +10,11 @@ class NewMessageInput extends React.Component {
     onSubmit = (event) => {
         event.preventDefault()
         
+        this.props.onSubmitNewMessage(this.state.newMessage)
+
         this.setState({
             newMessage: ''
         })
-
-        this.props.onSubmitNewMessage(this.state.newMessage)
     }
 
     updateInputValue = (eventArg) => {
@@ -25,16 +25,16 @@ class NewMessageInput extends React.Component {
 
     render() {
         return (
-            <form onSubmit={this.onSubmit}>
+            <form onSubmit = { this.onSubmit }>
                 <h1>Send new message</h1>
                 <input
-                    name='userMessage'
-                    placeholder='message text'
-                    type='text'
-                    value={this.state.newMessage}
-                    onChange={this.updateInputValue}
+                    name = 'userMessage'
+                    placeholder = 'message text'
+                    type = 'text'
+                    value = { this.state.newMessage }
+                    onChange = { this.updateInputValue }
                 />
-                <button type='submit'>
+                <button type = 'submit'>
                     Send message
                 </button>
             </form>

@@ -11,12 +11,12 @@ class AuthenticationForm extends React.Component {
     onSubmit = (event) => {
         event.preventDefault()
 
+        this.props.onSubmit(this.state.email, this.state.password)
+
         this.setState({
             email: '',
             password: '',
         })
-
-        this.props.onSubmit(this.state.email, this.state.password)
     }
 
     updateUserEmailValue = (eventArg) => {

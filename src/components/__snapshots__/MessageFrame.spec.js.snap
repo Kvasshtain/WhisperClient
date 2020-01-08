@@ -1,14 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MessageFrame should render correctly 1`] = `
-<div
-  className="MessageFrame"
->
+<div>
   <div>
-    <p />
+    <p>
+      captain Nemo
+    </p>
   </div>
   <div>
-    <p />
+    <p>
+      nemo@mail.ru
+    </p>
   </div>
   <div>
     <p>

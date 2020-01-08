@@ -1,17 +1,23 @@
-import { CHANGE_CHAT_USER, CHANGE_CHAT, REFRESH_CHATS_LIST, SET_AUTHENTICATION_RESULT, SET_LAST_ERROR} from '../actions/chatSettingsActions'
+import { 
+    CHANGE_CURRENT_USER, 
+    CHANGE_CURRENT_CHAT, 
+    REFRESH_CHATS_LIST, 
+    SET_AUTHENTICATION_RESULT, 
+    SET_LAST_ERROR
+} from '../actions/chatSettingsActions'
 
-export function chatUser(state = { userName: 'defaultUser', userEmail: 'dafaultEmail' }, action) {
+export function currentUser(state = {}, action) {
     switch (action.type) {
-        case CHANGE_CHAT_USER:
+        case CHANGE_CURRENT_USER:
             return action.payload
         default:
             return state
     }
 }
 
-export function currentChat(state = -1, action) {
+export function currentChat(state = {}, action) {
     switch (action.type) {
-        case CHANGE_CHAT:
+        case CHANGE_CURRENT_CHAT:
             return action.payload
         default:
             return state

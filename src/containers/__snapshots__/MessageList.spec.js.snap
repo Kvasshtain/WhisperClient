@@ -8,8 +8,10 @@ exports[`MessageList should render correctly 1`] = `
     key="0"
     message={
       Object {
-        "author": "captain Nemo",
-        "chatId": 0,
+        "_id": "0",
+        "authorEmail": "nemo@mail.com",
+        "authorName": "captain Nemo",
+        "chatId": "0",
         "text": "some message",
         "time": "2019-12-25T16:40:12.526Z",
         "wasMessageReceived": true,

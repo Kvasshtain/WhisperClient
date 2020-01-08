@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ChatFrame should render correctly 1`] = `
+<div
+  onClick={[Function]}
+>
+  <div>
+    <p>
+      captains log
+    </p>
+  </div>
+  <div>
+    <h3>
+      Chat users:
+    </h3>
+    <br />
+    <div>
+      <div
+        key="0"
+      >
+        <p>
+          captain Nemo
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+`;

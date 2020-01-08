@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NewChatForm should render correctly 1`] = `
+<form
+  onSubmit={[Function]}
+>
+  <h1>
+    Create new chat
+  </h1>
+  <input
+    name="chatName"
+    onChange={[Function]}
+    placeholder="chat name"
+    type="text"
+    value=""
+  />
+  <button
+    type="submit"
+  >
+    Create
+  </button>
+</form>
+`;

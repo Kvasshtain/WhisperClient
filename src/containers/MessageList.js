@@ -6,17 +6,24 @@ import { MessageFrame } from '../components/MessageFrame'
 
 class MessageList extends React.Component {
 
-    componentDidMount() {
-        this.props.fetchMessagesList()
+    componentDidMount = () => {
+
+        let currentChat = this.props.currentChat
+
+        if(!currentChat || !currentChat._id) {
+            return
+        }
+
+        this.props.fetchMessagesList(currentChat._id)
     }
 
     renderMessageList = () => {
         const { messages } = this.props;
 
         if (messages && messages.length) {
-            return messages.map(function (item, index) {
+            return messages.map(function (item) {
                 return (
-                    <MessageFrame key = { index } message = { item } />
+                    <MessageFrame key = { item._id } message = { item } />
                 )
             })
         }
@@ -25,7 +32,7 @@ class MessageList extends React.Component {
     render() {
         return (
             <div className="MessageList">
-                {this.renderMessageList()}
+                { this.renderMessageList() }
             </div>
         )
     }
@@ -34,12 +41,13 @@ class MessageList extends React.Component {
 const mapStateToProps = (state) => {
     return {
         messages: state.messages,
+        currentChat: state.currentChat,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchMessagesList: () => dispatch(fetchMessagesList()),
+        fetchMessagesList: (chatId) => dispatch(fetchMessagesList(chatId)),
     }
 }
 
@@ -47,10 +55,11 @@ MessageList.propTypes = {
     messages: PropTypes.arrayOf(PropTypes.shape({
         message: PropTypes.exact({
             chatId: PropTypes.number.isRequired,
-            author: PropTypes.string.isRequired,
-            time: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]).isRequired,
+            authorName: PropTypes.string.isRequired,
+            authorEmail: PropTypes.string.isRequired,
+            time: PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.instanceOf(Date)]).isRequired,
             text: PropTypes.string.isRequired,
-            wasMessageReceived: PropTypes.bool.isRequired
+            wasMessageReceived: PropTypes.bool,
         })
     })
     )

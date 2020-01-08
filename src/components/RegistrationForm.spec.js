@@ -4,7 +4,7 @@ import {shallowToJson} from 'enzyme-to-json';
 
 import { RegistrationForm } from './RegistrationForm'
 
-describe('AuthenticationForm', () => {
+describe('RegistrationForm', () => {
     const mockOnSubmit = jest.fn()
 
     it ('should render correctly', () => {

@@ -18,7 +18,7 @@ function MessageTimestamp(props) {
 }
 
 MessageTimestamp.propTypes = {
-    time: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]).isRequired
+    time: PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.instanceOf(Date)]).isRequired
 }
 
 export { MessageTimestamp }

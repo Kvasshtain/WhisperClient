@@ -1,25 +1,22 @@
-import { serverLocation, chatsListGetPath, submitUserNameAndPasswordPath, submitNewUserPath } from '../applicationSettings'
+import { serverLocation, submitNewChatPath, chatsListGetPath, submitUserNameAndPasswordPath, submitNewUserPath } from '../applicationSettings'
 
-export const CHANGE_CHAT_USER = 'CHANGE_CHAT_USER'
-export const CHANGE_CHAT = 'CHANGE_CHAT'
+export const CHANGE_CURRENT_USER = 'CHANGE_CURRENT_USER'
+export const CHANGE_CURRENT_CHAT = 'CHANGE_CURRENT_CHAT'
 export const REFRESH_CHATS_LIST = 'REFRESH_CHATS_LIST'
 export const SET_AUTHENTICATION_RESULT = 'SET_AUTHENTICATION_RESULT'
 export const SET_LAST_ERROR = 'SET_LAST_ERROR'
 
-export function changeChatUser(userEmail, userName) {
+export function changeCurrentUser(user) {
     return {
-        type: CHANGE_CHAT_USER,
-        payload: {
-            userName,
-            userEmail,
-        }
+        type: CHANGE_CURRENT_USER,
+        payload: user
     }
 }
 
-export function changeChat(chatId) {
+export function changeCurrentChat(chat) {
     return {
-        type: CHANGE_CHAT,
-        payload: chatId,
+        type: CHANGE_CURRENT_CHAT,
+        payload: chat
     }
 }
 
@@ -47,13 +44,69 @@ export function setLastError(status, message) {
     }
 }
 
-export function fetchChatsList() {
+export function createNewChat(name, users) {
     return (dispatch) => {
 
         const token = localStorage.token
 
         if(token) {
-            fetch(serverLocation + chatsListGetPath, {
+            let newChatData = {
+                chat: {
+                    name,
+                    users,
+                }
+            }
+    
+            fetch(serverLocation + submitNewChatPath, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: JSON.stringify(
+                    newChatData
+                )
+            })
+                .then((response) => {
+                    
+                    if (!response.ok) {
+
+                        localStorage.removeItem('token')
+
+                        return {
+                            status: response.status,
+                            message: response.statusText,
+                        }
+                    }
+                    
+                    return response.json()
+                })
+                .then((data) => {
+    
+                    if (data.message) {
+                        dispatch(setLastError(data.status, data.message))
+                    } else {
+                        let { _id, name, users } = data.chat
+    
+                        dispatch(changeCurrentChat(_id, name, users))
+                        dispatch(refreshChatsList(data))
+                    }
+                })
+                .catch(function (error) {
+                    console.log('error', error)
+                })
+        }
+    }
+}
+
+export function fetchChatsList(userId) {
+    return (dispatch) => {
+
+        const token = localStorage.token
+
+        if(token) {
+            fetch(`${serverLocation}${chatsListGetPath}?user_id=${userId}`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
@@ -129,12 +182,13 @@ export function submitUserNameAndPassword(email, password) {
                     dispatch(setLastError(data.status, data.message))
                     dispatch(setAuthenticationResult(false))
                 } else {
-                    let { email, name, token } = data.user
+                    let { _id, token } = data.user
 
                     localStorage.setItem('token', token)
 
-                    dispatch(changeChatUser(email, name))
+                    dispatch(changeCurrentUser(data.user))
                     dispatch(setAuthenticationResult(true))
+                    dispatch(fetchChatsList(_id))
                 }
             })
             .catch(function (error) {
@@ -181,12 +235,14 @@ export function submitNewUser(email, name, password) {
                     dispatch(setLastError(data.status, data.message))
                     dispatch(setAuthenticationResult(false))
                 } else {
-                    let { email, name, token } = data.user
+                    let { _id, token } = data.user
 
                     localStorage.setItem('token', token)
 
-                    dispatch(changeChatUser(email, name))
+                    dispatch(changeCurrentUser(data.user))
+                    dispatch(changeCurrentChat({}))
                     dispatch(setAuthenticationResult(true))
+                    dispatch(fetchChatsList(_id))
                 }
             })
             .catch(function (error) {

@@ -7,28 +7,30 @@ function MessageFrame(props) {
     let message = props.message
 
     return (
-        <div className="MessageFrame">
+        <div>
             <div>
-                <p>{message.authorName}</p>
+                <p>{ message.authorName }</p>
             </div>
             <div>
-                <p>{message.authorEmail}</p>
+                <p>{ message.authorEmail }</p>
             </div>
             <div>
-                <p>{message.text}</p>
+                <p>{ message.text }</p>
             </div>
-            <MessageTimestamp time={message.time} />
+            <MessageTimestamp time = { message.time } />
         </div>
     )
 }
 
 MessageFrame.propTypes = {
     message: PropTypes.exact({
-        chatId: PropTypes.number.isRequired,
-        author: PropTypes.string.isRequired,
-        time: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]).isRequired,
+        _id: PropTypes.string.isRequired,
+        chatId: PropTypes.string.isRequired,
+        authorName: PropTypes.string.isRequired,
+        authorEmail: PropTypes.string.isRequired,
+        time: PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.instanceOf(Date)]).isRequired,
         text: PropTypes.string.isRequired,
-        wasMessageReceived: PropTypes.bool.isRequired
+        wasMessageReceived: PropTypes.bool,
     })
 }
 

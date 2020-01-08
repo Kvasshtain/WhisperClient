@@ -36,9 +36,9 @@ export function sendNewMessage(text) {
             dispatch(messageWasReceived(false))
 
             let time = (new Date()).getTime();
-            let authorEmail = getState().chatUser.userEmail
-            let authorName = getState().chatUser.userName
-            let chatId = getState().currentChat
+            let authorEmail = getState().currentUser.email
+            let authorName = getState().currentUser.name
+            let chatId = getState().currentChat._id
     
             let message = {
                 chatId,
@@ -93,13 +93,13 @@ export function sendNewMessage(text) {
     };
 }
 
-export function fetchMessagesList() {
+export function fetchMessagesList(chatId) {
     return (dispatch) => {
 
         const token = localStorage.token
 
         if(token){
-            fetch(serverLocation + messageGetPath, {
+            fetch(`${serverLocation}${messageGetPath}?chat_id=${chatId}`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
