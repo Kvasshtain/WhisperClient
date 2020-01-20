@@ -20,7 +20,9 @@
     "start-js": "react-scripts start",
     "backend-start": "NODE_ENV=production node ../server/App.js",
     "start": "concurrently \"npm-run-all -p start-js backend-start\"",
-    "build": "react-scripts build",
+    "just-build": "react-scripts build",
+    "copy": "cp -r ./build ../server/static",
+    "build": "npm run just-build && npm run copy",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
