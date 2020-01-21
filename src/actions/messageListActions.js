@@ -74,7 +74,6 @@ export function sendNewMessage(text) {
                     return response.json()
                 })
                 .then((data) => {
-
                     if (data.message) {
                         dispatch(setLastError(data.status, data.message))
                         message.wasMessageReceived = false

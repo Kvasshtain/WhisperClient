@@ -52,7 +52,8 @@ ChatFrame.propTypes = {
             name: PropTypes.string.isRequired,
             email: PropTypes.string.isRequired,
         })).isRequired,
-    })
+    }),
+    onSelectChat: PropTypes.func.isRequired,
 }
 
 export { ChatFrame }

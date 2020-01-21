@@ -1,22 +1,33 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MessageList should render correctly 1`] = `
-<div
-  className="MessageList"
->
-  <MessageFrame
-    key="0"
-    message={
-      Object {
-        "_id": "0",
-        "authorEmail": "nemo@mail.com",
-        "authorName": "captain Nemo",
-        "chatId": "0",
-        "text": "some message",
-        "time": "2019-12-25T16:40:12.526Z",
-        "wasMessageReceived": true,
+<Fragment>
+  <button
+    onClick={[Function]}
+  >
+    Scroll down
+  </button>
+  <div
+    className="messageList"
+    onScroll={[Function]}
+  >
+    <MessageFrame
+      key="0"
+      message={
+        Object {
+          "_id": "0",
+          "authorEmail": "nemo@mail.com",
+          "authorName": "captain Nemo",
+          "chatId": "0",
+          "text": "some message",
+          "time": "2019-12-25T16:40:12.526Z",
+          "wasMessageReceived": true,
+        }
       }
-    }
+    />
+  </div>
+  <NewMessageInput
+    onSubmitNewMessage={[Function]}
   />
-</div>
+</Fragment>
 `;

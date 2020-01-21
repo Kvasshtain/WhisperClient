@@ -24,7 +24,7 @@ function MessageFrame(props) {
 
 MessageFrame.propTypes = {
     message: PropTypes.exact({
-        _id: PropTypes.string.isRequired,
+        _id: PropTypes.string,
         chatId: PropTypes.string.isRequired,
         authorName: PropTypes.string.isRequired,
         authorEmail: PropTypes.string.isRequired,

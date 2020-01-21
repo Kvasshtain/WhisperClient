@@ -1,6 +1,5 @@
 import React from 'react'
 import { NewChatForm } from '../components/NewChatForm'
-import { NewMessageInput } from '../components/NewMessageInput'
 import MessageList from './MessageList'
 import ChatList from './ChatList'
 import { AuthenticationForm } from '../components/AuthenticationForm'
@@ -8,7 +7,7 @@ import { RegistrationForm } from '../components/RegistrationForm'
 import { connect } from 'react-redux'
 import { sendNewMessage } from '../actions/messageListActions'
 import { submitUserNameAndPassword, submitNewUser, createNewChat } from '../actions/chatSettingsActions'
-import './App.css'
+import '../App.css'
 
 class App extends React.Component {
 
@@ -31,12 +30,7 @@ class App extends React.Component {
     if (!this.props.currentChat._id) return
 
     return (
-      <React.Fragment>
-        <MessageList />
-        <NewMessageInput
-          onSubmitNewMessage = { this.props.sendNewMessage }
-        />
-      </React.Fragment>
+        <MessageList sendNewMessage = { this.props.sendNewMessage } />
     )
   }
 

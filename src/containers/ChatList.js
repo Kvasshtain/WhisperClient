@@ -29,7 +29,7 @@ class ChatList extends React.Component {
 
     render() {
         return (
-            <div className = "ChatList">
+            <div className = "сhatList">
                 {this.renderChatList()}
             </div>
         )
