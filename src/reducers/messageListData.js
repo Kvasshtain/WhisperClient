@@ -1,4 +1,4 @@
-import { ADD_NEW_MESSAGE, MESSAGE_WAS_RECEIVED, REFRESH_MESSAGES_LIST } from '../actions/messageListActions'
+import { ADD_NEW_MESSAGE, MESSAGE_WAS_RECEIVED, REFRESH_MESSAGES_LIST, UNSHIFT_PREVIOUS_MESSAGES } from '../actions/messageListActions'
 
 export function messages(state = [], action) {
     switch (action.type) {
@@ -6,6 +6,10 @@ export function messages(state = [], action) {
             return state.concat(action.payload)
         case REFRESH_MESSAGES_LIST:
             return action.payload
+        case UNSHIFT_PREVIOUS_MESSAGES:
+            let previousMessages = action.payload
+            let newState = [...previousMessages, ...state]
+            return newState
         default:
             return state
     }

@@ -18,31 +18,7 @@ class MessageList extends React.Component {
     }
 
     componentDidMount = () => {
-
-        let currentChat = this.props.currentChat
-
-        if(!currentChat || !currentChat._id) {
-            return
-        }        
-
-        this.props.fetchMessagesList(currentChat._id)
-    }
-
-    scrollDownIfEnabled = () => {
-        if (this.state.enableScrollDown) {
-
-            this.setState({
-                enableScrollDown: false,
-            })
-
-            this.scrollDown()
-        }
-    }
-
-    scrollDown = () => {
-        const { current } = this.messageListRef
-
-        current.scrollTop = current.scrollHeight
+        this.fetchMessages()
     }
 
     componentDidUpdate = () => {
@@ -62,6 +38,37 @@ class MessageList extends React.Component {
         this.scrollDownIfEnabled()
     }
 
+    fetchMessages = () => {
+        let currentChat = this.props.currentChat
+        let messages = this.props.messages
+
+        if(!currentChat || !currentChat._id) return
+        if(!messages) return
+
+        let time = (new Date()).getTime();
+
+        let oldestMessageTime = messages.length ? messages[0].time : time
+
+        this.props.fetchMessagesList(currentChat._id, oldestMessageTime)
+    }
+
+    scrollDownIfEnabled = () => {
+        if (this.state.enableScrollDown) {
+
+            this.setState({
+                enableScrollDown: false,
+            })
+
+            this.scrollDown()
+        }
+    }
+
+    scrollDown = () => {
+        const { current } = this.messageListRef
+
+        current.scrollTop = current.scrollHeight
+    }
+
     renderMessageList = () => {
         const { messages } = this.props;
         let messagesLength = messages.length
@@ -75,12 +82,17 @@ class MessageList extends React.Component {
         }
     }
 
-    onDownClick = () => {
+    onScrollDownClick = () => {
         this.scrollDown()
     }
 
     onScroll = () => {
+        const minScrollTop = 10
+        const { current } = this.messageListRef
 
+        if (current.scrollTop < minScrollTop) {
+            this.fetchMessages()
+        }
     }
 
     sendNewMessage = (newMessage) => {
@@ -94,7 +106,7 @@ class MessageList extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <button onClick = { this.onDownClick}>
+                <button onClick = { this.onScrollDownClick}>
                     Scroll down
                 </button>
                 <div ref={this.messageListRef} className="messageList" onScroll = { this.onScroll }>
@@ -117,7 +129,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchMessagesList: (chatId) => dispatch(fetchMessagesList(chatId)),
+        fetchMessagesList: (chatId, oldestMessageTime) => dispatch(fetchMessagesList(chatId, oldestMessageTime)),
     }
 }
 

@@ -1,10 +1,11 @@
-import { serverLocation, messageSendPath, messageGetPath } from '../applicationSettings'
+import { serverLocation, messageSendPath, messageGetPath, fetchMessagesCount } from '../applicationSettings'
 
 import { setLastError } from './chatSettingsActions'
 
 export const ADD_NEW_MESSAGE = 'ADD_NEW_MESSAGE'
 export const MESSAGE_WAS_RECEIVED = 'MESSAGE_WAS_RECEIVED'
 export const REFRESH_MESSAGES_LIST = 'REFRESH_MESSAGES_LIST'
+export const UNSHIFT_PREVIOUS_MESSAGES = 'UNSHIFT_PREVIOUS_MESSAGES'
 
 export function addNewMessage(message) {
     return {
@@ -16,14 +17,21 @@ export function addNewMessage(message) {
 export function messageWasReceived(bool) {
     return {
         type: MESSAGE_WAS_RECEIVED,
-        payload: bool
+        payload: bool,
     };
 }
 
 export function refreshMessagesList(messages) {
     return {
         type: REFRESH_MESSAGES_LIST,
-        payload: messages
+        payload: messages,
+    }
+}
+
+export function unshiftPreviousMessages(messages) {
+    return {
+        type: UNSHIFT_PREVIOUS_MESSAGES,
+        payload: messages,
     }
 }
 
@@ -92,13 +100,13 @@ export function sendNewMessage(text) {
     };
 }
 
-export function fetchMessagesList(chatId) {
+export function fetchMessagesList(chatId, oldestMessageTime) {
     return (dispatch) => {
 
         const token = localStorage.token
 
         if(token){
-            fetch(`${serverLocation}${messageGetPath}?chat_id=${chatId}`, {
+            fetch(`${serverLocation}${messageGetPath}?chat_id=${chatId}&oldest_message_time=${oldestMessageTime}&fetch_messages_count=${fetchMessagesCount}`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
@@ -125,7 +133,7 @@ export function fetchMessagesList(chatId) {
                         dispatch(setLastError(data.status, data.message))
                         localStorage.removeItem('token')
                     } else {
-                        dispatch(refreshMessagesList(data))
+                        dispatch(unshiftPreviousMessages(data))
                     }
                 })
                 .catch(function (error) {
