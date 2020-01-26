@@ -1,4 +1,4 @@
-import { serverLocation, messageSendPath, messageGetPath, fetchMessagesCount } from '../applicationSettings'
+import { serverLocation, messageSendPath, messageGetPath, newMessageGetPath, fetchMessagesCount } from '../applicationSettings'
 
 import { setLastError } from './chatSettingsActions'
 
@@ -6,6 +6,7 @@ export const ADD_NEW_MESSAGE = 'ADD_NEW_MESSAGE'
 export const MESSAGE_WAS_RECEIVED = 'MESSAGE_WAS_RECEIVED'
 export const REFRESH_MESSAGES_LIST = 'REFRESH_MESSAGES_LIST'
 export const UNSHIFT_PREVIOUS_MESSAGES = 'UNSHIFT_PREVIOUS_MESSAGES'
+export const PUSH_NEW_MESSAGES = 'PUSH_NEW_MESSAGES'
 
 export function addNewMessage(message) {
     return {
@@ -31,6 +32,13 @@ export function refreshMessagesList(messages) {
 export function unshiftPreviousMessages(messages) {
     return {
         type: UNSHIFT_PREVIOUS_MESSAGES,
+        payload: messages,
+    }
+}
+
+export function pushNewMessages(messages) {
+    return {
+        type: PUSH_NEW_MESSAGES,
         payload: messages,
     }
 }
@@ -134,6 +142,49 @@ export function fetchMessagesList(chatId, oldestMessageTime) {
                         localStorage.removeItem('token')
                     } else {
                         dispatch(unshiftPreviousMessages(data))
+                    }
+                })
+                .catch(function (error) {
+                    console.log('error', error)
+                })
+        }
+    }
+}
+
+export function fetchNewMessages(chatId, newestMessageTime) {
+    return (dispatch) => {
+
+        const token = localStorage.token
+
+        if(token){
+            fetch(`${serverLocation}${newMessageGetPath}?chat_id=${chatId}&newest_message_time=${newestMessageTime}`, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                }
+            })
+                .then(response => {
+
+                    if (!response.ok) {
+                        localStorage.removeItem('token')
+
+                        return {
+                            status: response.status,
+                            message: response.statusText,
+                        }
+                    }
+
+                    return response.json()
+                })
+                .then((data) => {
+
+                    if (data.message) {
+                        dispatch(setLastError(data.status, data.message))
+                        localStorage.removeItem('token')
+                    } else {
+                        dispatch(pushNewMessages(data))
                     }
                 })
                 .catch(function (error) {

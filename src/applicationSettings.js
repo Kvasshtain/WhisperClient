@@ -2,6 +2,7 @@ export const serverLocation = 'http://localhost:4000/'
 
 export const messageSendPath = 'messages/new/'
 export const messageGetPath = 'messages/listRequest/'
+export const newMessageGetPath = 'messages/lastMessages/'
 export const submitNewChatPath = 'chats/new/'
 export const chatsListGetPath = 'chats/listRequest/'
 export const submitUserNameAndPasswordPath = 'users/login/'
@@ -10,3 +11,4 @@ export const searchUsersPath = 'users/search/'
 export const addNewUserToChatPath = 'chats/addNewUser/'
 
 export const fetchMessagesCount = 3
+export const updateInterval = 10000

@@ -1,9 +1,11 @@
 import React from 'react'
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { fetchMessagesList } from '../actions/messageListActions';
+import { fetchMessagesList } from '../actions/messageListActions'
+import { fetchNewMessages } from '../actions/messageListActions'
 import { MessageFrame } from '../components/MessageFrame'
 import { NewMessageInput } from '../components/NewMessageInput'
+import { updateInterval } from '../applicationSettings'
 
 class MessageList extends React.Component {
 
@@ -14,14 +16,18 @@ class MessageList extends React.Component {
 
         this.state = {
             enableScrollDown: true,
-            scrollTop: 0,
             previousMessagesLength: 0,
         }
     }
 
     componentDidMount = () => {
         this.fetchMessages()
+        this.initializeMessagesListUpdateTimer()
     }
+
+    componentWillUnmount() {
+        clearInterval(this.timerID)
+      }
 
     componentDidUpdate = () => {
         const { messages } = this.props;
@@ -29,8 +35,8 @@ class MessageList extends React.Component {
         
         if (!messages) return
         
-        let messagesLength = messages.length
-        let previousMessagesLength = this.state.previousMessagesLength
+        const messagesLength = messages.length
+        const previousMessagesLength = this.state.previousMessagesLength
         
         if (messagesLength === previousMessagesLength) return
 
@@ -45,18 +51,39 @@ class MessageList extends React.Component {
         this.scrollDownIfEnabled()
     }
 
+    initializeMessagesListUpdateTimer = () => {
+        this.timerID = setInterval(() => this.fetchNewMessages(), updateInterval)
+    }
+    
     fetchMessages = () => {
-        let currentChat = this.props.currentChat
-        let messages = this.props.messages
+        const currentChat = this.props.currentChat
+        const messages = this.props.messages
 
         if(!currentChat || !currentChat._id) return
         if(!messages) return
 
-        let time = (new Date()).getTime();
+        const time = (new Date()).getTime();
 
-        let oldestMessageTime = messages.length ? messages[0].time : time
+        const oldestMessageTime = messages.length ? messages[0].time : time
 
         this.props.fetchMessagesList(currentChat._id, oldestMessageTime)
+    }
+
+    fetchNewMessages = () => {
+        const currentChat = this.props.currentChat
+        const messages = this.props.messages
+
+        if(!currentChat || !currentChat._id) return
+        if(!messages) return
+
+        const lastMessageIndex = messages.length - 1
+
+        if (lastMessageIndex < 0) {
+            this.fetchMessages()
+            return
+        }
+
+        this.props.fetchNewMessages(currentChat._id, messages[lastMessageIndex].time)
     }
 
     scrollDownIfEnabled = () => {
@@ -78,7 +105,7 @@ class MessageList extends React.Component {
 
     renderMessageList = () => {
         const { messages } = this.props;
-        let messagesLength = messages.length
+        const messagesLength = messages.length
 
         if (messages && messagesLength) {
             return messages.map(function (item, index) {
@@ -137,6 +164,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         fetchMessagesList: (chatId, oldestMessageTime) => dispatch(fetchMessagesList(chatId, oldestMessageTime)),
+        fetchNewMessages: (chatId, newestMessageTime) => dispatch(fetchNewMessages(chatId, newestMessageTime)),
     }
 }
 
