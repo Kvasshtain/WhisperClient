@@ -3,7 +3,8 @@ import {
     CHANGE_CURRENT_CHAT, 
     REFRESH_CHATS_LIST, 
     SET_AUTHENTICATION_RESULT, 
-    SET_LAST_ERROR
+    SET_LAST_ERROR,
+    FILL_FOUND_USERS_LIST,
 } from '../actions/chatSettingsActions'
 
 export function currentUser(state = {}, action) {
@@ -45,6 +46,15 @@ export function isUserAuthenticated(state = false, action) {
 export function lastError(state = {}, action) {
     switch (action.type) {
         case SET_LAST_ERROR:
+            return action.payload
+        default:
+            return state
+    }
+}
+
+export function usersList(state = [], action) {
+     switch (action.type) {
+        case FILL_FOUND_USERS_LIST:
             return action.payload
         default:
             return state

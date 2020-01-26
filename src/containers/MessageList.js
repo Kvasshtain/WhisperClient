@@ -9,7 +9,9 @@ class MessageList extends React.Component {
 
     constructor(props) {
         super(props)
+        
         this.messageListRef = React.createRef()
+
         this.state = {
             enableScrollDown: true,
             scrollTop: 0,
@@ -23,6 +25,7 @@ class MessageList extends React.Component {
 
     componentDidUpdate = () => {
         const { messages } = this.props;
+        const scrollDownShift = 30
         
         if (!messages) return
         
@@ -34,6 +37,10 @@ class MessageList extends React.Component {
         this.setState({
             previousMessagesLength: messagesLength,
         })
+
+        const { current } = this.messageListRef
+
+        current.scrollTop += scrollDownShift
 
         this.scrollDownIfEnabled()
     }
@@ -87,7 +94,7 @@ class MessageList extends React.Component {
     }
 
     onScroll = () => {
-        const minScrollTop = 10
+        const minScrollTop = 30
         const { current } = this.messageListRef
 
         if (current.scrollTop < minScrollTop) {
@@ -143,8 +150,7 @@ MessageList.propTypes = {
             text: PropTypes.string.isRequired,
             wasMessageReceived: PropTypes.bool,
         })
-    })
-    )
+    }))
 }
 
 export { MessageList }

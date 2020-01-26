@@ -3,12 +3,12 @@ import PropTypes from 'prop-types'
 
 function MessageTimestamp(props) {
 
-    let date = new Date(props.time)
-    let hours = date.getHours()
-    let minutes = date.getMinutes()
-    let day = date.getDate()
-    let month = date.getMonth() + 1
-    let year = date.getFullYear()
+    const date = new Date(props.time)
+    const hours = date.getHours()
+    const minutes = date.getMinutes()
+    const day = date.getDate()
+    const month = date.getMonth() + 1
+    const year = date.getFullYear()
 
     return (
         <div>

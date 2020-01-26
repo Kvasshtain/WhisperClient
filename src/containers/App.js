@@ -2,6 +2,7 @@ import React from 'react'
 import { NewChatForm } from '../components/NewChatForm'
 import MessageList from './MessageList'
 import ChatList from './ChatList'
+import CurrentChatSettings from './CurrentChatSettings'
 import { AuthenticationForm } from '../components/AuthenticationForm'
 import { RegistrationForm } from '../components/RegistrationForm'
 import { connect } from 'react-redux'
@@ -25,7 +26,7 @@ class App extends React.Component {
     }
   }
 
-  renderMessageListNewMessageInput() {
+  renderMessageList() {
     if (!this.props.currentUser._id) return
     if (!this.props.currentChat._id) return
 
@@ -39,9 +40,9 @@ class App extends React.Component {
       return (
         <React.Fragment>
           <h1>Curret user: { this.props.currentUser.name }</h1>
-          <h1>Curret chat: { this.props.currentChat.name }</h1>
           {this.renderChatListNewChatForm()}
-          {this.renderMessageListNewMessageInput()}
+          <CurrentChatSettings/>
+          {this.renderMessageList()}
         </React.Fragment>
       )
     }

@@ -41,7 +41,7 @@ class RegistrationForm extends React.Component {
 
     render() {
         return (
-            <form onSubmit={this.onSubmit}>
+            <form onSubmit = { this.onSubmit }>
                 <h1>New user registration</h1>
                 <label>User email</label>
                 <input

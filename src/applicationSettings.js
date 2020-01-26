@@ -6,5 +6,7 @@ export const submitNewChatPath = 'chats/new/'
 export const chatsListGetPath = 'chats/listRequest/'
 export const submitUserNameAndPasswordPath = 'users/login/'
 export const submitNewUserPath = 'users/new/'
+export const searchUsersPath = 'users/search/'
+export const addNewUserToChatPath = 'chats/addNewUser/'
 
 export const fetchMessagesCount = 3

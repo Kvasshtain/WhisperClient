@@ -4,7 +4,7 @@ import { MessageTimestamp } from './MessageTimestamp'
 
 function MessageFrame(props) {
 
-    let message = props.message
+    const { message } = props
 
     return (
         <div>

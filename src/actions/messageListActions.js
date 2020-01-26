@@ -43,12 +43,12 @@ export function sendNewMessage(text) {
         if(token){
             dispatch(messageWasReceived(false))
 
-            let time = (new Date()).getTime();
-            let authorEmail = getState().currentUser.email
-            let authorName = getState().currentUser.name
-            let chatId = getState().currentChat._id
+            const time = (new Date()).getTime();
+            const authorEmail = getState().currentUser.email
+            const authorName = getState().currentUser.name
+            const chatId = getState().currentChat._id
     
-            let message = {
+            const message = {
                 chatId,
                 time,
                 authorEmail,

@@ -5,7 +5,7 @@ class ChatFrame extends React.Component {
 
     onSelectChat = () => {
         
-        let chat = this.props.chat
+        const { chat } = this.props
         
         this.props.onSelectChat(chat)
     }
@@ -25,10 +25,10 @@ class ChatFrame extends React.Component {
     }
 
     render() {
-        let chat = this.props.chat
+        const { chat } = this.props
 
         return (
-            <div onClick = { this.onSelectChat }>
+            <div className = "selectedItem" onClick = { this.onSelectChat }>
                 <div>
                     <p>{ chat.name }</p>
                 </div>
