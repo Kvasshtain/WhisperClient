@@ -15,8 +15,8 @@ class UserFrame extends React.Component {
 
         return (
             <div className = "selectedItem" onClick = { this.onUserClick }>
-                <p>{user.name}</p>
-                <p>{user.email}</p>
+                <p>{ user.name }</p>
+                <p>{ user.email }</p>
             </div>
         )
     }

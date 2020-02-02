@@ -6,6 +6,7 @@ import { fetchNewMessages } from '../actions/messageListActions'
 import { MessageFrame } from '../components/MessageFrame'
 import { NewMessageInput } from '../components/NewMessageInput'
 import { updateInterval } from '../applicationSettings'
+import './MessageList.sass'
 
 class MessageList extends React.Component {
 
@@ -139,17 +140,17 @@ class MessageList extends React.Component {
 
     render() {
         return (
-            <React.Fragment>
+            <div>
                 <button onClick = { this.onScrollDownClick}>
                     Scroll down
                 </button>
-                <div ref={this.messageListRef} className="messageList" onScroll = { this.onScroll }>
+                <div ref = { this.messageListRef } className="messageList" onScroll = { this.onScroll }>
                     {this.renderMessageList()}
                 </div>
                 <NewMessageInput
                     onSubmitNewMessage = { this.sendNewMessage }
                 />
-            </React.Fragment>
+            </div>
         )
     }
 }

@@ -12,7 +12,7 @@ function MessageTimestamp(props) {
 
     return (
         <div>
-            <p>{hours}:{minutes} {day}.{month}.{year}</p>
+            <p>{ hours }:{ minutes } { day }.{ month }.{ year }</p>
         </div>
     )
 }

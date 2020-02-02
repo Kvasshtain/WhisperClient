@@ -12,7 +12,15 @@ class RegistrationForm extends React.Component {
     onSubmit = (eventArg) => {
         eventArg.preventDefault()
 
-        this.props.onSubmit(this.state.email, this.state.name, this.state.password)
+        const { email, name, password } = this.state
+
+        const user = {
+            email,
+            name,
+            password,
+        }
+
+        this.props.onSubmit(user)
 
         this.setState({
             email: '',
@@ -41,8 +49,8 @@ class RegistrationForm extends React.Component {
 
     render() {
         return (
-            <form onSubmit = { this.onSubmit }>
-                <h1>New user registration</h1>
+            <form onSubmit = { this.onSubmit } className = "regAuthForm">
+                <h3>New user registration</h3>
                 <label>User email</label>
                 <input
                     name = "userEmail"

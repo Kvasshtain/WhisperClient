@@ -22,7 +22,7 @@ describe('when typing new message', () => {
     const newTestMessage = 'Some new message'
 
     const testedComponent = shallow(<NewMessageInput
-        onSubmitNewMessage={mockOnSubmitNewMessage}
+        onSubmitNewMessage = { mockOnSubmitNewMessage }
     />)
 
     beforeEach(() => {

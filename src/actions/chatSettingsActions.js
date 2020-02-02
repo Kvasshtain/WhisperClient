@@ -1,10 +1,12 @@
 import { serverLocation,
          submitNewChatPath,
          chatsListGetPath,
-         submitUserNameAndPasswordPath,
+         submitUserEmailAndPasswordPath,
          submitNewUserPath,
          searchUsersPath,
          addNewUserToChatPath, } from '../applicationSettings'
+
+import { createHttpHeadersWithToken, httpHeadersWithoutToken, checkResponseAndCreateErrorIfBadStatus } from './helper'
 
 export const CHANGE_CURRENT_USER = 'CHANGE_CURRENT_USER'
 export const CHANGE_CURRENT_CHAT = 'CHANGE_CURRENT_CHAT'
@@ -41,13 +43,20 @@ export function setAuthenticationResult(result) {
     }
 }
 
-export function setLastError(status, message) {
+export function handleServerError(serverErrorData) {
+    return (dispatch) => {
+        if (serverErrorData.status === 401) {
+            dispatch(resetAuthenticationResult())
+        }
+
+        dispatch(setLastError(serverErrorData))
+    }
+}
+
+export function setLastError(serverErrorData) {
     return {
         type: SET_LAST_ERROR,
-        payload: {
-            status,
-            message,
-        }
+        payload: serverErrorData
     }
 }
 
@@ -55,6 +64,13 @@ export function fillFoundUsersList(usersList) {
     return {
         type: FILL_FOUND_USERS_LIST,
         payload: usersList,
+    }
+}
+
+export function resetAuthenticationResult() {
+    return (dispatch) => {
+        localStorage.removeItem('token')
+        dispatch(setAuthenticationResult(false))
     }
 }
 
@@ -73,33 +89,19 @@ export function createNewChat(name, users) {
     
             fetch(serverLocation + submitNewChatPath, {
                 method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                },
+                headers: createHttpHeadersWithToken(token),
                 body: JSON.stringify(
                     newChatData
                 )
             })
                 .then((response) => {
-                    
-                    if (!response.ok) {
-
-                        localStorage.removeItem('token')
-
-                        return {
-                            status: response.status,
-                            message: response.statusText,
-                        }
-                    }
-                    
-                    return response.json()
+                    const serverError = checkResponseAndCreateErrorIfBadStatus(response)
+                    return serverError ? serverError : response.json()
                 })
                 .then((data) => {
     
-                    if (data.message) {
-                        dispatch(setLastError(data.status, data.message))
+                    if (data.status) {
+                        dispatch(handleServerError(data))
                     } else {
                         const { _id, name, users } = data.chat
                         const { currentUser } = getState()
@@ -123,30 +125,15 @@ export function fetchChatsList(userId) {
         if(token) {
             fetch(`${serverLocation}${chatsListGetPath}?user_id=${userId}`, {
                 method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                }
+                headers: createHttpHeadersWithToken(token),
             })
                 .then(response => {
-
-                    if (!response.ok) {
-
-                        localStorage.removeItem('token')
-
-                        return {
-                            status: response.status,
-                            message: response.statusText,
-                        }
-                    }
-
-                    return response.json()
+                    const serverError = checkResponseAndCreateErrorIfBadStatus(response)
+                    return serverError ? serverError : response.json()
                 })
-                .then((data) => {
+                .then((data) => {                   
                     if (data.message) {
-                        dispatch(setLastError(data.status, data.message))
-
+                        dispatch(handleServerError(data))
                         localStorage.removeItem('token')
                     } else {
                         dispatch(refreshChatsList(data))
@@ -159,7 +146,7 @@ export function fetchChatsList(userId) {
     }
 }
 
-export function submitUserNameAndPassword(email, password) {
+export function submitUserEmailAndPassword(email, password) {
     return (dispatch) => {
 
         const userAuthenticationData = {
@@ -170,31 +157,21 @@ export function submitUserNameAndPassword(email, password) {
             }
         }
 
-        fetch(serverLocation + submitUserNameAndPasswordPath, {
+        fetch(serverLocation + submitUserEmailAndPasswordPath, {
             method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
+            headers: httpHeadersWithoutToken,
             body: JSON.stringify(
                 userAuthenticationData
             )
         })
             .then((response) => {
-                
-                if (!response.ok) {
-                    return {
-                        status: response.status,
-                        message: response.statusText,
-                    }
-                }
-                
-                return response.json()
+                const serverError = checkResponseAndCreateErrorIfBadStatus(response)
+                return serverError ? serverError : response.json()
             })
             .then((data) => {
 
                 if (data.message) {
-                    dispatch(setLastError(data.status, data.message))
+                    dispatch(handleServerError(data))
                     dispatch(setAuthenticationResult(false))
                 } else {
                     const { _id, token } = data.user
@@ -212,42 +189,22 @@ export function submitUserNameAndPassword(email, password) {
     }
 }
 
-export function submitNewUser(email, name, password) {
+export function submitNewUser(user) {
     return (dispatch) => {
-
-        const userRegistrationData = {
-            user: {
-                email,
-                name,
-                password,
-            }
-        }
 
         fetch(serverLocation + submitNewUserPath, {
             method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(
-                userRegistrationData
-            )
+            headers: httpHeadersWithoutToken,
+            body: JSON.stringify({ user })
         })
             .then((response) => {
-                
-                if (!response.ok) {
-                    return {
-                        status: response.status,
-                        message: response.statusText,
-                    }
-                }
-                
-                return response.json()
+                const serverError = checkResponseAndCreateErrorIfBadStatus(response)
+                return serverError ? serverError : response.json()
             })
             .then((data) => {
 
                 if (data.message) {
-                    dispatch(setLastError(data.status, data.message))
+                    dispatch(handleServerError(data))
                     dispatch(setAuthenticationResult(false))
                 } else {
                     const { _id, token } = data.user
@@ -273,29 +230,15 @@ export function findUsers(userSeekData) {
         if(token) {
             fetch(`${serverLocation}${searchUsersPath}?user_seek_data=${userSeekData}`, {
                 method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                }
+                headers: createHttpHeadersWithToken(token),
             })
                 .then(response => {
-
-                    if (!response.ok) {
-
-                        localStorage.removeItem('token')
-
-                        return {
-                            status: response.status,
-                            message: response.statusText,
-                        }
-                    }
-
-                    return response.json()
+                    const serverError = checkResponseAndCreateErrorIfBadStatus(response)
+                    return serverError ? serverError : response.json()
                 })
                 .then((data) => {
                     if (data.message) {
-                        dispatch(setLastError(data.status, data.message))
+                        dispatch(handleServerError(data))
 
                         localStorage.removeItem('token')
                     } else {
@@ -317,11 +260,7 @@ export function addNewUserToCurrentChat(user) {
     
             fetch(serverLocation + addNewUserToChatPath, {
                 method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                },
+                headers: createHttpHeadersWithToken(token),
                 body: JSON.stringify({
                         chatId: currentChat._id,
                         newUserId: user._id,
@@ -329,23 +268,13 @@ export function addNewUserToCurrentChat(user) {
                 )
             })
                 .then((response) => {
-                    
-                    if (!response.ok) {
-
-                        localStorage.removeItem('token')
-
-                        return {
-                            status: response.status,
-                            message: response.statusText,
-                        }
-                    }
-                    
-                    return response.json()
+                    const serverError = checkResponseAndCreateErrorIfBadStatus(response)
+                    return serverError ? serverError : response.json()
                 })
                 .then((data) => {
     
                     if (data.message) {
-                        dispatch(setLastError(data.status, data.message))
+                        dispatch(handleServerError(data))
                     } else {
                         const { _id, name, users } = data.chat
     

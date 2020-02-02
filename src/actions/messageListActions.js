@@ -1,6 +1,8 @@
 import { serverLocation, messageSendPath, messageGetPath, newMessageGetPath, fetchMessagesCount } from '../applicationSettings'
 
-import { setLastError } from './chatSettingsActions'
+import { handleServerError } from './chatSettingsActions'
+
+import { createHttpHeadersWithToken, checkResponseAndCreateErrorIfBadStatus } from './helper'
 
 export const ADD_NEW_MESSAGE = 'ADD_NEW_MESSAGE'
 export const MESSAGE_WAS_RECEIVED = 'MESSAGE_WAS_RECEIVED'
@@ -66,32 +68,18 @@ export function sendNewMessage(text) {
     
             fetch(serverLocation + messageSendPath, {
                 method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                },
+                headers: createHttpHeadersWithToken(token),
                 body: JSON.stringify(
                     message
                 )
             })
                 .then((response) => {
-                    
-                    if (!response.ok) {
-                        message.wasMessageReceived = false
-                        localStorage.removeItem('token')
-
-                        return {
-                            status: response.status,
-                            message: response.statusText,
-                        }
-                    }
-    
-                    return response.json()
+                    const serverError = checkResponseAndCreateErrorIfBadStatus(response)
+                    return serverError ? serverError : response.json()
                 })
-                .then((data) => {
-                    if (data.message) {
-                        dispatch(setLastError(data.status, data.message))
+                .then((data) => {                  
+                    if (data.status) {
+                        dispatch(handleServerError(data))
                         message.wasMessageReceived = false
                         dispatch(addNewMessage(message))
                         localStorage.removeItem('token')
@@ -116,29 +104,15 @@ export function fetchMessagesList(chatId, oldestMessageTime) {
         if(token){
             fetch(`${serverLocation}${messageGetPath}?chat_id=${chatId}&oldest_message_time=${oldestMessageTime}&fetch_messages_count=${fetchMessagesCount}`, {
                 method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                }
+                headers: createHttpHeadersWithToken(token),
             })
                 .then(response => {
-
-                    if (!response.ok) {
-                        localStorage.removeItem('token')
-
-                        return {
-                            status: response.status,
-                            message: response.statusText,
-                        }
-                    }
-
-                    return response.json()
+                    const serverError = checkResponseAndCreateErrorIfBadStatus(response)
+                    return serverError ? serverError : response.json()
                 })
                 .then((data) => {
-
                     if (data.message) {
-                        dispatch(setLastError(data.status, data.message))
+                        dispatch(handleServerError(data))
                         localStorage.removeItem('token')
                     } else {
                         dispatch(unshiftPreviousMessages(data))
@@ -159,29 +133,15 @@ export function fetchNewMessages(chatId, newestMessageTime) {
         if(token){
             fetch(`${serverLocation}${newMessageGetPath}?chat_id=${chatId}&newest_message_time=${newestMessageTime}`, {
                 method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                }
+                headers: createHttpHeadersWithToken(token),
             })
                 .then(response => {
-
-                    if (!response.ok) {
-                        localStorage.removeItem('token')
-
-                        return {
-                            status: response.status,
-                            message: response.statusText,
-                        }
-                    }
-
-                    return response.json()
+                    const serverError = checkResponseAndCreateErrorIfBadStatus(response)
+                    return serverError ? serverError : response.json()
                 })
                 .then((data) => {
-
                     if (data.message) {
-                        dispatch(setLastError(data.status, data.message))
+                        dispatch(handleServerError(data))
                         localStorage.removeItem('token')
                     } else {
                         dispatch(pushNewMessages(data))

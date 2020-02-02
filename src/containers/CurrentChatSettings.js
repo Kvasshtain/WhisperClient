@@ -53,10 +53,10 @@ class CurrentChatSettings extends React.Component {
 
         if (showAddedUserMenu) {
             return (
-                <React.Fragment>
+                <React.div>
                     <UserSeekForm onSubmitUserSeekData = { this.onSubmitUserSeekData } />
                     {this.renderUsersList()}
-                </React.Fragment>
+                </React.div>
             )
         }
 

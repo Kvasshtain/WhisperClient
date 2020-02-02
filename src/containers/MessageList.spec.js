@@ -29,20 +29,3 @@ describe('MessageList', () => {
     })
 
 })
-
-// describe('ConnectedMessageList', () => {
-//     const initialState = { messages: ['test message'] }
-//     const mockStore = configureStore()
-//     let store, testedComponent
-
-//     beforeEach(() => {
-//         store = mockStore(initialState);
-//         testedComponent = shallow(<ConnectedMessageList store = {store} />)
-//     })
-
-//     it('should render correctly', () => {
-
-//         expect(shallowToJson(testedComponent)).toMatchSnapshot();
-//     })
-
-// })

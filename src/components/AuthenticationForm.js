@@ -5,7 +5,7 @@ class AuthenticationForm extends React.Component {
 
     state = {
         email: '',
-        password: ''
+        password: '',
     }
 
     onSubmit = (event) => {
@@ -33,25 +33,25 @@ class AuthenticationForm extends React.Component {
 
     render() {
         return (
-            <form onSubmit={this.onSubmit}>
-                <h1>Login</h1>
+            <form onSubmit = { this.onSubmit } className = "regAuthForm">
+                <h3>Login</h3>
                 <label>User email</label>
                 <input
-                    name='userEmail'
+                    name = 'userEmail'
                     placeholder='User email'
-                    type='text'
-                    value={this.state.email}
-                    onChange={this.updateUserEmailValue}
+                    type = 'text'
+                    value = { this.state.email }
+                    onChange = { this.updateUserEmailValue }
                 /><br />
                 <label>User password</label>
                 <input
-                    name='userPassword'
-                    placeholder='User password'
-                    type='text'
-                    value={this.state.password}
-                    onChange={this.updateUserPasswordValue}
+                    name = 'userPassword'
+                    placeholder = 'User password'
+                    type = 'text'
+                    value = { this.state.password }
+                    onChange = { this.updateUserPasswordValue }
                 /><br />
-                <button type="submit">
+                <button type = "submit">
                     Submit
                 </button>
             </form>
