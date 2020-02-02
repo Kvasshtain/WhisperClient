@@ -13,13 +13,22 @@ export function createHttpHeadersWithToken(token) {
 
 export function checkResponseAndCreateErrorIfBadStatus(response) {
 
-    if (response.ok) return
+    if (response.ok) {
+        return
+    } else {
 
-    const { status, statusText, message } = response
+        const { status, statusText, message } = response
 
-    return {
-        status,
-        badStatusText: statusText,
-        message
+        return {
+            status,
+            badStatusText: statusText,
+            message,
+        }
     }
+}
+
+export function validateEmail(email) {
+    const reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/
+
+    return reg.test(email)
 }

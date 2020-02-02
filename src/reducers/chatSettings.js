@@ -5,6 +5,7 @@ import {
     SET_AUTHENTICATION_RESULT, 
     SET_LAST_ERROR,
     FILL_FOUND_USERS_LIST,
+    CLEAR_LAST_ERROR,
 } from '../actions/chatSettingsActions'
 
 export function currentUser(state = {}, action) {
@@ -43,10 +44,12 @@ export function isUserAuthenticated(state = false, action) {
     }
 }
 
-export function lastError(state = {}, action) {
+export function lastError(state = null, action) {
     switch (action.type) {
         case SET_LAST_ERROR:
             return action.payload
+        case CLEAR_LAST_ERROR:
+            return null
         default:
             return state
     }

@@ -111,7 +111,7 @@ export function fetchMessagesList(chatId, oldestMessageTime) {
                     return serverError ? serverError : response.json()
                 })
                 .then((data) => {
-                    if (data.message) {
+                    if (data.badStatusText) {
                         dispatch(handleServerError(data))
                         localStorage.removeItem('token')
                     } else {
@@ -140,7 +140,7 @@ export function fetchNewMessages(chatId, newestMessageTime) {
                     return serverError ? serverError : response.json()
                 })
                 .then((data) => {
-                    if (data.message) {
+                    if (data.badStatusText) {
                         dispatch(handleServerError(data))
                         localStorage.removeItem('token')
                     } else {

@@ -6,7 +6,7 @@ import { serverLocation,
          searchUsersPath,
          addNewUserToChatPath, } from '../applicationSettings'
 
-import { createHttpHeadersWithToken, httpHeadersWithoutToken, checkResponseAndCreateErrorIfBadStatus } from './helper'
+import { createHttpHeadersWithToken, httpHeadersWithoutToken, checkResponseAndCreateErrorIfBadStatus, validateEmail } from './helper'
 
 export const CHANGE_CURRENT_USER = 'CHANGE_CURRENT_USER'
 export const CHANGE_CURRENT_CHAT = 'CHANGE_CURRENT_CHAT'
@@ -14,6 +14,7 @@ export const REFRESH_CHATS_LIST = 'REFRESH_CHATS_LIST'
 export const SET_AUTHENTICATION_RESULT = 'SET_AUTHENTICATION_RESULT'
 export const SET_LAST_ERROR = 'SET_LAST_ERROR'
 export const FILL_FOUND_USERS_LIST = 'FILL_FOUND_USERS_LIST'
+export const CLEAR_LAST_ERROR = 'CLEAR_LAST_ERROR'
 
 export function changeCurrentUser(user) {
     return {
@@ -53,10 +54,10 @@ export function handleServerError(serverErrorData) {
     }
 }
 
-export function setLastError(serverErrorData) {
+export function setLastError(errorData) {
     return {
         type: SET_LAST_ERROR,
-        payload: serverErrorData
+        payload: errorData,
     }
 }
 
@@ -71,6 +72,12 @@ export function resetAuthenticationResult() {
     return (dispatch) => {
         localStorage.removeItem('token')
         dispatch(setAuthenticationResult(false))
+    }
+}
+
+export function clearLastError() {
+    return {
+        type: CLEAR_LAST_ERROR,
     }
 }
 
@@ -132,7 +139,7 @@ export function fetchChatsList(userId) {
                     return serverError ? serverError : response.json()
                 })
                 .then((data) => {                   
-                    if (data.message) {
+                    if (data.badStatusText) {
                         dispatch(handleServerError(data))
                         localStorage.removeItem('token')
                     } else {
@@ -148,6 +155,13 @@ export function fetchChatsList(userId) {
 
 export function submitUserEmailAndPassword(email, password) {
     return (dispatch) => {
+
+        if (!validateEmail(email)) {
+            dispatch(setLastError({
+                message: `Bad email: ${email}`,
+            }))
+            return
+        }
 
         const userAuthenticationData = {
             user: {
@@ -170,7 +184,7 @@ export function submitUserEmailAndPassword(email, password) {
             })
             .then((data) => {
 
-                if (data.message) {
+                if (data.badStatusText) {
                     dispatch(handleServerError(data))
                     dispatch(setAuthenticationResult(false))
                 } else {
@@ -192,6 +206,14 @@ export function submitUserEmailAndPassword(email, password) {
 export function submitNewUser(user) {
     return (dispatch) => {
 
+        if (!validateEmail(user.email)) {
+            dispatch(setLastError({
+                message: `Bad email: ${user.email}`,
+            }))
+
+            return
+        }
+
         fetch(serverLocation + submitNewUserPath, {
             method: 'POST',
             headers: httpHeadersWithoutToken,
@@ -203,7 +225,7 @@ export function submitNewUser(user) {
             })
             .then((data) => {
 
-                if (data.message) {
+                if (data.badStatusText) {
                     dispatch(handleServerError(data))
                     dispatch(setAuthenticationResult(false))
                 } else {
@@ -237,7 +259,7 @@ export function findUsers(userSeekData) {
                     return serverError ? serverError : response.json()
                 })
                 .then((data) => {
-                    if (data.message) {
+                    if (data.badStatusText) {
                         dispatch(handleServerError(data))
 
                         localStorage.removeItem('token')
@@ -273,7 +295,7 @@ export function addNewUserToCurrentChat(user) {
                 })
                 .then((data) => {
     
-                    if (data.message) {
+                    if (data.badStatusText) {
                         dispatch(handleServerError(data))
                     } else {
                         const { _id, name, users } = data.chat

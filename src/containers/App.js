@@ -6,9 +6,10 @@ import CurrentChatSettings from './CurrentChatSettings'
 import { AuthenticationForm } from '../components/AuthenticationForm'
 import { RegistrationForm } from '../components/RegistrationForm'
 import { SettingsPanel } from '../components/SettingsPanel'
+import { ErrorWindow } from '../components/ErrorWindow'
 import { connect } from 'react-redux'
 import { sendNewMessage } from '../actions/messageListActions'
-import { submitUserEmailAndPassword, submitNewUser, createNewChat, resetAuthenticationResult } from '../actions/chatSettingsActions'
+import { submitUserEmailAndPassword, submitNewUser, createNewChat, resetAuthenticationResult, clearLastError } from '../actions/chatSettingsActions'
 import './App.sass'
 
 class App extends React.Component {
@@ -33,6 +34,14 @@ class App extends React.Component {
 
     return (
       <MessageList sendNewMessage = { this.props.sendNewMessage } />
+    )
+  }
+
+  renderErrorWindow() {
+    if (!this.props.lastError) return
+
+    return (
+      <ErrorWindow onOk = { this.props.clearLastError } lastError = { this.props.lastError } />
     )
   }
 
@@ -62,14 +71,17 @@ class App extends React.Component {
     }
 
     return (
-      <div className = "regAuthFormsPanel">
-        <RegistrationForm
-          onSubmit = { this.props.submitNewUser }
-        />
-        <AuthenticationForm
-          onSubmit = { this.props.submitUserEmailAndPassword }
-        />
-      </div>
+      <React.Fragment>
+        { this.renderErrorWindow() }
+        <div className = "regAuthFormsPanel">
+          <RegistrationForm
+            onSubmit = { this.props.submitNewUser }
+          />
+          <AuthenticationForm
+            onSubmit = { this.props.submitUserEmailAndPassword }
+          />
+        </div>
+      </React.Fragment>
     )
   }
 
@@ -88,6 +100,7 @@ const mapStateToProps = (state) => {
     currentChat: state.currentChat,
     wasMessageReceived: state.wasMessageReceived,
     isUserAuthenticated: state.isUserAuthenticated,
+    lastError: state.lastError,
   }
 }
 
@@ -98,6 +111,7 @@ const mapDispatchToProps = (dispatch) => {
     submitUserEmailAndPassword: (userEmail, userPassword) => dispatch(submitUserEmailAndPassword(userEmail, userPassword)),
     submitNewUser: (user) => dispatch(submitNewUser(user)),
     resetAuthenticationResult: () => dispatch(resetAuthenticationResult()),
+    clearLastError: () => dispatch(clearLastError()),
   }
 }
 
