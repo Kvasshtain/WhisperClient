@@ -1,3 +1,7 @@
+$border-color: #555
+$border: 1px solid $border-color
+$padding-width: 5px
+    
 .regAuthFormsPanel
     width: 50%
     height: 50%
@@ -11,26 +15,53 @@
 .regAuthForm
     box-sizing: border-box
     height: 50%
-    padding: 5px
-    border: 1px solid #555
+    padding: $padding-width
+    border: $border
 
 .appPanel
     height: 100%
 
-.mainPanel
+.modalWindow
+    box-sizing: border-box
+    background-color: white
+    padding: 20px
+    height: 250px
+    width: 400px
+    position: absolute
+    left: 50%
+    top: 50%
+    z-index: 9000
+    transform: translate(-50%, -50%)
+    border: $border
+
+.coverDiv
+    position: fixed
+    top: 0
+    left: 0
+    z-index: 9001
     width: 100%
-    display: -webkit-flex
-    display: flex
+    height: 100%
+    background-color: transparent
+    
+.mainPanel
+    display: grid
+    grid-template-columns: 300px auto 0px
+    grid-template-rows: 30px auto 30px
+    grid-template-areas: "left-top-menu chat-name-settings right-top-menu" "chat-list chat-messages additions" "left-bottom-menu chat-messages right-bottom-menu"
+
+.settingsPanel
+    grid-area: left-top-menu
+
+.userChatsPanel
+    grid-area: chat-list
+
+.currentChatSettings
+    grid-area: chat-name-settings
+
+.currentChatPanel
+    grid-area: chat-messages
 
 .mainPanel > div
     box-sizing: border-box
-    padding: 5px
-    border: 1px solid #555
-
-.userChatsPanel
-    flex-wrap: wrap
-    width: 30%
-
-.currentChatPanel
-    flex-wrap: wrap
-    width: 70%
+    padding: $padding-width
+    border: 1px solid $border-color

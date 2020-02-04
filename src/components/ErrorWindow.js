@@ -28,7 +28,7 @@ function ErrorWindow(props) {
     return (
         <div className = "modalWindow">
             <div>
-                <h1>Error</h1>
+                <h4>Error</h4>
             </div>
             <div>
                 { statusParagraph }
@@ -44,7 +44,7 @@ function ErrorWindow(props) {
 
 ErrorWindow.propTypes = {
     lastError: PropTypes.exact({
-        status: PropTypes.string,
+        status: PropTypes.number,
         badStatusText: PropTypes.string,
         message: PropTypes.string,
     })

@@ -53,10 +53,12 @@ class CurrentChatSettings extends React.Component {
 
         if (showAddedUserMenu) {
             return (
-                <React.div>
-                    <UserSeekForm onSubmitUserSeekData = { this.onSubmitUserSeekData } />
-                    {this.renderUsersList()}
-                </React.div>
+                <div className = "coverDiv">
+                    <div className = "modalWindow">
+                        <UserSeekForm onSubmitUserSeekData = { this.onSubmitUserSeekData } />
+                        {this.renderUsersList()}
+                    </div>
+                </div>
             )
         }
 
@@ -71,8 +73,8 @@ class CurrentChatSettings extends React.Component {
 
     render() {
         return (
-            <div className = "chatSettings">
-                <h1>Curret chat: { this.props.currentChat.name }</h1>
+            <div>
+                <span>Curret chat: { this.props.currentChat.name }</span>
                 { this.renderAddedUserMenu() }
             </div>
         )

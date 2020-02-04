@@ -28,7 +28,7 @@ UserFrame.propTypes = {
         name: PropTypes.string.isRequired,
         email: PropTypes.string.isRequired,
     }),
-    onSelectUser: PropTypes.func.isRequired,
+    onSelectUser: PropTypes.func,
 }
 
 export { UserFrame }

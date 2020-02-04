@@ -4,8 +4,8 @@ import PropTypes from 'prop-types'
 function SettingsPanel(props) {
 
     return (
-        <div onClick = { props.onSignOut }>
-            <button >
+        <div>
+            <button onClick = { props.onSignOut }>
                 Sign out
             </button>
         </div>

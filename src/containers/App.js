@@ -41,7 +41,9 @@ class App extends React.Component {
     if (!this.props.lastError) return
 
     return (
-      <ErrorWindow onOk = { this.props.clearLastError } lastError = { this.props.lastError } />
+      <div className = "coverDiv">
+        <ErrorWindow className = "modalWindow" onOk = { this.props.clearLastError } lastError = { this.props.lastError } />
+      </div>
     )
   }
 
@@ -53,17 +55,15 @@ class App extends React.Component {
     if (this.props.isUserAuthenticated) {
       return (
         <div className = "mainPanel">
+          <SettingsPanel className = "settingsPanel"
+            onSignOut = { this.onSignOut }
+          />
           <div className = "userChatsPanel">
-            <SettingsPanel
-              onSignOut = { this.onSignOut }
-            />
-            <div>
-              <h1>Curret user: { this.props.currentUser.name }</h1>
-              {this.renderChatListNewChatForm()}
-            </div>
+            <h1>Curret user: { this.props.currentUser.name }</h1>
+            { this.renderChatListNewChatForm() }
           </div>
+          <CurrentChatSettings className = "currentChatSettings"/>
           <div className = "currentChatPanel">
-            <CurrentChatSettings />
             {this.renderMessageList()}
           </div>
         </div>
