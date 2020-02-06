@@ -26,7 +26,6 @@ class NewMessageInput extends React.Component {
     render() {
         return (
             <form className = "newMessageInput" onSubmit = { this.onSubmit }>
-                <h1>Send new message</h1>
                 <input
                     name = 'userMessage'
                     placeholder = 'message text'

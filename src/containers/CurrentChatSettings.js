@@ -73,10 +73,10 @@ class CurrentChatSettings extends React.Component {
 
     render() {
         return (
-            <div>
-                <span>Curret chat: { this.props.currentChat.name }</span>
-                { this.renderAddedUserMenu() }
-            </div>
+                <div>
+                    <span>Chat: { this.props.currentChat.name }</span>
+                    { this.renderAddedUserMenu() }
+                </div>
         )
     }
 }

@@ -30,10 +30,10 @@ class ChatFrame extends React.Component {
         return (
             <div className = "selectedItem" onClick = { this.onSelectChat }>
                 <div>
-                    <p>{ chat.name }</p>
+                    <h4>{ chat.name }</h4>
                 </div>
                 <div>
-                    <h3>Chat users:</h3><br />
+                    <p>Chat members:</p>
                         <div>
                             { this.renderUsersList(chat.users) }
                         </div>

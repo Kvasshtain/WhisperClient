@@ -1,6 +1,28 @@
 $border-color: #555
 $border: 1px solid $border-color
 $padding-width: 5px
+
+
+$leftColumn-width: 300px  
+    
+    
+$topPanel-height: 35px
+$topPanel-content-margin: 5px
+$topPanel-button-height: $topPanel-height - 2 * $topPanel-content-margin
+$messageList-margin: 50px
+
+
+$font-color: #233527
+$smallFont-size: 14px
+
+
+
+h1,h2,h3,h4,h5,h6
+    margin: 0px
+
+
+
+
     
 .regAuthFormsPanel
     width: 50%
@@ -21,12 +43,14 @@ $padding-width: 5px
 .appPanel
     height: 100%
 
+
+
 .modalWindow
     box-sizing: border-box
     background-color: white
     padding: 20px
-    height: 250px
-    width: 400px
+    height: 400px
+    width: 500px
     position: absolute
     left: 50%
     top: 50%
@@ -43,25 +67,60 @@ $padding-width: 5px
     height: 100%
     background-color: transparent
     
-.mainPanel
-    display: grid
-    grid-template-columns: 300px auto 0px
-    grid-template-rows: 30px auto 30px
-    grid-template-areas: "left-top-menu chat-name-settings right-top-menu" "chat-list chat-messages additions" "left-bottom-menu chat-messages right-bottom-menu"
 
-.settingsPanel
-    grid-area: left-top-menu
+
+
+
+    
+    
+.topPanel
+    position: fixed
+    top: 0
+    left: 0
+    width: 100%
+    background-color: #ace6ba
+    height: $topPanel-height
+    button
+        height: $topPanel-button-height
+        border-radius: $topPanel-button-height / 4
+        background-color:  #8bcc9a
+        border: 0px solid white
+        font-size: $smallFont-size
+        color: $font-color
+    span
+        margin: 5px
+        font-size: $smallFont-size
+        color: $font-color
+        
+
+.topPanel>div
+    display: inline-block
+    margin: 5px
+
+.topPanel>div:first-child
+    width: $leftColumn-width
+
+
+
+
+
+
+.mainPanel
+    box-sizing: border-box
+    padding-top: $topPanel-height
+    height: 100vh
+
+.mainPanel>div
+    box-sizing: border-box
+    display: inline-block
+    padding: 10px
 
 .userChatsPanel
-    grid-area: chat-list
-
-.currentChatSettings
-    grid-area: chat-name-settings
+    width: $leftColumn-width
 
 .currentChatPanel
-    grid-area: chat-messages
+    width: calc( 100% - #{$leftColumn-width} )
 
-.mainPanel > div
-    box-sizing: border-box
-    padding: $padding-width
-    border: 1px solid $border-color
+.currentChatPanel>div
+    margin-left: $messageList-margin
+    margin-right: $messageList-margin

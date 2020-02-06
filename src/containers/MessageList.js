@@ -144,7 +144,7 @@ class MessageList extends React.Component {
                 <button onClick = { this.onScrollDownClick}>
                     Scroll down
                 </button>
-                <div ref = { this.messageListRef } className="messageList" onScroll = { this.onScroll }>
+                <div ref = { this.messageListRef } className = "messageList" onScroll = { this.onScroll }>
                     {this.renderMessageList()}
                 </div>
                 <NewMessageInput

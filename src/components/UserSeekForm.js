@@ -34,7 +34,7 @@ class UserSeekForm extends React.Component {
                     type = 'text'
                     value = { this.state.userSeekData }
                     onChange = { this.updateSearchQueryString }
-                /><br />
+                />
                 <button type = 'submit'>
                     Find users
                 </button>

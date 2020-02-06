@@ -28,7 +28,7 @@ class NewChatForm extends React.Component {
     render() {
         return (
             <form onSubmit = { this.onSubmit }>
-                <h1>Create new chat</h1>
+                <h4>+Chat</h4>
                 <input
                     name = 'chatName'
                     placeholder = 'chat name'

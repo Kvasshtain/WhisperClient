@@ -18,11 +18,11 @@ class App extends React.Component {
     if (this.props.currentUser._id) {
       return (
         <div>
+          <ChatList />
           <NewChatForm
             onSubmitNewChat = { this.props.createNewChat }
             currentUserId = { this.props.currentUser._id }
           />
-          <ChatList />
         </div>
       )
     }
@@ -54,19 +54,22 @@ class App extends React.Component {
   renderMainContent() {
     if (this.props.isUserAuthenticated) {
       return (
-        <div className = "mainPanel">
-          <SettingsPanel className = "settingsPanel"
-            onSignOut = { this.onSignOut }
-          />
-          <div className = "userChatsPanel">
-            <h1>Curret user: { this.props.currentUser.name }</h1>
-            { this.renderChatListNewChatForm() }
+        <React.Fragment>
+          <div className = "topPanel">
+            <SettingsPanel className = "settingsPanel"
+              onSignOut = { this.onSignOut } currentUserName = { this.props.currentUser.name }
+            />
+            <CurrentChatSettings className = "currentChatSettings"/>
           </div>
-          <CurrentChatSettings className = "currentChatSettings"/>
-          <div className = "currentChatPanel">
-            {this.renderMessageList()}
+          <div className = "mainPanel">
+            <div className = "userChatsPanel">
+              { this.renderChatListNewChatForm() }
+            </div>
+            <div className = "currentChatPanel">
+              {this.renderMessageList()}
+            </div>
           </div>
-        </div>
+        </React.Fragment>
       )
     }
 

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types'
 import { fetchChatsList, changeCurrentChat } from '../actions/chatSettingsActions';
 import { ChatFrame } from '../components/ChatFrame'
+import './ChatList.sass'
 
 class ChatList extends React.Component {
 
