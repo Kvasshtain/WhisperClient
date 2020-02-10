@@ -28,7 +28,7 @@ class ChatFrame extends React.Component {
         const { chat } = this.props
 
         return (
-            <div className = "selectedItem" onClick = { this.onSelectChat }>
+            <div className = "selected-item" onClick = { this.onSelectChat }>
                 <div>
                     <h4>{ chat.name }</h4>
                 </div>

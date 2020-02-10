@@ -139,12 +139,17 @@ class MessageList extends React.Component {
     }
 
     render() {
+
+        const strToDecode = "&#11015";
+        const parser = new DOMParser();
+        const decodedString = parser.parseFromString(`<!doctype html><body>${strToDecode}`, 'text/html').body.textContent;
+
         return (
             <div>
-                <button onClick = { this.onScrollDownClick}>
-                    Scroll down
-                </button>
-                <div ref = { this.messageListRef } className = "messageList" onScroll = { this.onScroll }>
+                <div className = "scroll-down-button" onClick = { this.onScrollDownClick}>
+                    { decodedString }
+                </div>
+                <div ref = { this.messageListRef } className = "message-list" onScroll = { this.onScroll }>
                     {this.renderMessageList()}
                 </div>
                 <NewMessageInput

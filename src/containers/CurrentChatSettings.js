@@ -1,7 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { UserFrame } from '../components/UserFrame'
-import { UserSeekForm } from '../components/UserSeekForm'
+import { AddToChatNewUserWindow } from '../components/AddToChatNewUserWindow'
 import { findUsers, addNewUserToCurrentChat } from '../actions/chatSettingsActions'
 import PropTypes from 'prop-types'
 
@@ -15,17 +14,13 @@ class CurrentChatSettings extends React.Component {
         }
     }
 
-    onSubmitUserSeekData = (userSeekData) => {
-        this.props.findUsers(userSeekData)
-    }
-
     onAddUserButtonClick = () => {
         this.setState({
             showAddedUserMenu: true,
         })
     }
 
-    onUserClick = (user) => {
+    addNewUserToCurrentChat = (user) => {
         this.setState({
             showAddedUserMenu: false,
         })
@@ -33,32 +28,25 @@ class CurrentChatSettings extends React.Component {
         this.props.addNewUserToCurrentChat(user)
     }
 
-    renderUsersList = () => {
-        const { usersList } = this.props
-        const onUserClick = this.onUserClick
-
-        if (usersList && usersList.length) {
-            return usersList.map(function (item) {
-                return (
-                    <UserFrame onUserClick = { onUserClick } key = { item._id } user = { item } />
-                )
-            })
-        }
+    cancelUserAdding = () => {
+        this.setState({
+            showAddedUserMenu: false,
+        })
     }
 
-    renderAddedUserMenu = () => {
+    renderAddedUserWindow = () => {
 
         const { showAddedUserMenu } = this.state
-        const { currentChat } = this.props
+        const { currentChat, findUsers, usersList } = this.props
 
         if (showAddedUserMenu) {
             return (
-                <div className = "coverDiv">
-                    <div className = "modalWindow">
-                        <UserSeekForm onSubmitUserSeekData = { this.onSubmitUserSeekData } />
-                        {this.renderUsersList()}
-                    </div>
-                </div>
+                <AddToChatNewUserWindow
+                    findUsers = { findUsers }
+                    usersList = { usersList }
+                    onUserClick = { this.addNewUserToCurrentChat }
+                    cancelUserAdding = { this.cancelUserAdding }
+                />
             )
         }
 
@@ -75,7 +63,7 @@ class CurrentChatSettings extends React.Component {
         return (
                 <div>
                     <span>Chat: { this.props.currentChat.name }</span>
-                    { this.renderAddedUserMenu() }
+                    { this.renderAddedUserWindow() }
                 </div>
         )
     }

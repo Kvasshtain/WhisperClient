@@ -49,7 +49,7 @@ class RegistrationForm extends React.Component {
 
     render() {
         return (
-            <form onSubmit = { this.onSubmit } className = "regAuthForm">
+            <form onSubmit = { this.onSubmit } className = "reg-auth-form">
                 <h3>New user registration</h3>
                 <label>User email</label>
                 <input

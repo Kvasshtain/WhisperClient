@@ -41,8 +41,8 @@ class App extends React.Component {
     if (!this.props.lastError) return
 
     return (
-      <div className = "coverDiv">
-        <ErrorWindow className = "modalWindow" onOk = { this.props.clearLastError } lastError = { this.props.lastError } />
+      <div className = "cover-div">
+        <ErrorWindow className = "modal-window" onOk = { this.props.clearLastError } lastError = { this.props.lastError } />
       </div>
     )
   }
@@ -55,17 +55,17 @@ class App extends React.Component {
     if (this.props.isUserAuthenticated) {
       return (
         <React.Fragment>
-          <div className = "topPanel">
-            <SettingsPanel className = "settingsPanel"
+          <div className = "top-panel">
+            <SettingsPanel className = "settings-panel"
               onSignOut = { this.onSignOut } currentUserName = { this.props.currentUser.name }
             />
-            <CurrentChatSettings className = "currentChatSettings"/>
+            <CurrentChatSettings className = "current-chat-settings"/>
           </div>
-          <div className = "mainPanel">
-            <div className = "userChatsPanel">
+          <div className = "main-panel">
+            <div className = "user-chats-panel">
               { this.renderChatListNewChatForm() }
             </div>
-            <div className = "currentChatPanel">
+            <div className = "current-chat-panel">
               {this.renderMessageList()}
             </div>
           </div>
@@ -76,7 +76,7 @@ class App extends React.Component {
     return (
       <React.Fragment>
         { this.renderErrorWindow() }
-        <div className = "regAuthFormsPanel">
+        <div className = "reg-auth-forms-panel">
           <RegistrationForm
             onSubmit = { this.props.submitNewUser }
           />
@@ -90,7 +90,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className = "appPanel">
+      <div className = "app-panel">
         { this.renderMainContent() }
       </div>
     )

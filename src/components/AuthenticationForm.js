@@ -33,7 +33,7 @@ class AuthenticationForm extends React.Component {
 
     render() {
         return (
-            <form onSubmit = { this.onSubmit } className = "regAuthForm">
+            <form onSubmit = { this.onSubmit } className = "reg-auth-form">
                 <h3>Login</h3>
                 <label>User email</label>
                 <input

@@ -26,7 +26,7 @@ function ErrorWindow(props) {
     }
 
     return (
-        <div className = "modalWindow">
+        <div className = "moda-window">
             <div>
                 <h4>Error</h4>
             </div>

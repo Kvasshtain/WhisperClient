@@ -1,30 +1,30 @@
 $border-color: #555
 $border: 1px solid $border-color
+$no-border: 0px solid white
 $padding-width: 5px
 
-
-$leftColumn-width: 300px  
-    
-    
-$topPanel-height: 35px
-$topPanel-content-margin: 5px
-$topPanel-button-height: $topPanel-height - 2 * $topPanel-content-margin
-$messageList-margin: 50px
-
+$left-column-width: 500px  
+  
+$top-panel-height: 35px
+$top-panel-content-margin: 5px
+$top-panel-button-height: $top-panel-height - 2 * $top-panel-content-margin
+$list-padding: 0px 10px 10px 10px
 
 $font-color: #233527
 $smallFont-size: 14px
 
-
+@mixin scrollList()
+    display: flex
+    border: 1px solid #afafaf
+    flex-direction: column
+    position: relative
+    padding: $list-padding
+    height: 100%
 
 h1,h2,h3,h4,h5,h6
     margin: 0px
-
-
-
-
-    
-.regAuthFormsPanel
+  
+.reg-auth-forms-panel
     width: 50%
     height: 50%
     position: absolute
@@ -34,18 +34,18 @@ h1,h2,h3,h4,h5,h6
     left: 0
     margin: auto
 
-.regAuthForm
+.reg-auth-form
     box-sizing: border-box
     height: 50%
     padding: $padding-width
     border: $border
 
-.appPanel
+.app-panel
     height: 100%
+    div
+        box-sizing: border-box
 
-
-
-.modalWindow
+.modal-window
     box-sizing: border-box
     background-color: white
     padding: 20px
@@ -58,7 +58,7 @@ h1,h2,h3,h4,h5,h6
     transform: translate(-50%, -50%)
     border: $border
 
-.coverDiv
+.cover-div
     position: fixed
     top: 0
     left: 0
@@ -66,61 +66,49 @@ h1,h2,h3,h4,h5,h6
     width: 100%
     height: 100%
     background-color: transparent
-    
-
-
-
-
-    
-    
-.topPanel
+  
+.top-panel
     position: fixed
+    display: flex
     top: 0
     left: 0
     width: 100%
     background-color: #ace6ba
-    height: $topPanel-height
+    height: $top-panel-height
     button
-        height: $topPanel-button-height
-        border-radius: $topPanel-button-height / 4
+        height: $top-panel-button-height
+        border-radius: $top-panel-button-height / 4
         background-color:  #8bcc9a
-        border: 0px solid white
+        border: $no-border
         font-size: $smallFont-size
         color: $font-color
     span
         margin: 5px
         font-size: $smallFont-size
         color: $font-color
-        
+    > div
+        display: inline-block
+        margin: 5px
+    > div:last-child
+        right: 0px    
 
-.topPanel>div
-    display: inline-block
-    margin: 5px
-
-.topPanel>div:first-child
-    width: $leftColumn-width
-
-
-
-
-
-
-.mainPanel
+.main-panel
+    position: fixed
+    display: flex
     box-sizing: border-box
-    padding-top: $topPanel-height
+    padding-top: $top-panel-height
+    width: 100%
     height: 100vh
+    > div
+        box-sizing: border-box
+        display: inline-block
 
-.mainPanel>div
-    box-sizing: border-box
-    display: inline-block
-    padding: 10px
+.user-chats-panel
+    width: $left-column-width
+    > div
+        @include scrollList()
 
-.userChatsPanel
-    width: $leftColumn-width
-
-.currentChatPanel
-    width: calc( 100% - #{$leftColumn-width} )
-
-.currentChatPanel>div
-    margin-left: $messageList-margin
-    margin-right: $messageList-margin
+.current-chat-panel
+    width: 100%
+    > div
+        @include scrollList()

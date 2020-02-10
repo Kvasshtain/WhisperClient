@@ -1,3 +1,38 @@
-.messageList
-    overflow-y: scroll
-    height: 380px
+@import "ScrollList.sass"
+
+$no-border: 0px solid white
+    
+.message-list
+    @include scrollList
+    > div
+        margin: 10px
+        border-radius: 10px
+        background-color:  #cff3d7
+        border: $no-border
+        padding: 10px
+
+$no-border: 0px solid white
+$font-color: #233527
+$scroll-down-button-font-size: 50px
+$scroll-down-button-size: 75px
+$scroll-down-button-margin: 65px
+
+.scroll-down-button
+    position: absolute
+    display: flex
+    right: 0
+    bottom: 0
+    margin: $scroll-down-button-margin
+    align-items: center
+    justify-content: center
+    width: $scroll-down-button-size
+    height: $scroll-down-button-size
+    border-radius: $scroll-down-button-size
+    background-color:  #8bcc9a
+    border: $no-border
+    font-size: $scroll-down-button-font-size
+    color: $font-color
+    opacity: 0.3
+
+.scroll-down-button:hover
+    opacity: 1

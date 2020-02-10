@@ -37,7 +37,7 @@ class NewChatForm extends React.Component {
                     onChange = { this.updateChatNameValue }
                 />
                 <button type = "submit">
-                    Create
+                    Create new chat
                 </button>
             </form>
         )
