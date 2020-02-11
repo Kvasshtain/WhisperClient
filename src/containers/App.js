@@ -55,12 +55,6 @@ class App extends React.Component {
     if (this.props.isUserAuthenticated) {
       return (
         <React.Fragment>
-          <div className = "top-panel">
-            <SettingsPanel className = "settings-panel"
-              onSignOut = { this.onSignOut } currentUserName = { this.props.currentUser.name }
-            />
-            <CurrentChatSettings className = "current-chat-settings"/>
-          </div>
           <div className = "main-panel">
             <div className = "user-chats-panel">
               { this.renderChatListNewChatForm() }
@@ -68,6 +62,12 @@ class App extends React.Component {
             <div className = "current-chat-panel">
               {this.renderMessageList()}
             </div>
+          </div>
+          <div className = "top-panel">
+            <SettingsPanel className = "settings-panel"
+              onSignOut = { this.onSignOut } currentUserName = { this.props.currentUser.name }
+            />
+            <CurrentChatSettings className = "current-chat-settings"/>
           </div>
         </React.Fragment>
       )

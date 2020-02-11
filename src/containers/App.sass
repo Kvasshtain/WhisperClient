@@ -8,17 +8,16 @@ $left-column-width: 500px
 $top-panel-height: 35px
 $top-panel-content-margin: 5px
 $top-panel-button-height: $top-panel-height - 2 * $top-panel-content-margin
-$list-padding: 0px 10px 10px 10px
 
 $font-color: #233527
 $smallFont-size: 14px
 
-@mixin scrollList()
+@mixin vertical-flex-panel()
     display: flex
     border: 1px solid #afafaf
     flex-direction: column
+    justify-content: space-between
     position: relative
-    padding: $list-padding
     height: 100%
 
 h1,h2,h3,h4,h5,h6
@@ -73,15 +72,17 @@ h1,h2,h3,h4,h5,h6
     top: 0
     left: 0
     width: 100%
-    background-color: #ace6ba
+    background: linear-gradient(to top, #f5feea, #ace6ba)
     height: $top-panel-height
     button
         height: $top-panel-button-height
         border-radius: $top-panel-button-height / 4
-        background-color:  #8bcc9a
+        background: linear-gradient(to top, #c7e6ce, #97d4a5)
         border: $no-border
         font-size: $smallFont-size
         color: $font-color
+    button:hover
+        background: linear-gradient(to top,  #c7e6dc, #97d4ba)
     span
         margin: 5px
         font-size: $smallFont-size
@@ -95,20 +96,24 @@ h1,h2,h3,h4,h5,h6
 .main-panel
     position: fixed
     display: flex
-    box-sizing: border-box
     padding-top: $top-panel-height
     width: 100%
     height: 100vh
     > div
-        box-sizing: border-box
         display: inline-block
+    form
+        padding: 10px
+        background: linear-gradient(to bottom, #f5feea, #ace6ba)
+        border-top: 1px solid #afafaf
+
 
 .user-chats-panel
     width: $left-column-width
+    background-color:  #ddebe8
     > div
-        @include scrollList()
+        @include vertical-flex-panel()
 
 .current-chat-panel
     width: 100%
     > div
-        @include scrollList()
+        @include vertical-flex-panel()
