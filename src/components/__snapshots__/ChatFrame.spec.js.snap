@@ -2,18 +2,18 @@
 
 exports[`ChatFrame should render correctly 1`] = `
 <div
+  className="selected-item"
   onClick={[Function]}
 >
   <div>
-    <p>
+    <h4>
       captains log
-    </p>
+    </h4>
   </div>
   <div>
-    <h3>
-      Chat users:
-    </h3>
-    <br />
+    <p>
+      Chat members:
+    </p>
     <div>
       <div
         key="0"

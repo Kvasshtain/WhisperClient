@@ -4,9 +4,9 @@ exports[`NewChatForm should render correctly 1`] = `
 <form
   onSubmit={[Function]}
 >
-  <h1>
-    Create new chat
-  </h1>
+  <h4>
+    +Chat
+  </h4>
   <input
     name="chatName"
     onChange={[Function]}
@@ -17,7 +17,7 @@ exports[`NewChatForm should render correctly 1`] = `
   <button
     type="submit"
   >
-    Create
+    Create new chat
   </button>
 </form>
 `;

@@ -2,11 +2,12 @@
 
 exports[`AuthenticationForm should render correctly 1`] = `
 <form
+  className="reg-auth-form"
   onSubmit={[Function]}
 >
-  <h1>
+  <h3>
     Login
-  </h1>
+  </h3>
   <label>
     User email
   </label>

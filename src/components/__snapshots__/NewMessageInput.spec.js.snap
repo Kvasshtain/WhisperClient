@@ -2,11 +2,12 @@
 
 exports[`NewMessageInput should render correctly 1`] = `
 <form
+  className="new-message-input"
   onSubmit={[Function]}
 >
-  <h1>
-    Send new message
-  </h1>
+  <h4>
+    +Message
+  </h4>
   <input
     name="userMessage"
     onChange={[Function]}

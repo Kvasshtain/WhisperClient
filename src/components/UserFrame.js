@@ -2,33 +2,31 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 class UserFrame extends React.Component {
+  onUserClick = () => {
+    const { user } = this.props
 
-    onUserClick = () => {
-        
-        const { user } = this.props
-        
-        this.props.onUserClick(user)
-    }
+    this.props.onUserClick(user)
+  }
 
-    render() {
-        const { user } = this.props
+  render() {
+    const { user } = this.props
 
-        return (
-            <div className = "selected-item" onClick = { this.onUserClick }>
-                <p>{ user.name }</p>
-                <p>{ user.email }</p>
-            </div>
-        )
-    }
+    return (
+      <div className="selected-item" onClick={this.onUserClick}>
+        <p>{user.name}</p>
+        <p>{user.email}</p>
+      </div>
+    )
+  }
 }
 
 UserFrame.propTypes = {
-    chat: PropTypes.exact({
-        _id: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        email: PropTypes.string.isRequired,
-    }),
-    onSelectUser: PropTypes.func,
+  chat: PropTypes.exact({
+    _id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+  }),
+  onSelectUser: PropTypes.func,
 }
 
 export { UserFrame }
