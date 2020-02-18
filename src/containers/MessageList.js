@@ -32,6 +32,7 @@ class MessageList extends React.Component {
   componentDidUpdate = () => {
     const { messages } = this.props
     const scrollDownShift = 30
+    const { current } = this.messageListRef
 
     if (!messages) return
 
@@ -44,11 +45,11 @@ class MessageList extends React.Component {
       previousMessagesLength: messagesLength,
     })
 
-    const { current } = this.messageListRef
-
     current.scrollTop += scrollDownShift
 
     this.scrollDownIfEnabled()
+
+    this.tryLoadMessagesUntilScrollAppears()
   }
 
   initializeMessagesListUpdateTimer = () => {
@@ -99,6 +100,14 @@ class MessageList extends React.Component {
     }
   }
 
+  tryLoadMessagesUntilScrollAppears() {
+    const { current } = this.messageListRef
+
+    if (current.offsetWidth <= current.clientWidth) {
+      this.fetchMessages()
+    }
+  }
+
   scrollDown = () => {
     const { current } = this.messageListRef
 
@@ -106,12 +115,20 @@ class MessageList extends React.Component {
   }
 
   renderMessageList = () => {
-    const { messages } = this.props
+    const { messages, currentUser } = this.props
     const messagesLength = messages.length
 
     if (messages && messagesLength) {
       return messages.map(function(item, index) {
-        return <MessageFrame key={index} message={item} />
+        return (
+          <div>
+            <MessageFrame
+              key={index}
+              message={item}
+              currentUserEmail={currentUser.email}
+            />
+          </div>
+        )
       })
     }
   }
@@ -167,6 +184,7 @@ const mapStateToProps = state => {
   return {
     messages: state.messages,
     currentChat: state.currentChat,
+    currentUser: state.currentUser,
   }
 }
 

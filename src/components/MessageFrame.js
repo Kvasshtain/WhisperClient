@@ -3,10 +3,17 @@ import PropTypes from 'prop-types'
 import { MessageTimestamp } from './MessageTimestamp'
 
 function MessageFrame(props) {
-  const { message } = props
+  const { message, currentUserEmail } = props
+  let messageFrameClass
+
+  if (currentUserEmail === message.authorEmail) {
+    messageFrameClass = 'current_user_message'
+  } else {
+    messageFrameClass = 'another_user_message'
+  }
 
   return (
-    <div>
+    <div className={messageFrameClass}>
       <div>
         <p>{message.authorName}</p>
       </div>
