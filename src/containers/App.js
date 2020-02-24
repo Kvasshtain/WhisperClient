@@ -8,7 +8,7 @@ import { RegistrationForm } from '../components/RegistrationForm'
 import { SettingsPanel } from '../components/SettingsPanel'
 import { ErrorWindow } from '../components/ErrorWindow'
 import { connect } from 'react-redux'
-import { sendNewMessage } from '../actions/messageListActions'
+import { encryptAndSendNewMessage } from '../actions/messageListActions'
 import {
   submitUserEmailAndPassword,
   submitNewUser,
@@ -112,7 +112,7 @@ const mapDispatchToProps = dispatch => {
   return {
     createNewChat: (chatName, usersIds) =>
       dispatch(createNewChat(chatName, usersIds)),
-    sendNewMessage: message => dispatch(sendNewMessage(message)),
+    sendNewMessage: message => dispatch(encryptAndSendNewMessage(message)),
     submitUserEmailAndPassword: (userEmail, userPassword) =>
       dispatch(submitUserEmailAndPassword(userEmail, userPassword)),
     submitNewUser: user => dispatch(submitNewUser(user)),

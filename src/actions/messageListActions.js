@@ -11,6 +11,7 @@ import { handleServerError } from './chatSettingsActions'
 import {
   createHttpHeadersWithToken,
   checkResponseAndCreateErrorIfBadStatus,
+  convertMessages,
 } from './helper'
 
 export const ADD_NEW_MESSAGE = 'ADD_NEW_MESSAGE'
@@ -51,6 +52,18 @@ export function pushNewMessages(messages) {
   return {
     type: PUSH_NEW_MESSAGES,
     payload: messages,
+  }
+}
+
+export function encryptAndSendNewMessage(text) {
+  return (dispatch, getState) => {
+    const { forwardPreprocessorFunction } = getState().currentChat
+
+    if (forwardPreprocessorFunction) {
+      text = forwardPreprocessorFunction(text)
+    }
+
+    dispatch(sendNewMessage(text))
   }
 }
 
@@ -103,7 +116,7 @@ export function sendNewMessage(text) {
 }
 
 export function fetchMessagesList(chatId, oldestMessageTime) {
-  return dispatch => {
+  return (dispatch, getState) => {
     const token = localStorage.token
 
     if (token) {
@@ -123,6 +136,8 @@ export function fetchMessagesList(chatId, oldestMessageTime) {
             dispatch(handleServerError(data))
             localStorage.removeItem('token')
           } else {
+            const { backwardPreprocessorFunction } = getState().currentChat
+            data = convertMessages(data, backwardPreprocessorFunction)
             dispatch(unshiftPreviousMessages(data))
           }
         })
@@ -134,7 +149,7 @@ export function fetchMessagesList(chatId, oldestMessageTime) {
 }
 
 export function fetchNewMessages(chatId, newestMessageTime) {
-  return dispatch => {
+  return (dispatch, getState) => {
     const token = localStorage.token
 
     if (token) {
@@ -154,6 +169,8 @@ export function fetchNewMessages(chatId, newestMessageTime) {
             dispatch(handleServerError(data))
             localStorage.removeItem('token')
           } else {
+            const { backwardPreprocessorFunction } = getState().currentChat
+            data = convertMessages(data, backwardPreprocessorFunction)
             dispatch(pushNewMessages(data))
           }
         })

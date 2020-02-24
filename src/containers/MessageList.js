@@ -17,6 +17,7 @@ class MessageList extends React.Component {
     this.state = {
       enableScrollDown: true,
       previousMessagesLength: 0,
+      suspendMessagesFetching: false,
     }
   }
 
@@ -45,6 +46,10 @@ class MessageList extends React.Component {
       previousMessagesLength: messagesLength,
     })
 
+    this.setState({
+      suspendMessagesFetching: false,
+    })
+
     current.scrollTop += scrollDownShift
 
     this.scrollDownIfEnabled()
@@ -57,6 +62,8 @@ class MessageList extends React.Component {
   }
 
   fetchMessages = () => {
+    if (this.state.suspendMessagesFetching) return
+
     const currentChat = this.props.currentChat
     const messages = this.props.messages
 
@@ -121,12 +128,8 @@ class MessageList extends React.Component {
     if (messages && messagesLength) {
       return messages.map(function(item, index) {
         return (
-          <div>
-            <MessageFrame
-              key={index}
-              message={item}
-              currentUserEmail={currentUser.email}
-            />
+          <div key={index}>
+            <MessageFrame message={item} currentUserEmail={currentUser.email} />
           </div>
         )
       })
@@ -142,6 +145,10 @@ class MessageList extends React.Component {
     const { current } = this.messageListRef
 
     if (current.scrollTop < minScrollTop) {
+      this.setState({
+        suspendMessagesFetching: true,
+      })
+
       this.fetchMessages()
     }
   }

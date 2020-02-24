@@ -26,7 +26,7 @@ class AddToChatNewUserWindow extends React.Component {
         <div className="modal-window">
           <UserSeekForm onSubmitUserSeekData={this.onSubmitUserSeekData} />
           {this.renderUsersList()}
-          <button onClick={this.props.cancelUserAdding}>Cancel</button>
+          <button onClick={this.props.onCancelClick}>Cancel</button>
         </div>
       </div>
     )

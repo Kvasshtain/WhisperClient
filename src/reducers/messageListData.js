@@ -9,7 +9,7 @@ import {
 export function messages(state = [], action) {
   switch (action.type) {
     case ADD_NEW_MESSAGE:
-      return state.concat(action.payload)
+      return [...state, action.payload]
     case REFRESH_MESSAGES_LIST:
       return action.payload
     case UNSHIFT_PREVIOUS_MESSAGES:

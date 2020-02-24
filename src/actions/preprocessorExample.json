@@ -1,0 +1,4 @@
+{
+    "forward": "return text + 'YoHoHo'",
+    "backward": "return 'YoHoHo' + text"
+}

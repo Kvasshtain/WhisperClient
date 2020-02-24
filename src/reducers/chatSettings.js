@@ -6,6 +6,7 @@ import {
   SET_LAST_ERROR,
   FILL_FOUND_USERS_LIST,
   CLEAR_LAST_ERROR,
+  ADD_NEW_SPECIAL_MESSAGES_PREPROCESSOR_FUNCTION,
 } from '../actions/chatSettingsActions'
 
 export function currentUser(state = {}, action) {
@@ -21,6 +22,8 @@ export function currentChat(state = {}, action) {
   switch (action.type) {
     case CHANGE_CURRENT_CHAT:
       return action.payload
+    case ADD_NEW_SPECIAL_MESSAGES_PREPROCESSOR_FUNCTION:
+      return { ...state, ...action.payload }
     default:
       return state
   }

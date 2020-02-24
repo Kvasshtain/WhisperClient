@@ -1,9 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { AddToChatNewUserWindow } from '../components/AddToChatNewUserWindow'
+import { SpecialMessagesPreprocessorMenu } from '../components/SpecialMessagesPreprocessorMenu'
 import {
   findUsers,
   addNewUserToCurrentChat,
+  addNewSpecialMessagesPreprocessor,
 } from '../actions/chatSettingsActions'
 import PropTypes from 'prop-types'
 
@@ -13,6 +15,7 @@ class CurrentChatSettings extends React.Component {
 
     this.state = {
       showAddedUserMenu: false,
+      showSpecialMessagesPreprocessorMenu: false,
     }
   }
 
@@ -22,11 +25,14 @@ class CurrentChatSettings extends React.Component {
     })
   }
 
-  addNewUserToCurrentChat = user => {
+  onAddSpecialMessagesPreprocessorButtonClick = () => {
     this.setState({
-      showAddedUserMenu: false,
+      showSpecialMessagesPreprocessorMenu: true,
     })
+  }
 
+  addNewUserToCurrentChat = user => {
+    this.cancelUserAdding()
     this.props.addNewUserToCurrentChat(user)
   }
 
@@ -36,8 +42,22 @@ class CurrentChatSettings extends React.Component {
     })
   }
 
+  addNewSpecialMessagesPreprocessor = preprocessorFunctionString => {
+    this.cancelSpecialMessagesPreprocessorAdding()
+    this.props.addNewSpecialMessagesPreprocessor(preprocessorFunctionString)
+  }
+
+  cancelSpecialMessagesPreprocessorAdding = () => {
+    this.setState({
+      showSpecialMessagesPreprocessorMenu: false,
+    })
+  }
+
   renderAddedUserWindow = () => {
-    const { showAddedUserMenu } = this.state
+    const {
+      showAddedUserMenu,
+      showSpecialMessagesPreprocessorMenu,
+    } = this.state
     const { currentChat, findUsers, usersList } = this.props
 
     if (showAddedUserMenu) {
@@ -46,16 +66,31 @@ class CurrentChatSettings extends React.Component {
           findUsers={findUsers}
           usersList={usersList}
           onUserClick={this.addNewUserToCurrentChat}
-          cancelUserAdding={this.cancelUserAdding}
+          onCancelClick={this.cancelUserAdding}
+        />
+      )
+    }
+
+    if (showSpecialMessagesPreprocessorMenu) {
+      return (
+        <SpecialMessagesPreprocessorMenu
+          currentChat={currentChat}
+          onSubmit={this.addNewSpecialMessagesPreprocessor}
+          onCancelClick={this.cancelSpecialMessagesPreprocessorAdding}
         />
       )
     }
 
     if (currentChat._id) {
       return (
-        <button onClick={this.onAddUserButtonClick}>
-          Add new user to chat
-        </button>
+        <React.Fragment>
+          <button onClick={this.onAddUserButtonClick}>
+            Add new user to chat
+          </button>
+          <button onClick={this.onAddSpecialMessagesPreprocessorButtonClick}>
+            Add special messages preprocessor
+          </button>
+        </React.Fragment>
       )
     }
   }
@@ -81,6 +116,8 @@ const mapDispatchToProps = dispatch => {
   return {
     findUsers: userSeekData => dispatch(findUsers(userSeekData)),
     addNewUserToCurrentChat: user => dispatch(addNewUserToCurrentChat(user)),
+    addNewSpecialMessagesPreprocessor: file =>
+      dispatch(addNewSpecialMessagesPreprocessor(file)),
   }
 }
 
@@ -104,6 +141,8 @@ CurrentChatSettings.propTypes = {
         email: PropTypes.string.isRequired,
       })
     ),
+    forwardPreprocessorFunction: PropTypes.func,
+    backwardPreprocessorFunction: PropTypes.func,
   }),
   findUsers: PropTypes.func.isRequired,
   addNewUserToCurrentChat: PropTypes.func.isRequired,

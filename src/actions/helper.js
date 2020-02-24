@@ -30,3 +30,33 @@ export function validateEmail(email) {
 
   return reg.test(email)
 }
+
+export function readTextFile(file) {
+  return new Promise((resolve, reject) => {
+    var reader = new FileReader()
+    reader.onload = () => {
+      resolve(reader.result)
+    }
+    reader.onerror = reject
+    reader.readAsText(file)
+  })
+}
+
+export function isStringNullOrEmpty(str) {
+  if (!str) return true
+
+  if (str.trim() == '') return true
+
+  return false
+}
+
+export function convertMessages(messages, convertor) {
+  if (convertor) {
+    messages = messages.map(item => {
+      const text = convertor(item.text)
+      return { ...item, text }
+    })
+  }
+
+  return messages
+}

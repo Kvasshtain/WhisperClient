@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import {
   fetchChatsList,
-  changeCurrentChat,
+  tryGetPreprocessorAndСhangeCurrentChat,
 } from '../actions/chatSettingsActions'
 import { ChatFrame } from '../components/ChatFrame'
 import './ChatList.sass'
@@ -48,7 +48,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     fetchChatsList: userId => dispatch(fetchChatsList(userId)),
-    changeCurrentChat: chat => dispatch(changeCurrentChat(chat)),
+    changeCurrentChat: chat =>
+      dispatch(tryGetPreprocessorAndСhangeCurrentChat(chat)),
   }
 }
 
