@@ -10,6 +10,7 @@ import { ErrorWindow } from '../components/ErrorWindow'
 import { connect } from 'react-redux'
 import { encryptAndSendNewMessage } from '../actions/messageListActions'
 import {
+  checkIsUserAuthenticated,
   submitUserEmailAndPassword,
   submitNewUser,
   createNewChat,
@@ -19,6 +20,10 @@ import {
 import './App.sass'
 
 class App extends React.Component {
+  componentDidMount() {
+    this.props.checkIsUserAuthenticated()
+  }
+
   renderChatListNewChatForm() {
     if (this.props.currentUser._id) {
       return (
@@ -110,6 +115,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    checkIsUserAuthenticated: () => dispatch(checkIsUserAuthenticated()),
     createNewChat: (chatName, usersIds) =>
       dispatch(createNewChat(chatName, usersIds)),
     sendNewMessage: message => dispatch(encryptAndSendNewMessage(message)),

@@ -10,5 +10,5 @@ export const submitNewUserPath = 'users/new/'
 export const searchUsersPath = 'users/search/'
 export const addNewUserToChatPath = 'chats/addNewUser/'
 
-export const fetchMessagesCount = 3
+export const fetchMessagesCount = 15
 export const updateInterval = 10000

@@ -45,7 +45,7 @@ export function readTextFile(file) {
 export function isStringNullOrEmpty(str) {
   if (!str) return true
 
-  if (str.trim() == '') return true
+  if (str.trim() === '') return true
 
   return false
 }

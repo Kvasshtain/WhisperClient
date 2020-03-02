@@ -1,13 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { addLeadZero } from './helper'
 
 function MessageTimestamp(props) {
   const date = new Date(props.time)
-  const hours = date.getHours()
-  const minutes = date.getMinutes()
-  const day = date.getDate()
-  const month = date.getMonth() + 1
-  const year = date.getFullYear()
+  let hours = addLeadZero(date.getHours())
+  let minutes = addLeadZero(date.getMinutes())
+  let day = addLeadZero(date.getDate())
+  let month = addLeadZero(date.getMonth() + 1)
+  let year = date.getFullYear()
 
   return (
     <div>

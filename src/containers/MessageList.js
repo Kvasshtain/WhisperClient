@@ -18,10 +18,15 @@ class MessageList extends React.Component {
       enableScrollDown: true,
       previousMessagesLength: 0,
       suspendMessagesFetching: false,
+      currentChat: null,
     }
   }
 
   componentDidMount = () => {
+    const { currentChat } = this.props
+    if (this.state.currentChat !== currentChat) {
+      this.setState({ currentChat })
+    }
     this.fetchMessages()
     this.initializeMessagesListUpdateTimer()
   }
@@ -31,9 +36,14 @@ class MessageList extends React.Component {
   }
 
   componentDidUpdate = () => {
-    const { messages } = this.props
+    const { messages, currentChat } = this.props
     const scrollDownShift = 30
     const { current } = this.messageListRef
+
+    if (this.state.currentChat !== currentChat) {
+      this.reloadMessagesList()
+      return
+    }
 
     if (!messages) return
 
@@ -53,17 +63,33 @@ class MessageList extends React.Component {
     current.scrollTop += scrollDownShift
 
     this.scrollDownIfEnabled()
+  }
 
-    this.tryLoadMessagesUntilScrollAppears()
+  reloadMessagesList = () => {
+    this.setState({
+      currentChat: this.props.currentChat,
+    })
+
+    this.fetchMessagesForced()
+    this.setState({
+      suspendMessagesFetching: true,
+    })
   }
 
   initializeMessagesListUpdateTimer = () => {
-    this.timerID = setInterval(() => this.fetchNewMessages(), updateInterval)
+    this.timerID = setInterval(() => {
+      this.fetchNewMessages()
+      this.tryLoadMessagesUntilScrollAppears()
+    }, updateInterval)
   }
 
   fetchMessages = () => {
     if (this.state.suspendMessagesFetching) return
 
+    this.fetchMessagesForced()
+  }
+
+  fetchMessagesForced = () => {
     const currentChat = this.props.currentChat
     const messages = this.props.messages
 
@@ -141,7 +167,7 @@ class MessageList extends React.Component {
   }
 
   onScroll = () => {
-    const minScrollTop = 30
+    const minScrollTop = 20
     const { current } = this.messageListRef
 
     if (current.scrollTop < minScrollTop) {

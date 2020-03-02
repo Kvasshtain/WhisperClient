@@ -19,6 +19,13 @@ export const MESSAGE_WAS_RECEIVED = 'MESSAGE_WAS_RECEIVED'
 export const REFRESH_MESSAGES_LIST = 'REFRESH_MESSAGES_LIST'
 export const UNSHIFT_PREVIOUS_MESSAGES = 'UNSHIFT_PREVIOUS_MESSAGES'
 export const PUSH_NEW_MESSAGES = 'PUSH_NEW_MESSAGES'
+export const CLEAR_MESSAGES = 'CLEAR_MESSAGES'
+
+export function clearMessages() {
+  return {
+    type: CLEAR_MESSAGES,
+  }
+}
 
 export function addNewMessage(message) {
   return {

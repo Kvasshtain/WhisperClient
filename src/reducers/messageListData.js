@@ -4,10 +4,13 @@ import {
   REFRESH_MESSAGES_LIST,
   UNSHIFT_PREVIOUS_MESSAGES,
   PUSH_NEW_MESSAGES,
+  CLEAR_MESSAGES,
 } from '../actions/messageListActions'
 
 export function messages(state = [], action) {
   switch (action.type) {
+    case CLEAR_MESSAGES:
+      return []
     case ADD_NEW_MESSAGE:
       return [...state, action.payload]
     case REFRESH_MESSAGES_LIST:

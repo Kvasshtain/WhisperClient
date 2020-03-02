@@ -8,6 +8,8 @@ import {
   addNewUserToChatPath,
 } from '../applicationSettings'
 
+import { clearMessages } from './messageListActions'
+
 import {
   createHttpHeadersWithToken,
   httpHeadersWithoutToken,
@@ -82,6 +84,7 @@ export function fillFoundUsersList(usersList) {
 export function resetAuthenticationResult() {
   return dispatch => {
     localStorage.removeItem('token')
+    localStorage.removeItem('userJson')
     dispatch(setAuthenticationResult(false))
   }
 }
@@ -102,6 +105,26 @@ export function addNewSpecialMessagesPreprocessorFunction(
       forwardPreprocessorFunction,
       backwardPreprocessorFunction,
     },
+  }
+}
+
+export function checkIsUserAuthenticated() {
+  return async dispatch => {
+    const { token, userJson } = localStorage
+    let user
+    try {
+      if (!token) return
+      if (!userJson) return
+      user = await JSON.parse(userJson)
+    } catch (error) {
+      localStorage.removeItem('token')
+      localStorage.removeItem('userJson')
+      return
+    }
+
+    dispatch(changeCurrentUser(user))
+    dispatch(setAuthenticationResult(true))
+    dispatch(fetchChatsList(user._id))
   }
 }
 
@@ -159,6 +182,7 @@ export function tryGetPreprocessorAndСhangeCurrentChat(chat) {
     }
 
     dispatch(changeCurrentChat(chat))
+    dispatch(clearMessages())
 
     if (forwardPreprocessorFunction && backwardPreprocessorFunction) {
       dispatch(
@@ -234,6 +258,7 @@ export function fetchChatsList(userId) {
         if (data.badStatusText) {
           dispatch(handleServerError(data))
           localStorage.removeItem('token')
+          localStorage.removeItem('userJson')
         } else {
           dispatch(refreshChatsList(data))
         }
@@ -286,6 +311,7 @@ export function submitUserEmailAndPassword(email, password) {
         const { _id, token } = data.user
 
         localStorage.setItem('token', token)
+        localStorage.setItem('userJson', JSON.stringify(data.user))
 
         dispatch(changeCurrentUser(data.user))
         dispatch(setAuthenticationResult(true))
@@ -329,6 +355,7 @@ export function submitNewUser(user) {
         const { _id, token } = data.user
 
         localStorage.setItem('token', token)
+        localStorage.setItem('userJson', JSON.stringify(data.user))
 
         dispatch(changeCurrentUser(data.user))
         dispatch(changeCurrentChat({}))
@@ -365,6 +392,7 @@ export function findUsers(userSeekData) {
           dispatch(handleServerError(data))
 
           localStorage.removeItem('token')
+          localStorage.removeItem('userJson')
         } else {
           dispatch(fillFoundUsersList(data))
         }
