@@ -17,6 +17,7 @@ import {
   validateEmail,
   readTextFile,
   isStringNullOrEmpty,
+  getUserToken,
 } from './helper'
 
 export const CHANGE_CURRENT_USER = 'CHANGE_CURRENT_USER'
@@ -83,7 +84,6 @@ export function fillFoundUsersList(usersList) {
 
 export function resetAuthenticationResult() {
   return dispatch => {
-    localStorage.removeItem('token')
     localStorage.removeItem('userJson')
     dispatch(setAuthenticationResult(false))
   }
@@ -110,14 +110,12 @@ export function addNewSpecialMessagesPreprocessorFunction(
 
 export function checkIsUserAuthenticated() {
   return async dispatch => {
-    const { token, userJson } = localStorage
+    const { userJson } = localStorage
     let user
     try {
-      if (!token) return
       if (!userJson) return
       user = await JSON.parse(userJson)
     } catch (error) {
-      localStorage.removeItem('token')
       localStorage.removeItem('userJson')
       return
     }
@@ -198,36 +196,36 @@ export function tryGetPreprocessorAndСhangeCurrentChat(chat) {
 export function createNewChat(name, users) {
   return async (dispatch, getState) => {
     try {
-      const { token } = localStorage
+      const token = await getUserToken()
 
-      if (token) {
-        const newChatData = {
-          chat: {
-            name,
-            users,
-          },
-        }
+      if (!token) return
 
-        const response = await fetch(serverLocation + submitNewChatPath, {
-          method: 'POST',
-          headers: createHttpHeadersWithToken(token),
-          body: JSON.stringify(newChatData),
-        })
+      const newChatData = {
+        chat: {
+          name,
+          users,
+        },
+      }
 
-        let data = checkResponseAndCreateErrorIfBadStatus(response)
+      const response = await fetch(serverLocation + submitNewChatPath, {
+        method: 'POST',
+        headers: createHttpHeadersWithToken(token),
+        body: JSON.stringify(newChatData),
+      })
 
-        if (!data) {
-          data = await response.json()
-        }
+      let data = checkResponseAndCreateErrorIfBadStatus(response)
 
-        if (data.status) {
-          dispatch(handleServerError(data))
-        } else {
-          const { currentUser } = getState()
+      if (!data) {
+        data = await response.json()
+      }
 
-          dispatch(tryGetPreprocessorAndСhangeCurrentChat(data.chat))
-          dispatch(fetchChatsList(currentUser._id))
-        }
+      if (data.status) {
+        dispatch(handleServerError(data))
+      } else {
+        const { currentUser } = getState()
+
+        dispatch(tryGetPreprocessorAndСhangeCurrentChat(data.chat))
+        dispatch(fetchChatsList(currentUser._id))
       }
     } catch (error) {
       console.log('error', error)
@@ -238,30 +236,30 @@ export function createNewChat(name, users) {
 export function fetchChatsList(userId) {
   return async dispatch => {
     try {
-      const { token } = localStorage
+      const token = await getUserToken()
 
-      if (token) {
-        const response = await fetch(
-          `${serverLocation}${chatsListGetPath}?user_id=${userId}`,
-          {
-            method: 'GET',
-            headers: createHttpHeadersWithToken(token),
-          }
-        )
+      if (!token) return
 
-        let data = checkResponseAndCreateErrorIfBadStatus(response)
-
-        if (!data) {
-          data = await response.json()
+      const response = await fetch(
+        `${serverLocation}${chatsListGetPath}?user_id=${userId}`,
+        {
+          method: 'GET',
+          headers: createHttpHeadersWithToken(token),
         }
+      )
 
-        if (data.badStatusText) {
-          dispatch(handleServerError(data))
-          localStorage.removeItem('token')
-          localStorage.removeItem('userJson')
-        } else {
-          dispatch(refreshChatsList(data))
-        }
+      let data = checkResponseAndCreateErrorIfBadStatus(response)
+
+      if (!data) {
+        data = await response.json()
+      }
+
+      if (data.badStatusText) {
+        dispatch(handleServerError(data))
+        localStorage.removeItem('token')
+        localStorage.removeItem('userJson')
+      } else {
+        dispatch(refreshChatsList(data))
       }
     } catch (error) {
       console.log('error', error)
@@ -308,9 +306,8 @@ export function submitUserEmailAndPassword(email, password) {
         dispatch(handleServerError(data))
         dispatch(setAuthenticationResult(false))
       } else {
-        const { _id, token } = data.user
+        const { _id } = data.user
 
-        localStorage.setItem('token', token)
         localStorage.setItem('userJson', JSON.stringify(data.user))
 
         dispatch(changeCurrentUser(data.user))
@@ -352,9 +349,8 @@ export function submitNewUser(user) {
         dispatch(handleServerError(data))
         dispatch(setAuthenticationResult(false))
       } else {
-        const { _id, token } = data.user
+        const { _id } = data.user
 
-        localStorage.setItem('token', token)
         localStorage.setItem('userJson', JSON.stringify(data.user))
 
         dispatch(changeCurrentUser(data.user))
@@ -371,31 +367,31 @@ export function submitNewUser(user) {
 export function findUsers(userSeekData) {
   return async dispatch => {
     try {
-      const { token } = localStorage
+      const token = await getUserToken()
 
-      if (token) {
-        const response = await fetch(
-          `${serverLocation}${searchUsersPath}?user_seek_data=${userSeekData}`,
-          {
-            method: 'GET',
-            headers: createHttpHeadersWithToken(token),
-          }
-        )
+      if (!token) return
 
-        let data = checkResponseAndCreateErrorIfBadStatus(response)
-
-        if (!data) {
-          data = await response.json()
+      const response = await fetch(
+        `${serverLocation}${searchUsersPath}?user_seek_data=${userSeekData}`,
+        {
+          method: 'GET',
+          headers: createHttpHeadersWithToken(token),
         }
+      )
 
-        if (data.badStatusText) {
-          dispatch(handleServerError(data))
+      let data = checkResponseAndCreateErrorIfBadStatus(response)
 
-          localStorage.removeItem('token')
-          localStorage.removeItem('userJson')
-        } else {
-          dispatch(fillFoundUsersList(data))
-        }
+      if (!data) {
+        data = await response.json()
+      }
+
+      if (data.badStatusText) {
+        dispatch(handleServerError(data))
+
+        localStorage.removeItem('token')
+        localStorage.removeItem('userJson')
+      } else {
+        dispatch(fillFoundUsersList(data))
       }
     } catch (error) {
       console.log('error', error)
@@ -406,30 +402,31 @@ export function findUsers(userSeekData) {
 export function addNewUserToCurrentChat(user) {
   return async (dispatch, getState) => {
     try {
-      const { token } = localStorage
-      if (token) {
-        const { currentChat } = getState()
+      const token = await getUserToken()
 
-        const response = await fetch(serverLocation + addNewUserToChatPath, {
-          method: 'POST',
-          headers: createHttpHeadersWithToken(token),
-          body: JSON.stringify({
-            chatId: currentChat._id,
-            newUserId: user._id,
-          }),
-        })
+      if (!token) return
 
-        let data = checkResponseAndCreateErrorIfBadStatus(response)
+      const { currentChat } = getState()
 
-        if (!data) {
-          data = await response.json()
-        }
+      const response = await fetch(serverLocation + addNewUserToChatPath, {
+        method: 'POST',
+        headers: createHttpHeadersWithToken(token),
+        body: JSON.stringify({
+          chatId: currentChat._id,
+          newUserId: user._id,
+        }),
+      })
 
-        if (data.badStatusText) {
-          dispatch(handleServerError(data))
-        } else {
-          dispatch(tryGetPreprocessorAndСhangeCurrentChat(data.chat))
-        }
+      let data = checkResponseAndCreateErrorIfBadStatus(response)
+
+      if (!data) {
+        data = await response.json()
+      }
+
+      if (data.badStatusText) {
+        dispatch(handleServerError(data))
+      } else {
+        dispatch(tryGetPreprocessorAndСhangeCurrentChat(data.chat))
       }
     } catch (error) {
       console.log('error', error)

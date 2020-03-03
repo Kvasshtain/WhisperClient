@@ -60,3 +60,15 @@ export function convertMessages(messages, convertor) {
 
   return messages
 }
+
+export async function getUserToken() {
+  const { userJson } = localStorage
+
+  if (!userJson) return null
+
+  const user = await JSON.parse(userJson)
+
+  if (!user) return null
+
+  return user.token ? user.token : null
+}

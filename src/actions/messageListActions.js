@@ -12,6 +12,7 @@ import {
   createHttpHeadersWithToken,
   checkResponseAndCreateErrorIfBadStatus,
   convertMessages,
+  getUserToken,
 } from './helper'
 
 export const ADD_NEW_MESSAGE = 'ADD_NEW_MESSAGE'
@@ -77,46 +78,46 @@ export function encryptAndSendNewMessage(text) {
 export function sendNewMessage(text) {
   return async (dispatch, getState) => {
     try {
-      const token = localStorage.token
+      const token = await getUserToken()
 
-      if (token) {
-        dispatch(messageWasReceived(false))
+      if (!token) return
 
-        const time = new Date().getTime()
-        const authorEmail = getState().currentUser.email
-        const authorName = getState().currentUser.name
-        const chatId = getState().currentChat._id
+      dispatch(messageWasReceived(false))
 
-        const message = {
-          chatId,
-          time,
-          authorEmail,
-          authorName,
-          text,
-        }
+      const time = new Date().getTime()
+      const authorEmail = getState().currentUser.email
+      const authorName = getState().currentUser.name
+      const chatId = getState().currentChat._id
 
-        const response = await fetch(serverLocation + messageSendPath, {
-          method: 'POST',
-          headers: createHttpHeadersWithToken(token),
-          body: JSON.stringify(message),
-        })
+      const message = {
+        chatId,
+        time,
+        authorEmail,
+        authorName,
+        text,
+      }
 
-        let data = checkResponseAndCreateErrorIfBadStatus(response)
+      const response = await fetch(serverLocation + messageSendPath, {
+        method: 'POST',
+        headers: createHttpHeadersWithToken(token),
+        body: JSON.stringify(message),
+      })
 
-        if (!data) {
-          data = await response.json()
-        }
+      let data = checkResponseAndCreateErrorIfBadStatus(response)
 
-        if (data.status) {
-          dispatch(handleServerError(data))
-          message.wasMessageReceived = false
-          dispatch(addNewMessage(message))
-          localStorage.removeItem('token')
-        } else {
-          message.wasMessageReceived = true
-          dispatch(addNewMessage(message))
-          dispatch(messageWasReceived(true))
-        }
+      if (!data) {
+        data = await response.json()
+      }
+
+      if (data.status) {
+        dispatch(handleServerError(data))
+        message.wasMessageReceived = false
+        dispatch(addNewMessage(message))
+        localStorage.removeItem('token')
+      } else {
+        message.wasMessageReceived = true
+        dispatch(addNewMessage(message))
+        dispatch(messageWasReceived(true))
       }
     } catch (error) {
       console.log('error', error)
@@ -127,31 +128,31 @@ export function sendNewMessage(text) {
 export function fetchMessagesList(chatId, oldestMessageTime) {
   return async (dispatch, getState) => {
     try {
-      const token = localStorage.token
+      const token = await getUserToken()
 
-      if (token) {
-        const response = await fetch(
-          `${serverLocation}${messageGetPath}?chat_id=${chatId}&oldest_message_time=${oldestMessageTime}&fetch_messages_count=${fetchMessagesCount}`,
-          {
-            method: 'GET',
-            headers: createHttpHeadersWithToken(token),
-          }
-        )
+      if (!token) return
 
-        let data = checkResponseAndCreateErrorIfBadStatus(response)
-
-        if (!data) {
-          data = await response.json()
+      const response = await fetch(
+        `${serverLocation}${messageGetPath}?chat_id=${chatId}&oldest_message_time=${oldestMessageTime}&fetch_messages_count=${fetchMessagesCount}`,
+        {
+          method: 'GET',
+          headers: createHttpHeadersWithToken(token),
         }
+      )
 
-        if (data.badStatusText) {
-          dispatch(handleServerError(data))
-          localStorage.removeItem('token')
-        } else {
-          const { backwardPreprocessorFunction } = getState().currentChat
-          data = convertMessages(data, backwardPreprocessorFunction)
-          dispatch(unshiftPreviousMessages(data))
-        }
+      let data = checkResponseAndCreateErrorIfBadStatus(response)
+
+      if (!data) {
+        data = await response.json()
+      }
+
+      if (data.badStatusText) {
+        dispatch(handleServerError(data))
+        localStorage.removeItem('token')
+      } else {
+        const { backwardPreprocessorFunction } = getState().currentChat
+        data = convertMessages(data, backwardPreprocessorFunction)
+        dispatch(unshiftPreviousMessages(data))
       }
     } catch (error) {
       console.log('error', error)
@@ -162,31 +163,31 @@ export function fetchMessagesList(chatId, oldestMessageTime) {
 export function fetchNewMessages(chatId, newestMessageTime) {
   return async (dispatch, getState) => {
     try {
-      const token = localStorage.token
+      const token = await getUserToken()
 
-      if (token) {
-        const response = await fetch(
-          `${serverLocation}${newMessageGetPath}?chat_id=${chatId}&newest_message_time=${newestMessageTime}`,
-          {
-            method: 'GET',
-            headers: createHttpHeadersWithToken(token),
-          }
-        )
+      if (!token) return
 
-        let data = checkResponseAndCreateErrorIfBadStatus(response)
-
-        if (!data) {
-          data = await response.json()
+      const response = await fetch(
+        `${serverLocation}${newMessageGetPath}?chat_id=${chatId}&newest_message_time=${newestMessageTime}`,
+        {
+          method: 'GET',
+          headers: createHttpHeadersWithToken(token),
         }
+      )
 
-        if (data.badStatusText) {
-          dispatch(handleServerError(data))
-          localStorage.removeItem('token')
-        } else {
-          const { backwardPreprocessorFunction } = getState().currentChat
-          data = convertMessages(data, backwardPreprocessorFunction)
-          dispatch(pushNewMessages(data))
-        }
+      let data = checkResponseAndCreateErrorIfBadStatus(response)
+
+      if (!data) {
+        data = await response.json()
+      }
+
+      if (data.badStatusText) {
+        dispatch(handleServerError(data))
+        localStorage.removeItem('token')
+      } else {
+        const { backwardPreprocessorFunction } = getState().currentChat
+        data = convertMessages(data, backwardPreprocessorFunction)
+        dispatch(pushNewMessages(data))
       }
     } catch (error) {
       console.log('error', error)
