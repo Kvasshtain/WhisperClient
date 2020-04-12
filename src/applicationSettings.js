@@ -1,4 +1,5 @@
 export const serverLocation = 'http://localhost:4000/'
+export const wsServerLocation = 'ws://localhost:4000/'
 
 export const messageSendPath = 'messages/new/'
 export const messageGetPath = 'messages/listRequest/'
