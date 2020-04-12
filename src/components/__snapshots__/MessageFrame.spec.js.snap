@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MessageFrame should render correctly 1`] = `
-<div>
+<div
+  className="another_user_message"
+>
   <div>
     <p>
       captain Nemo

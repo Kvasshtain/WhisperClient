@@ -12,20 +12,24 @@ exports[`MessageList should render correctly 1`] = `
     className="message-list"
     onScroll={[Function]}
   >
-    <MessageFrame
+    <div
       key="0"
-      message={
-        Object {
-          "_id": "0",
-          "authorEmail": "nemo@mail.com",
-          "authorName": "captain Nemo",
-          "chatId": "0",
-          "text": "some message",
-          "time": "2019-12-25T16:40:12.526Z",
-          "wasMessageReceived": true,
+    >
+      <MessageFrame
+        currentUserEmail="nemo@mail.com"
+        message={
+          Object {
+            "_id": "0",
+            "authorEmail": "nemo@mail.com",
+            "authorName": "captain Nemo",
+            "chatId": "0",
+            "text": "some message",
+            "time": "2019-12-25T16:40:12.526Z",
+            "wasMessageReceived": true,
+          }
         }
-      }
-    />
+      />
+    </div>
   </div>
   <NewMessageInput
     onSubmitNewMessage={[Function]}

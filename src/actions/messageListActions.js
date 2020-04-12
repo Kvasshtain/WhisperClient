@@ -1,5 +1,6 @@
 import {
   serverLocation,
+  wsServerLocation,
   messageSendPath,
   messageGetPath,
   newMessageGetPath,
@@ -7,6 +8,7 @@ import {
 } from '../applicationSettings'
 
 import { handleServerError } from './chatSettingsActions'
+import { wsConnect, wsDisconnect } from './webSocketActions'
 
 import {
   createHttpHeadersWithToken,
@@ -116,7 +118,7 @@ export function sendNewMessage(text) {
         localStorage.removeItem('token')
       } else {
         message.wasMessageReceived = true
-        dispatch(addNewMessage(message))
+        //dispatch(addNewMessage(message))
         dispatch(messageWasReceived(true))
       }
     } catch (error) {
@@ -185,12 +187,34 @@ export function fetchNewMessages(chatId, newestMessageTime) {
         dispatch(handleServerError(data))
         localStorage.removeItem('token')
       } else {
-        const { backwardPreprocessorFunction } = getState().currentChat
-        data = convertMessages(data, backwardPreprocessorFunction)
-        dispatch(pushNewMessages(data))
+        dispatch(applyBackwardPreprocessorFunctionAndPushMessage(data))
       }
     } catch (error) {
       console.log('error', error)
     }
+  }
+}
+
+export function applyBackwardPreprocessorFunctionAndPushMessage(messages) {
+  return (dispatch, getState) => {
+    const { backwardPreprocessorFunction } = getState().currentChat
+
+    if (backwardPreprocessorFunction) {
+      messages = convertMessages(messages, backwardPreprocessorFunction)
+    }
+
+    dispatch(pushNewMessages(messages))
+  }
+}
+
+export function subscribeForNewMessages(chatId) {
+  return dispatch => {
+    dispatch(wsConnect(`${wsServerLocation}${chatId}`))
+  }
+}
+
+export function unsubscribeForNewMessages() {
+  return dispatch => {
+    dispatch(wsDisconnect())
   }
 }

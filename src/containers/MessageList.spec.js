@@ -19,6 +19,17 @@ describe('MessageList', () => {
     },
   ]
   const mockFetchMessagesList = jest.fn()
+  const mockCurrentUser = {
+    _id: '0',
+    name: 'captain Nemo',
+    email: 'nemo@mail.com',
+  }
+  const mockCurrentChat = {
+    _id: '0',
+    name: 'chat1',
+    users: [],
+  }
+  const mockSubscribeForNewMessages = jest.fn()
   let testedComponent
 
   beforeEach(() => {
@@ -26,6 +37,9 @@ describe('MessageList', () => {
       <MessageList
         messages={mockMessages}
         fetchMessagesList={mockFetchMessagesList}
+        currentUser={mockCurrentUser}
+        currentChat={mockCurrentChat}
+        subscribeForNewMessages={mockSubscribeForNewMessages}
       />
     )
   })
