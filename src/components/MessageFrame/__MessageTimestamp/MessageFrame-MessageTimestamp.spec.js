@@ -2,7 +2,7 @@ import React from 'react'
 import { shallow } from 'enzyme'
 import { shallowToJson } from 'enzyme-to-json'
 
-import { MessageTimestamp } from './MessageTimestamp'
+import { MessageTimestamp } from './MessageFrame-MessageTimestamp'
 
 describe('NewMessageInput', () => {
   const mockTime = '2019-12-25T17:02:10.480Z'

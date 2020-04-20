@@ -8,7 +8,7 @@ import {
   unsubscribeForNewMessages,
 } from '../actions/messageListActions'
 
-import { MessageFrame } from '../components/MessageFrame'
+import { MessageFrame } from '../components/MessageFrame/MessageFrame'
 import { NewMessageInput } from '../components/NewMessageInput'
 //import { updateInterval } from '../applicationSettings'
 import './MessageList.sass'

@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { addLeadZero } from './helper'
+import { addLeadZero } from '../../helper'
+
+import './MessageFrame-MessageTimestamp.sass'
 
 function MessageTimestamp(props) {
   const date = new Date(props.time)
@@ -11,10 +13,10 @@ function MessageTimestamp(props) {
   let year = date.getFullYear()
 
   return (
-    <div>
-      <p>
+    <div className="messageFrame-MessageTimestamp">
+      <span>
         {hours}:{minutes} {day}.{month}.{year}
-      </p>
+      </span>
     </div>
   )
 }
