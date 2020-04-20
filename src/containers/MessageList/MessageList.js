@@ -6,10 +6,11 @@ import {
   fetchNewMessages,
   subscribeForNewMessages,
   unsubscribeForNewMessages,
-} from '../actions/messageListActions'
+} from '../../actions/messageListActions'
 
-import { MessageFrame } from '../components/MessageFrame/MessageFrame'
-import { NewMessageInput } from '../components/NewMessageInput'
+import { MessageFrame } from '../../components/MessageFrame/MessageFrame'
+import { ScrollDownButton } from './__ScrollDownButton/MessageList-ScrollDownButton'
+import { NewMessageInput } from '../../components/NewMessageInput'
 //import { updateInterval } from '../applicationSettings'
 import './MessageList.sass'
 
@@ -209,9 +210,7 @@ class MessageList extends React.Component {
 
     return (
       <div>
-        <div className="scroll-down-button" onClick={this.onScrollDownClick}>
-          {decodedString}
-        </div>
+        <ScrollDownButton onScrollDownClick={this.onScrollDownClick} />
         <div
           ref={this.messageListRef}
           className="message-list"

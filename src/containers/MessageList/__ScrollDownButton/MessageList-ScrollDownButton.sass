@@ -1,25 +1,10 @@
-@import "ScrollList.sass"
-
-$no-border: 0px solid white
-
-.message-list
-    @include scroll-list
-    > div
-        display: flex
-        flex-direction: column
-        justify-content: flex-start
-        > div.current_user_message
-            align-self: flex-end
-        > div.another_user_message
-            align-self: flex-start
-
 $no-border: 0px solid white
 $font-color: #233527
 $scroll-down-button-font-size: 50px
 $scroll-down-button-size: 75px
 $scroll-down-button-margin: 65px
 
-.scroll-down-button
+.scrollDownButton
     position: absolute
     display: flex
     right: 0
@@ -36,5 +21,5 @@ $scroll-down-button-margin: 65px
     color: $font-color
     opacity: 0.3
 
-.scroll-down-button:hover
+.scrollDownButton:hover
     opacity: 1

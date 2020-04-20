@@ -1,6 +1,6 @@
 import React from 'react'
 import { NewChatForm } from '../components/NewChatForm'
-import MessageList from './MessageList'
+import MessageList from './MessageList/MessageList'
 import ChatList from './ChatList'
 import CurrentChatSettings from './CurrentChatSettings'
 import { AuthenticationForm } from '../components/AuthenticationForm'
