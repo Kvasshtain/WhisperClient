@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+import './SpecialMessagesPreprocessorMenu.sass'
+
 class SpecialMessagesPreprocessorMenu extends React.Component {
   state = {
     file: null,
@@ -27,20 +29,18 @@ class SpecialMessagesPreprocessorMenu extends React.Component {
 
   render() {
     return (
-      <div className="cover-div">
-        <div className="modal-window">
-          <form onSubmit={this.onSubmit}>
-            <h4>+Chat</h4>
-            <input
-              name="messagesPreprocessorFile"
-              type="file"
-              value={this.state.filePath}
-              onChange={this.updateMessagesPreprocessorFile}
-            />
-            <button type="submit">Add special messages preprocessor</button>
-            <button onClick={this.props.onCancelClick}>Cancel</button>
-          </form>
-        </div>
+      <div className="specialMessagesPreprocessorMenu">
+        <form onSubmit={this.onSubmit}>
+          <h4>+Chat</h4>
+          <input
+            name="messagesPreprocessorFile"
+            type="file"
+            value={this.state.filePath}
+            onChange={this.updateMessagesPreprocessorFile}
+          />
+          <button type="submit">Add special messages preprocessor</button>
+          <button onClick={this.props.onCancelClick}>Cancel</button>
+        </form>
       </div>
     )
   }

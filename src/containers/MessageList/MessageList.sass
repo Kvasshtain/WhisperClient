@@ -1,14 +1,11 @@
 @import "../ScrollList.sass"
-
-$no-border: 0px solid white
+$margin: 5%
 
 .message-list
     @include scroll-list
     > div
+        margin-left: $margin
+        margin-right: $margin
         display: flex
         flex-direction: column
         justify-content: flex-start
-        > div.current_user_message
-            align-self: flex-end
-        > div.another_user_message
-            align-self: flex-start

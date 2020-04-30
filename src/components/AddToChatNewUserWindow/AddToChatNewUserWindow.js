@@ -1,7 +1,9 @@
 import React from 'react'
-import { UserFrame } from './UserFrame'
-import { UserSeekForm } from './UserSeekForm'
+import { UserFrame } from '../UserFrame'
+import { UserSeekForm } from '../UserSeekForm'
 import PropTypes from 'prop-types'
+
+import './AddToChatNewUserWindow.sass'
 
 class AddToChatNewUserWindow extends React.Component {
   onSubmitUserSeekData = userSeekData => {
@@ -22,12 +24,10 @@ class AddToChatNewUserWindow extends React.Component {
 
   render() {
     return (
-      <div className="cover-div">
-        <div className="modal-window">
-          <UserSeekForm onSubmitUserSeekData={this.onSubmitUserSeekData} />
-          {this.renderUsersList()}
-          <button onClick={this.props.onCancelClick}>Cancel</button>
-        </div>
+      <div className="addToChatNewUserWindow">
+        <UserSeekForm onSubmitUserSeekData={this.onSubmitUserSeekData} />
+        {this.renderUsersList()}
+        <button onClick={this.props.onCancelClick}>Cancel</button>
       </div>
     )
   }

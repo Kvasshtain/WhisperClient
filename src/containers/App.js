@@ -3,12 +3,13 @@ import { NewChatForm } from '../components/NewChatForm'
 import MessageList from './MessageList/MessageList'
 import ChatList from './ChatList'
 import CurrentChatSettings from './CurrentChatSettings'
-import { AuthenticationForm } from '../components/AuthenticationForm'
-import { RegistrationForm } from '../components/RegistrationForm'
+import { asModalWindow } from '../components/ModalWindow/asModalWindow'
+import { AuthenticationAndRegistrationWindow } from '../components/AuthenticationAndRegistrationWindow/AuthenticationAndRegistrationWindow'
 import { SettingsPanel } from '../components/SettingsPanel'
-import { ErrorWindow } from '../components/ErrorWindow'
+import { ErrorWindow } from '../components/ErrorWindow/ErrorWindow'
 import { connect } from 'react-redux'
 import { encryptAndSendNewMessage } from '../actions/messageListActions'
+
 import {
   checkIsUserAuthenticated,
   submitUserEmailAndPassword,
@@ -17,7 +18,10 @@ import {
   resetAuthenticationResult,
   clearLastError,
 } from '../actions/chatSettingsActions'
+
 import './App.sass'
+
+const ErrorModalWindow = asModalWindow(ErrorWindow)
 
 class App extends React.Component {
   componentDidMount() {
@@ -49,13 +53,10 @@ class App extends React.Component {
     if (!this.props.lastError) return
 
     return (
-      <div className="cover-div">
-        <ErrorWindow
-          className="modal-window"
-          onOk={this.props.clearLastError}
-          lastError={this.props.lastError}
-        />
-      </div>
+      <ErrorModalWindow
+        onOk={this.props.clearLastError}
+        lastError={this.props.lastError}
+      />
     )
   }
 
@@ -86,20 +87,20 @@ class App extends React.Component {
     }
 
     return (
-      <React.Fragment>
-        {this.renderErrorWindow()}
-        <div className="reg-auth-forms-panel">
-          <RegistrationForm onSubmit={this.props.submitNewUser} />
-          <AuthenticationForm
-            onSubmit={this.props.submitUserEmailAndPassword}
-          />
-        </div>
-      </React.Fragment>
+      <AuthenticationAndRegistrationWindow
+        onAuthenticationSubmit={this.props.submitUserEmailAndPassword}
+        onRegistrationSubmit={this.props.submitNewUser}
+      />
     )
   }
 
   render() {
-    return <div className="app-panel">{this.renderMainContent()}</div>
+    return (
+      <React.Fragment>
+        {this.renderErrorWindow()}
+        <div className="app-panel">{this.renderMainContent()}</div>
+      </React.Fragment>
+    )
   }
 }
 

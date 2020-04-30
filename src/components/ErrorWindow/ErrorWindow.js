@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+import './ErrorWindow.sass'
+
 function ErrorWindow(props) {
   const { status, badStatusText, message } = props.lastError
 
@@ -8,18 +10,12 @@ function ErrorWindow(props) {
 
   if (status) {
     statusParagraph = <p>Status: {status}</p>
-  }
-
-  if (status) {
     badStatusTextParagraph = <p>Status text: {badStatusText}</p>
-  }
-
-  if (status) {
     messageParagraph = <p>Message: {message}</p>
   }
 
   return (
-    <div className="moda-window">
+    <div className="errorWindow">
       <div>
         <h4>Error</h4>
       </div>

@@ -1,13 +1,20 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { AddToChatNewUserWindow } from '../components/AddToChatNewUserWindow'
-import { SpecialMessagesPreprocessorMenu } from '../components/SpecialMessagesPreprocessorMenu'
+import PropTypes from 'prop-types'
+
+import { asModalWindow } from '../components/ModalWindow/asModalWindow'
+import { AddToChatNewUserWindow } from '../components/AddToChatNewUserWindow/AddToChatNewUserWindow'
+import { SpecialMessagesPreprocessorMenu } from '../components/SpecialMessagesPreprocessorMenu/SpecialMessagesPreprocessorMenu'
 import {
   findUsers,
   addNewUserToCurrentChat,
   addNewSpecialMessagesPreprocessor,
 } from '../actions/chatSettingsActions'
-import PropTypes from 'prop-types'
+
+const AddToChatNewUserModalWindow = asModalWindow(AddToChatNewUserWindow)
+const SpecialMessagesPreprocessorModalWindow = asModalWindow(
+  SpecialMessagesPreprocessorMenu
+)
 
 class CurrentChatSettings extends React.Component {
   constructor(props) {
@@ -62,7 +69,7 @@ class CurrentChatSettings extends React.Component {
 
     if (showAddedUserMenu) {
       return (
-        <AddToChatNewUserWindow
+        <AddToChatNewUserModalWindow
           findUsers={findUsers}
           usersList={usersList}
           onUserClick={this.addNewUserToCurrentChat}
@@ -73,7 +80,7 @@ class CurrentChatSettings extends React.Component {
 
     if (showSpecialMessagesPreprocessorMenu) {
       return (
-        <SpecialMessagesPreprocessorMenu
+        <SpecialMessagesPreprocessorModalWindow
           currentChat={currentChat}
           onSubmit={this.addNewSpecialMessagesPreprocessor}
           onCancelClick={this.cancelSpecialMessagesPreprocessorAdding}

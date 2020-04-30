@@ -25,6 +25,8 @@ class MessageList extends React.Component {
       previousMessagesLength: 0,
       suspendMessagesFetching: false,
       currentChat: null,
+      needScrollDown: true,
+      showScrollDownButton: false,
     }
   }
 
@@ -66,13 +68,12 @@ class MessageList extends React.Component {
     const messagesLength = messages.length
     const previousMessagesLength = this.state.previousMessagesLength
 
-    if (messagesLength === previousMessagesLength) return
+    if (messagesLength <= previousMessagesLength) {
+      return
+    }
 
     this.setState({
       previousMessagesLength: messagesLength,
-    })
-
-    this.setState({
       suspendMessagesFetching: false,
     })
 
@@ -80,18 +81,18 @@ class MessageList extends React.Component {
       current.scrollTop += scrollDownShift
     }
 
-    this.scrollDownIfEnabled()
+    this.scrollDownIfNeed()
   }
 
   reloadMessagesList = () => {
     this.setState({
       currentChat: this.props.currentChat,
+      previousMessagesLength: 0,
+      suspendMessagesFetching: true,
+      needScrollDown: true,
     })
 
     this.fetchMessagesForced()
-    this.setState({
-      suspendMessagesFetching: true,
-    })
   }
 
   fetchMessages = () => {
@@ -134,10 +135,10 @@ class MessageList extends React.Component {
     )
   }
 
-  scrollDownIfEnabled = () => {
-    if (this.state.enableScrollDown) {
+  scrollDownIfNeed = () => {
+    if (this.state.needScrollDown) {
       this.setState({
-        enableScrollDown: false,
+        needScrollDown: false,
       })
 
       this.scrollDown()
@@ -155,9 +156,50 @@ class MessageList extends React.Component {
   scrollDown = () => {
     const { current } = this.messageListRef
 
+    this.setState({
+      needScrollDown: false,
+    })
+
     if (current) {
       current.scrollTop = current.scrollHeight
     }
+  }
+
+  onScrollDownClick = () => {
+    this.scrollDown()
+  }
+
+  onScroll = () => {
+    const minScrollTop = 200
+    const scrollDownButtonThreshold = 200
+    const {
+      scrollHeight,
+      scrollTop,
+      clientHeight,
+    } = this.messageListRef.current
+
+    this.setState({
+      showScrollDownButton:
+        scrollHeight - scrollTop >= clientHeight + scrollDownButtonThreshold,
+    })
+
+    if (this.state.suspendMessagesFetching) return
+
+    if (scrollTop < minScrollTop) {
+      this.setState({
+        suspendMessagesFetching: true,
+      })
+
+      this.fetchMessages()
+    }
+  }
+
+  sendNewMessage = newMessage => {
+    this.props.sendNewMessage(newMessage)
+
+    this.setState({
+      needScrollDown: true,
+    })
   }
 
   renderMessageList = () => {
@@ -175,29 +217,10 @@ class MessageList extends React.Component {
     }
   }
 
-  onScrollDownClick = () => {
-    this.scrollDown()
-  }
-
-  onScroll = () => {
-    const minScrollTop = 20
-    const { current } = this.messageListRef
-
-    if (current.scrollTop < minScrollTop) {
-      this.setState({
-        suspendMessagesFetching: true,
-      })
-
-      this.fetchMessages()
+  renderScrollDownButton = () => {
+    if (this.state.showScrollDownButton) {
+      return <ScrollDownButton onScrollDownClick={this.onScrollDownClick} />
     }
-  }
-
-  sendNewMessage = newMessage => {
-    this.props.sendNewMessage(newMessage)
-
-    this.setState({
-      enableScrollDown: true,
-    })
   }
 
   render() {
@@ -210,7 +233,7 @@ class MessageList extends React.Component {
 
     return (
       <div>
-        <ScrollDownButton onScrollDownClick={this.onScrollDownClick} />
+        {this.renderScrollDownButton()}
         <div
           ref={this.messageListRef}
           className="message-list"
