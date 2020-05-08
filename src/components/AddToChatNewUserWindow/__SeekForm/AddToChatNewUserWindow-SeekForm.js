@@ -1,7 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-class UserSeekForm extends React.Component {
+import { InputField } from '../../InputField/InputField'
+
+import '../../SubmitButton/SubmitButton.sass'
+
+class SeekForm extends React.Component {
   state = {
     userSeekData: '',
   }
@@ -25,23 +29,26 @@ class UserSeekForm extends React.Component {
   render() {
     return (
       <form onSubmit={this.onSubmit}>
-        <h1>Search for a new member</h1>
-        <label>Enter email</label>
-        <input
+        <InputField
+          caption="User email"
           name="userEmail"
           placeholder="User email"
           type="text"
           value={this.state.userSeekData}
           onChange={this.updateSearchQueryString}
         />
-        <button type="submit">Find users</button>
+        <div align="center">
+          <button className="submitButton" type="submit">
+            Find users
+          </button>
+        </div>
       </form>
     )
   }
 }
 
-UserSeekForm.propTypes = {
+SeekForm.propTypes = {
   onSubmitUserSeekData: PropTypes.func.isRequired,
 }
 
-export { UserSeekForm }
+export { SeekForm }

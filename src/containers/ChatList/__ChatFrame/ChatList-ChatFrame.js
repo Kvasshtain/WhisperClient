@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+import './ChatList-ChatFrame.sass'
+
 class ChatFrame extends React.Component {
   onSelectChat = () => {
     const { chat } = this.props
@@ -24,7 +26,7 @@ class ChatFrame extends React.Component {
     const { chat } = this.props
 
     return (
-      <div className="selected-item" onClick={this.onSelectChat}>
+      <div className="chatList-ChatFrame" onClick={this.onSelectChat}>
         <div>
           <h4>{chat.name}</h4>
         </div>

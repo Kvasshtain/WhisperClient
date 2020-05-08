@@ -2,7 +2,7 @@
 
 exports[`ChatFrame should render correctly 1`] = `
 <div
-  className="selected-item"
+  className="chatList-ChatFrame"
   onClick={[Function]}
 >
   <div>

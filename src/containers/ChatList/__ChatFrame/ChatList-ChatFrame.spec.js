@@ -2,7 +2,7 @@ import React from 'react'
 import { shallow } from 'enzyme'
 import { shallowToJson } from 'enzyme-to-json'
 
-import { ChatFrame } from './ChatFrame'
+import { ChatFrame } from './ChatList-ChatFrame'
 
 describe('ChatFrame', () => {
   const mockChat = {

@@ -2,14 +2,17 @@ import React from 'react'
 import { shallow } from 'enzyme'
 import { shallowToJson } from 'enzyme-to-json'
 
-import { RegistrationForm } from './RegistrationForm'
+import { AuthenticationAndRegistrationForm } from './AuthenticationAndRegistrationForm'
 
 describe('RegistrationForm', () => {
   const mockOnSubmit = jest.fn()
 
   it('should render correctly', () => {
     const testedComponent = shallow(
-      <RegistrationForm onSubmit={mockOnSubmit} />
+      <AuthenticationAndRegistrationForm
+        onRegistrationSubmit={mockOnSubmit}
+        onAuthenticationSubmit={mockOnSubmit}
+      />
     )
 
     expect(shallowToJson(testedComponent)).toMatchSnapshot()
@@ -20,7 +23,12 @@ describe('when typing email', () => {
   const mockOnSubmit = jest.fn()
   const newTestUserEmail = 'capitan-nemo@google.com'
 
-  const myComponent = shallow(<RegistrationForm onSubmit={mockOnSubmit} />)
+  const myComponent = shallow(
+    <AuthenticationAndRegistrationForm
+      onRegistrationSubmit={mockOnSubmit}
+      onAuthenticationSubmit={mockOnSubmit}
+    />
+  )
 
   beforeEach(() => {
     myComponent.find('[name="userEmail"]').simulate('change', {
@@ -39,9 +47,20 @@ describe('when typing name', () => {
   const mockOnSubmit = jest.fn()
   const newTestUserName = 'Capitan Nemo'
 
-  const myComponent = shallow(<RegistrationForm onSubmit={mockOnSubmit} />)
+  const myComponent = shallow(
+    <AuthenticationAndRegistrationForm
+      onRegistrationSubmit={mockOnSubmit}
+      onAuthenticationSubmit={mockOnSubmit}
+    />
+  )
 
   beforeEach(() => {
+    myComponent.find('[name="changeMode"]').simulate('click', {
+      target: {
+        checked: true,
+      },
+    })
+
     myComponent.find('[name="userName"]').simulate('change', {
       target: {
         value: newTestUserName,
@@ -58,7 +77,12 @@ describe('when typing name', () => {
   const mockOnSubmit = jest.fn()
   const newTestUserPassword = 'root'
 
-  const myComponent = shallow(<RegistrationForm onSubmit={mockOnSubmit} />)
+  const myComponent = shallow(
+    <AuthenticationAndRegistrationForm
+      onRegistrationSubmit={mockOnSubmit}
+      onAuthenticationSubmit={mockOnSubmit}
+    />
+  )
 
   beforeEach(() => {
     myComponent.find('[name="userPassword"]').simulate('change', {
@@ -76,7 +100,12 @@ describe('when typing name', () => {
 describe('when push the button', () => {
   const mockOnSubmit = jest.fn()
 
-  const myComponent = shallow(<RegistrationForm onSubmit={mockOnSubmit} />)
+  const myComponent = shallow(
+    <AuthenticationAndRegistrationForm
+      onRegistrationSubmit={mockOnSubmit}
+      onAuthenticationSubmit={mockOnSubmit}
+    />
+  )
 
   beforeEach(() => {
     myComponent.find('form').simulate('submit', {

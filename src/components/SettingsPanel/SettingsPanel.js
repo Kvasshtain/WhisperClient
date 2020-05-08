@@ -1,9 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+import './SettingsPanel.sass'
+
 function SettingsPanel(props) {
   return (
-    <div>
+    <div className="settingsPanel">
       <button onClick={props.onSignOut}>Sign out</button>
       <span>{props.currentUserName}</span>
     </div>

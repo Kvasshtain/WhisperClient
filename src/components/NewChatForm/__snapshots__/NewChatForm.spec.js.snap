@@ -2,6 +2,7 @@
 
 exports[`NewChatForm should render correctly 1`] = `
 <form
+  className="newChatForm"
   onSubmit={[Function]}
 >
   <h4>

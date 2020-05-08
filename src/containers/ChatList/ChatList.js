@@ -1,11 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
+
 import {
   fetchChatsList,
   tryGetPreprocessorAndСhangeCurrentChat,
-} from '../actions/chatSettingsActions'
-import { ChatFrame } from '../components/ChatFrame'
+} from '../../actions/chatSettingsActions'
+
+import { ChatFrame } from './__ChatFrame/ChatList-ChatFrame'
+
 import './ChatList.sass'
 
 class ChatList extends React.Component {
@@ -34,7 +37,7 @@ class ChatList extends React.Component {
   }
 
   render() {
-    return <div className="сhat-list">{this.renderChatList()}</div>
+    return <div className="сhatList">{this.renderChatList()}</div>
   }
 }
 

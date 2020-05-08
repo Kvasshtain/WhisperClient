@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+import './UserFrame.sass'
+
 class UserFrame extends React.Component {
   onUserClick = () => {
     const { user } = this.props
@@ -12,9 +14,8 @@ class UserFrame extends React.Component {
     const { user } = this.props
 
     return (
-      <div className="selected-item" onClick={this.onUserClick}>
-        <p>{user.name}</p>
-        <p>{user.email}</p>
+      <div className="userFrame" onClick={this.onUserClick}>
+        <span>{user.name}</span>
       </div>
     )
   }

@@ -10,9 +10,10 @@ import {
 
 import { MessageFrame } from '../../components/MessageFrame/MessageFrame'
 import { ScrollDownButton } from './__ScrollDownButton/MessageList-ScrollDownButton'
-import { NewMessageInput } from '../../components/NewMessageInput'
 //import { updateInterval } from '../applicationSettings'
+
 import './MessageList.sass'
+import './__Item/MessageList-Item.sass'
 
 class MessageList extends React.Component {
   constructor(props) {
@@ -181,6 +182,7 @@ class MessageList extends React.Component {
     this.setState({
       showScrollDownButton:
         scrollHeight - scrollTop >= clientHeight + scrollDownButtonThreshold,
+      needScrollDown: scrollHeight - scrollTop == clientHeight,
     })
 
     if (this.state.suspendMessagesFetching) return
@@ -194,14 +196,6 @@ class MessageList extends React.Component {
     }
   }
 
-  sendNewMessage = newMessage => {
-    this.props.sendNewMessage(newMessage)
-
-    this.setState({
-      needScrollDown: true,
-    })
-  }
-
   renderMessageList = () => {
     const { messages, currentUser } = this.props
     const messagesLength = messages.length
@@ -209,7 +203,7 @@ class MessageList extends React.Component {
     if (messages && messagesLength) {
       return messages.map(function(item, index) {
         return (
-          <div key={index}>
+          <div className="item" key={index}>
             <MessageFrame message={item} currentUserEmail={currentUser.email} />
           </div>
         )
@@ -232,17 +226,16 @@ class MessageList extends React.Component {
     ).body.textContent
 
     return (
-      <div>
-        {this.renderScrollDownButton()}
+      <React.Fragment>
         <div
           ref={this.messageListRef}
-          className="message-list"
+          className="messageList"
           onScroll={this.onScroll}
         >
           {this.renderMessageList()}
         </div>
-        <NewMessageInput onSubmitNewMessage={this.sendNewMessage} />
-      </div>
+        {this.renderScrollDownButton()}
+      </React.Fragment>
     )
   }
 }

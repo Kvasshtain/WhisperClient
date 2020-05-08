@@ -1,9 +1,11 @@
 import React from 'react'
-import { UserFrame } from '../UserFrame'
-import { UserSeekForm } from '../UserSeekForm'
+import { UserFrame } from '../UserFrame/UserFrame'
+import { SeekForm } from './__SeekForm/AddToChatNewUserWindow-SeekForm'
 import PropTypes from 'prop-types'
 
 import './AddToChatNewUserWindow.sass'
+import '../CloseButton/CloseButton.sass'
+import './__UsersList/AddToChatNewUserWindow-UsersList.sass'
 
 class AddToChatNewUserWindow extends React.Component {
   onSubmitUserSeekData = userSeekData => {
@@ -25,9 +27,14 @@ class AddToChatNewUserWindow extends React.Component {
   render() {
     return (
       <div className="addToChatNewUserWindow">
-        <UserSeekForm onSubmitUserSeekData={this.onSubmitUserSeekData} />
-        {this.renderUsersList()}
-        <button onClick={this.props.onCancelClick}>Cancel</button>
+        <h4>Search for a new member</h4>
+        <button className="closeButton" onClick={this.props.onCancelClick}>
+          X
+        </button>
+        <SeekForm onSubmitUserSeekData={this.onSubmitUserSeekData} />
+        <div className="addToChatNewUserWindow-UsersList">
+          {this.renderUsersList()}
+        </div>
       </div>
     )
   }

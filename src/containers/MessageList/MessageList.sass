@@ -1,11 +1,7 @@
 @import "../ScrollList.sass"
-$margin: 5%
 
-.message-list
-    @include scroll-list
-    > div
-        margin-left: $margin
-        margin-right: $margin
-        display: flex
-        flex-direction: column
-        justify-content: flex-start
+.messageList
+    display: inline-block
+    width: 100%
+    background: url(../../resources/sky.jpg) center center no-repeat fixed #ffffff
+    @include scrollList

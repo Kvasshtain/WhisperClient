@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { InputField } from '../InputField/InputField'
 
 import './AuthenticationAndRegistrationForm.sass'
-import './__SubmitButton/AuthenticationAndRegistrationForm-SubmitButton.sass'
+import '../SubmitButton/SubmitButton.sass'
 
 class AuthenticationAndRegistrationForm extends React.Component {
   state = {
@@ -104,10 +104,7 @@ class AuthenticationAndRegistrationForm extends React.Component {
     }
 
     return (
-      <button
-        className="authenticationAndRegistrationForm__SubmitButton"
-        type="submit"
-      >
+      <button className="submitButton" type="submit">
         {buttonText}
       </button>
     )
@@ -116,7 +113,7 @@ class AuthenticationAndRegistrationForm extends React.Component {
   render() {
     return (
       <div className="authenticationAndRegistrationForm">
-        <input type="checkbox" onClick={this.changeMode} />
+        <input type="checkbox" name="changeMode" onClick={this.changeMode} />
         <span>Registration</span>
         <form onSubmit={this.onSubmit}>
           <div align="center">{this.renderHeader()}</div>

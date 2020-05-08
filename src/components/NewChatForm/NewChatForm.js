@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+import './NewChatForm.sass'
+
 class NewChatForm extends React.Component {
   state = {
     name: '',
@@ -26,7 +28,7 @@ class NewChatForm extends React.Component {
 
   render() {
     return (
-      <form onSubmit={this.onSubmit}>
+      <form className="newChatForm" onSubmit={this.onSubmit}>
         <h4>+Chat</h4>
         <input
           name="chatName"

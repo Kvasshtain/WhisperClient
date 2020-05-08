@@ -1,12 +1,12 @@
 import React from 'react'
-import { NewChatForm } from '../components/NewChatForm'
-import MessageList from './MessageList/MessageList'
-import ChatList from './ChatList'
-import CurrentChatSettings from './CurrentChatSettings'
+import CurrentChatPanel from './CurrentChatPanel/CurrentChatPanel'
+import UserChatsPanel from './UserChatsPanel/UserChatsPanel'
+import CurrentChatSettings from './CurrentChatSettings/CurrentChatSettings'
 import { asModalWindow } from '../components/ModalWindow/asModalWindow'
 import { AuthenticationAndRegistrationWindow } from '../components/AuthenticationAndRegistrationWindow/AuthenticationAndRegistrationWindow'
-import { SettingsPanel } from '../components/SettingsPanel'
+import { SettingsPanel } from '../components/SettingsPanel/SettingsPanel'
 import { ErrorWindow } from '../components/ErrorWindow/ErrorWindow'
+
 import { connect } from 'react-redux'
 import { encryptAndSendNewMessage } from '../actions/messageListActions'
 
@@ -14,7 +14,6 @@ import {
   checkIsUserAuthenticated,
   submitUserEmailAndPassword,
   submitNewUser,
-  createNewChat,
   resetAuthenticationResult,
   clearLastError,
 } from '../actions/chatSettingsActions'
@@ -28,26 +27,12 @@ class App extends React.Component {
     this.props.checkIsUserAuthenticated()
   }
 
-  renderChatListNewChatForm() {
-    if (this.props.currentUser._id) {
-      return (
-        <div>
-          <ChatList />
-          <NewChatForm
-            onSubmitNewChat={this.props.createNewChat}
-            currentUserId={this.props.currentUser._id}
-          />
-        </div>
-      )
-    }
-  }
+  // renderMessageList() {
+  //   if (!this.props.currentUser._id) return
+  //   if (!this.props.currentChat._id) return
 
-  renderMessageList() {
-    if (!this.props.currentUser._id) return
-    if (!this.props.currentChat._id) return
-
-    return <MessageList sendNewMessage={this.props.sendNewMessage} />
-  }
+  //   return <MessageList sendNewMessage={this.props.sendNewMessage} />
+  // }
 
   renderErrorWindow() {
     if (!this.props.lastError) return
@@ -69,14 +54,11 @@ class App extends React.Component {
       return (
         <React.Fragment>
           <div className="main-panel">
-            <div className="user-chats-panel">
-              {this.renderChatListNewChatForm()}
-            </div>
-            <div className="current-chat-panel">{this.renderMessageList()}</div>
+            <UserChatsPanel />
+            <CurrentChatPanel />
           </div>
           <div className="top-panel">
             <SettingsPanel
-              className="settings-panel"
               onSignOut={this.onSignOut}
               currentUserName={this.props.currentUser.name}
             />
@@ -117,8 +99,6 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     checkIsUserAuthenticated: () => dispatch(checkIsUserAuthenticated()),
-    createNewChat: (chatName, usersIds) =>
-      dispatch(createNewChat(chatName, usersIds)),
     sendNewMessage: message => dispatch(encryptAndSendNewMessage(message)),
     submitUserEmailAndPassword: (userEmail, userPassword) =>
       dispatch(submitUserEmailAndPassword(userEmail, userPassword)),

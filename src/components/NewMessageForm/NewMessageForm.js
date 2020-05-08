@@ -1,7 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-class NewMessageInput extends React.Component {
+import './NewMessageForm.sass'
+
+class NewMessageForm extends React.Component {
   state = {
     newMessage: '',
   }
@@ -24,7 +26,7 @@ class NewMessageInput extends React.Component {
 
   render() {
     return (
-      <form className="new-message-input" onSubmit={this.onSubmit}>
+      <form className="newMessageForm" onSubmit={this.onSubmit}>
         <h4>+Message</h4>
         <input
           name="userMessage"
@@ -39,8 +41,8 @@ class NewMessageInput extends React.Component {
   }
 }
 
-NewMessageInput.propTypes = {
+NewMessageForm.propTypes = {
   onSubmitNewMessage: PropTypes.func.isRequired,
 }
 
-export { NewMessageInput }
+export { NewMessageForm }

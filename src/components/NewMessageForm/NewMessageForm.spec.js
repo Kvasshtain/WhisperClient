@@ -2,14 +2,14 @@ import React from 'react'
 import { shallow } from 'enzyme'
 import { shallowToJson } from 'enzyme-to-json'
 
-import { NewMessageInput } from './NewMessageInput'
+import { NewMessageForm } from './NewMessageForm'
 
-describe('NewMessageInput', () => {
+describe('NewMessageForm', () => {
   const mockOnSubmitNewMessage = jest.fn()
 
   it('should render correctly', () => {
     const testedComponent = shallow(
-      <NewMessageInput onSubmitNewMessage={mockOnSubmitNewMessage} />
+      <NewMessageForm onSubmitNewMessage={mockOnSubmitNewMessage} />
     )
 
     expect(shallowToJson(testedComponent)).toMatchSnapshot()
@@ -21,7 +21,7 @@ describe('when typing new message', () => {
   const newTestMessage = 'Some new message'
 
   const testedComponent = shallow(
-    <NewMessageInput onSubmitNewMessage={mockOnSubmitNewMessage} />
+    <NewMessageForm onSubmitNewMessage={mockOnSubmitNewMessage} />
   )
 
   beforeEach(() => {
@@ -41,7 +41,7 @@ describe('when push the button', () => {
   const mockOnSubmitNewMessage = jest.fn()
 
   const myComponent = shallow(
-    <NewMessageInput onSubmitNewMessage={mockOnSubmitNewMessage} />
+    <NewMessageForm onSubmitNewMessage={mockOnSubmitNewMessage} />
   )
 
   beforeEach(() => {

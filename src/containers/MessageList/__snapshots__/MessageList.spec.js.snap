@@ -1,15 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MessageList should render correctly 1`] = `
-<div>
-  <ScrollDownButton
-    onScrollDownClick={[Function]}
-  />
+<Fragment>
   <div
-    className="message-list"
+    className="messageList"
     onScroll={[Function]}
   >
     <div
+      className="item"
       key="0"
     >
       <MessageFrame
@@ -28,8 +26,5 @@ exports[`MessageList should render correctly 1`] = `
       />
     </div>
   </div>
-  <NewMessageInput
-    onSubmitNewMessage={[Function]}
-  />
-</div>
+</Fragment>
 `;

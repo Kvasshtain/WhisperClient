@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RegistrationForm should render correctly 1`] = `
+<div
+  className="authenticationAndRegistrationForm"
+>
+  <input
+    name="changeMode"
+    onClick={[Function]}
+    type="checkbox"
+  />
+  <span>
+    Registration
+  </span>
+  <form
+    onSubmit={[Function]}
+  >
+    <div
+      align="center"
+    >
+      <h3
+        className="authenticationAndRegistrationForm__Header"
+      >
+        Login
+      </h3>
+    </div>
+    <InputField
+      caption="User email"
+      name="userEmail"
+      onChange={[Function]}
+      placeholder="User email"
+      type="text"
+      value=""
+    />
+    <InputField
+      caption="User password"
+      name="userPassword"
+      onChange={[Function]}
+      placeholder="User password"
+      type="text"
+      value=""
+    />
+    <div
+      align="center"
+    >
+      <button
+        className="submitButton"
+        type="submit"
+      >
+        Sign in
+      </button>
+    </div>
+  </form>
+</div>
+`;

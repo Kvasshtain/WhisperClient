@@ -2,14 +2,16 @@ import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
-import { asModalWindow } from '../components/ModalWindow/asModalWindow'
-import { AddToChatNewUserWindow } from '../components/AddToChatNewUserWindow/AddToChatNewUserWindow'
-import { SpecialMessagesPreprocessorMenu } from '../components/SpecialMessagesPreprocessorMenu/SpecialMessagesPreprocessorMenu'
+import { asModalWindow } from '../../components/ModalWindow/asModalWindow'
+import { AddToChatNewUserWindow } from '../../components/AddToChatNewUserWindow/AddToChatNewUserWindow'
+import { SpecialMessagesPreprocessorMenu } from '../../components/SpecialMessagesPreprocessorMenu/SpecialMessagesPreprocessorMenu'
 import {
   findUsers,
   addNewUserToCurrentChat,
   addNewSpecialMessagesPreprocessor,
-} from '../actions/chatSettingsActions'
+} from '../../actions/chatSettingsActions'
+
+import './CurrentChatSettings.sass'
 
 const AddToChatNewUserModalWindow = asModalWindow(AddToChatNewUserWindow)
 const SpecialMessagesPreprocessorModalWindow = asModalWindow(
@@ -104,7 +106,7 @@ class CurrentChatSettings extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="currentChatSettings">
         <span>Chat: {this.props.currentChat.name}</span>
         {this.renderAddedUserWindow()}
       </div>
