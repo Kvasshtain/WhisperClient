@@ -2,9 +2,9 @@ import React from 'react'
 import CurrentChatPanel from './CurrentChatPanel/CurrentChatPanel'
 import UserChatsPanel from './UserChatsPanel/UserChatsPanel'
 import CurrentChatSettings from './CurrentChatSettings/CurrentChatSettings'
+import SettingsPanel from './SettingsPanel/SettingsPanel'
 import { asModalWindow } from '../components/ModalWindow/asModalWindow'
 import { AuthenticationAndRegistrationWindow } from '../components/AuthenticationAndRegistrationWindow/AuthenticationAndRegistrationWindow'
-import { SettingsPanel } from '../components/SettingsPanel/SettingsPanel'
 import { ErrorWindow } from '../components/ErrorWindow/ErrorWindow'
 
 import { connect } from 'react-redux'
@@ -26,13 +26,6 @@ class App extends React.Component {
   componentDidMount() {
     this.props.checkIsUserAuthenticated()
   }
-
-  // renderMessageList() {
-  //   if (!this.props.currentUser._id) return
-  //   if (!this.props.currentChat._id) return
-
-  //   return <MessageList sendNewMessage={this.props.sendNewMessage} />
-  // }
 
   renderErrorWindow() {
     if (!this.props.lastError) return
@@ -58,11 +51,8 @@ class App extends React.Component {
             <CurrentChatPanel />
           </div>
           <div className="top-panel">
-            <SettingsPanel
-              onSignOut={this.onSignOut}
-              currentUserName={this.props.currentUser.name}
-            />
-            <CurrentChatSettings className="current-chat-settings" />
+            <SettingsPanel />
+            <CurrentChatSettings />
           </div>
         </React.Fragment>
       )
@@ -80,7 +70,7 @@ class App extends React.Component {
     return (
       <React.Fragment>
         {this.renderErrorWindow()}
-        <div className="app-panel">{this.renderMainContent()}</div>
+        <div className="appPanel">{this.renderMainContent()}</div>
       </React.Fragment>
     )
   }
