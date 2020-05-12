@@ -26,8 +26,6 @@ SettingsPanel.propTypes = {
   }),
 }
 
-export { SettingsPanel }
-
 const mapStateToProps = state => {
   return {
     currentUser: state.currentUser,

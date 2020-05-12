@@ -157,5 +157,4 @@ CurrentChatSettings.propTypes = {
   addNewUserToCurrentChat: PropTypes.func.isRequired,
 }
 
-export { CurrentChatSettings }
 export default connect(mapStateToProps, mapDispatchToProps)(CurrentChatSettings)
