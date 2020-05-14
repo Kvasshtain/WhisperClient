@@ -2,14 +2,19 @@ import React from 'react'
 import { shallow } from 'enzyme'
 import { shallowToJson } from 'enzyme-to-json'
 
-import { NewMessageForm } from './NewMessageForm'
+import { SimpleDataForm } from './SimpleDataForm'
 
-describe('NewMessageForm', () => {
-  const mockOnSubmitNewMessage = jest.fn()
+describe('SimpleDataForm', () => {
+  const mockOnSubmitNewData = jest.fn()
 
   it('should render correctly', () => {
     const testedComponent = shallow(
-      <NewMessageForm onSubmitNewMessage={mockOnSubmitNewMessage} />
+      <SimpleDataForm
+        onSubmitNewData={mockOnSubmitNewData}
+        u
+        name="userMessage"
+        type="text"
+      />
     )
 
     expect(shallowToJson(testedComponent)).toMatchSnapshot()
@@ -17,31 +22,39 @@ describe('NewMessageForm', () => {
 })
 
 describe('when typing new message', () => {
-  const mockOnSubmitNewMessage = jest.fn()
-  const newTestMessage = 'Some new message'
+  const mockOnSubmitNewData = jest.fn()
+  const newTestData = 'Some new message'
 
   const testedComponent = shallow(
-    <NewMessageForm onSubmitNewMessage={mockOnSubmitNewMessage} />
+    <SimpleDataForm
+      onSubmitNewData={mockOnSubmitNewData}
+      name="userMessage"
+      type="text"
+    />
   )
 
   beforeEach(() => {
     testedComponent.find('input').simulate('change', {
       target: {
-        value: newTestMessage,
+        value: newTestData,
       },
     })
   })
 
   it('updates inputValue field in state', () => {
-    expect(testedComponent.state().newMessage).toEqual(newTestMessage)
+    expect(testedComponent.state().newData).toEqual(newTestData)
   })
 })
 
 describe('when push the button', () => {
-  const mockOnSubmitNewMessage = jest.fn()
+  const mockOnSubmitNewData = jest.fn()
 
   const myComponent = shallow(
-    <NewMessageForm onSubmitNewMessage={mockOnSubmitNewMessage} />
+    <SimpleDataForm
+      onSubmitNewData={mockOnSubmitNewData}
+      name="userMessage"
+      type="text"
+    />
   )
 
   beforeEach(() => {
@@ -51,6 +64,6 @@ describe('when push the button', () => {
   })
 
   it('calls the props.onSubmit', () => {
-    expect(mockOnSubmitNewMessage).toHaveBeenCalledTimes(1)
+    expect(mockOnSubmitNewData).toHaveBeenCalledTimes(1)
   })
 })

@@ -1,24 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`NewMessageForm should render correctly 1`] = `
+exports[`SimpleDataForm should render correctly 1`] = `
 <form
-  className="newMessageForm"
+  className="simpleDataForm"
   onSubmit={[Function]}
 >
-  <h4>
-    +Message
-  </h4>
+  <h4 />
   <input
     name="userMessage"
     onChange={[Function]}
-    placeholder="message text"
     type="text"
     value=""
   />
   <button
     type="submit"
-  >
-    Send message
-  </button>
+  />
 </form>
 `;

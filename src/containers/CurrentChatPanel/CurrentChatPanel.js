@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { encryptAndSendNewMessage } from '../../actions/messageListActions'
 
 import MessageList from '../MessageList/MessageList'
-import { NewMessageForm } from '../../components/NewMessageForm/NewMessageForm'
+import { SimpleDataForm } from '../../components/SimpleDataForm/SimpleDataForm'
 
 import './CurrentChatPanel.sass'
 
@@ -15,7 +15,14 @@ class CurrentChatPanel extends React.Component {
     return (
       <React.Fragment>
         <MessageList />
-        <NewMessageForm onSubmitNewMessage={this.props.sendNewMessage} />
+        <SimpleDataForm
+          onSubmitNewData={this.props.sendNewMessage}
+          caption="+Message"
+          name="userMessage"
+          placeholder="message text"
+          type="text"
+          buttonCaption="Send"
+        />
       </React.Fragment>
     )
   }

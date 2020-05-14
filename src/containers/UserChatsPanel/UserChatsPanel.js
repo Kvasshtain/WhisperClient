@@ -2,20 +2,28 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import ChatList from '../ChatList/ChatList'
-import { NewChatForm } from '../../components/NewChatForm/NewChatForm'
+import { SimpleDataForm } from '../../components/SimpleDataForm/SimpleDataForm'
 
 import { createNewChat } from '../../actions/chatSettingsActions'
 
 import './UserChatsPanel.sass'
 
 class UserChatsPanel extends React.Component {
+  onSubmitNewChat = chatName => {
+    this.props.createNewChat(chatName, [this.props.currentUser._id])
+  }
+
   render() {
     return (
       <div className="userChatsPanel">
         <ChatList />
-        <NewChatForm
-          onSubmitNewChat={this.props.createNewChat}
-          currentUserId={this.props.currentUser._id}
+        <SimpleDataForm
+          onSubmitNewData={this.onSubmitNewChat}
+          caption="+Chat"
+          name="chatName"
+          placeholder="chat name"
+          type="text"
+          buttonCaption="Create"
         />
       </div>
     )
