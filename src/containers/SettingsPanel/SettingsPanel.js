@@ -10,8 +10,8 @@ class SettingsPanel extends React.Component {
   render() {
     return (
       <div className="settingsPanel">
-        <button onClick={this.props.onSignOut}>Sign out</button>
         <span>{this.props.currentUser.name}</span>
+        <button onClick={this.props.onSignOut}>Sign out</button>
       </div>
     )
   }

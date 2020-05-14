@@ -6,14 +6,16 @@ exports[`SimpleDataForm should render correctly 1`] = `
   onSubmit={[Function]}
 >
   <h4 />
-  <input
-    name="userMessage"
-    onChange={[Function]}
-    type="text"
-    value=""
-  />
-  <button
-    type="submit"
-  />
+  <div>
+    <input
+      name="userMessage"
+      onChange={[Function]}
+      type="text"
+      value=""
+    />
+    <button
+      type="submit"
+    />
+  </div>
 </form>
 `;

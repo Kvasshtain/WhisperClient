@@ -8,8 +8,8 @@ import './AppPanel-TopPanel.sass'
 function TopPanel() {
   return (
     <div className="topPanel">
-      <SettingsPanel />
       <CurrentChatSettings />
+      <SettingsPanel />
     </div>
   )
 }
