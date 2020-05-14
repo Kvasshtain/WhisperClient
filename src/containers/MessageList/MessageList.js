@@ -14,6 +14,7 @@ import { ScrollDownButton } from './__ScrollDownButton/MessageList-ScrollDownBut
 
 import './MessageList.sass'
 import './__Item/MessageList-Item.sass'
+import './__ChatNameCaption/MessageList-ChatNameCaption.sass'
 
 class MessageList extends React.Component {
   constructor(props) {
@@ -217,6 +218,19 @@ class MessageList extends React.Component {
     }
   }
 
+  renderChatNameCaption = () => {
+    const chatName = this.props.currentChat.name
+    if (chatName) {
+      return (
+        <div className="chatNameCaption">
+          <div>
+            <span>{chatName}</span>
+          </div>
+        </div>
+      )
+    }
+  }
+
   render() {
     const strToDecode = '&#11015'
     const parser = new DOMParser()
@@ -235,6 +249,7 @@ class MessageList extends React.Component {
           {this.renderMessageList()}
         </div>
         {this.renderScrollDownButton()}
+        {this.renderChatNameCaption()}
       </React.Fragment>
     )
   }

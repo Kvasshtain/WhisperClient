@@ -106,10 +106,7 @@ class CurrentChatSettings extends React.Component {
 
   render() {
     return (
-      <div className="currentChatSettings">
-        <span>Chat: {this.props.currentChat.name}</span>
-        {this.renderAddedUserWindow()}
-      </div>
+      <div className="currentChatSettings">{this.renderAddedUserWindow()}</div>
     )
   }
 }

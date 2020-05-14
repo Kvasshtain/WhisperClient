@@ -26,5 +26,14 @@ exports[`MessageList should render correctly 1`] = `
       />
     </div>
   </div>
+  <div
+    className="chatNameCaption"
+  >
+    <div>
+      <span>
+        chat1
+      </span>
+    </div>
+  </div>
 </Fragment>
 `;
