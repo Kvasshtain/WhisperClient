@@ -1,7 +1,8 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+
 import { UserFrame } from '../UserFrame/UserFrame'
 import { SeekForm } from './__SeekForm/AddToChatNewUserWindow-SeekForm'
-import PropTypes from 'prop-types'
 
 import './AddToChatNewUserWindow.sass'
 import '../CloseButton/CloseButton.sass'

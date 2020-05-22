@@ -1,0 +1,13 @@
+$no-border: 0px solid white
+$smallFont-size: 14px
+
+@mixin simpleButton()
+    height: 30px
+    border-radius: 30px
+    border: $no-border
+    padding-left: 10px
+    padding-right: 10px
+    font-size: $smallFont-size
+    background: linear-gradient(to bottom, #c7e6dc, #97d4ba)
+    &:hover
+        background: linear-gradient(to top, #c7e6ce, #97d4a5)

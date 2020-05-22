@@ -1,11 +1,4 @@
-$no-border: 0px solid white
-    
+@import "../SimpleButton.sass"
+
 .submitButton
-    height: 30px
-    border-radius: 30px
-    border: $no-border
-    padding-left: 10px
-    padding-right: 10px
-    background: linear-gradient(to bottom, #c7e6dc, #97d4ba)
-.submitButton:hover
-    background: linear-gradient(to top, #c7e6ce, #97d4a5)
+    @include simpleButton
