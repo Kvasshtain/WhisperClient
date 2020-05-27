@@ -1,8 +1,10 @@
 import React from 'react'
+import { Route, Switch, withRouter } from 'react-router-dom'
+
 import { asModalWindow } from '../components/ModalWindow/asModalWindow'
-import { AuthenticationAndRegistrationWindow } from '../components/AuthenticationAndRegistrationWindow/AuthenticationAndRegistrationWindow'
+import AuthenticationAndRegistrationWindow from './AuthenticationAndRegistrationWindow/AuthenticationAndRegistrationWindow'
 import { ErrorWindow } from '../components/ErrorWindow/ErrorWindow'
-import { AppPanel } from './AppPanel/AppPanel'
+import AppPanel from './AppPanel/AppPanel'
 
 import { connect } from 'react-redux'
 
@@ -11,13 +13,22 @@ import {
   submitUserEmailAndPassword,
   submitNewUser,
   clearLastError,
+  resetAuthenticationResult,
 } from '../actions/chatSettingsActions'
 
 const ErrorModalWindow = asModalWindow(ErrorWindow)
 
 class App extends React.Component {
   componentDidMount() {
-    this.props.checkIsUserAuthenticated()
+    const { isUserAuthenticated, checkIsUserAuthenticated } = this.props
+
+    checkIsUserAuthenticated()
+
+    if (isUserAuthenticated) {
+      this.props.history.push('/chat')
+    } else {
+      this.props.history.push('/login')
+    }
   }
 
   renderErrorWindow() {
@@ -32,15 +43,15 @@ class App extends React.Component {
   }
 
   renderMainContent() {
-    if (this.props.isUserAuthenticated) {
-      return <AppPanel />
-    }
-
     return (
-      <AuthenticationAndRegistrationWindow
-        onAuthenticationSubmit={this.props.submitUserEmailAndPassword}
-        onRegistrationSubmit={this.props.submitNewUser}
-      />
+      <Switch>
+        <Route
+          exact
+          path="/login"
+          render={() => <AuthenticationAndRegistrationWindow />}
+        />
+        <Route path="/chat" component={AppPanel} />
+      </Switch>
     )
   }
 
@@ -68,7 +79,9 @@ const mapDispatchToProps = dispatch => {
       dispatch(submitUserEmailAndPassword(userEmail, userPassword)),
     submitNewUser: user => dispatch(submitNewUser(user)),
     clearLastError: () => dispatch(clearLastError()),
+    onSignOut: () => dispatch(resetAuthenticationResult()),
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+const AppWithRouter = withRouter(App)
+export default connect(mapStateToProps, mapDispatchToProps)(AppWithRouter)

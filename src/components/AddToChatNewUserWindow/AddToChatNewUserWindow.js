@@ -53,7 +53,6 @@ AddToChatNewUserWindow.propTypes = {
   ),
   findUsers: PropTypes.func.isRequired,
   onUserClick: PropTypes.func.isRequired,
-  cancelUserAdding: PropTypes.func.isRequired,
 }
 
 export { AddToChatNewUserWindow }
