@@ -15,6 +15,7 @@ import {
   checkResponseAndCreateErrorIfBadStatus,
   convertMessages,
   getUserToken,
+  createGuid,
 } from './helper'
 
 export const ADD_NEW_MESSAGE = 'ADD_NEW_MESSAGE'
@@ -23,6 +24,8 @@ export const REFRESH_MESSAGES_LIST = 'REFRESH_MESSAGES_LIST'
 export const UNSHIFT_PREVIOUS_MESSAGES = 'UNSHIFT_PREVIOUS_MESSAGES'
 export const PUSH_NEW_MESSAGES = 'PUSH_NEW_MESSAGES'
 export const CLEAR_MESSAGES = 'CLEAR_MESSAGES'
+export const ADD_MSSAGE_TO_WAITING_LIST = 'ADD_MSSAGE_TO_WAITING_LIST'
+export const REMOVE_MESSAGES_FROM_WAITING_LIST = 'REMOVE_MESSAGES_FROM_WAITING_LIST'
 
 export function clearMessages() {
   return {
@@ -66,18 +69,34 @@ export function pushNewMessages(messages) {
 }
 
 export function encryptAndSendNewMessage(text) {
-  return (dispatch, getState) => {
+  return (dispatch, getState) => {    
     const { forwardPreprocessorFunction } = getState().currentChat
 
+    let processedText = text
+
     if (forwardPreprocessorFunction) {
-      text = forwardPreprocessorFunction(text)
+      processedText = forwardPreprocessorFunction(text)
     }
 
-    dispatch(sendNewMessage(text))
+    dispatch(sendNewMessage(processedText, text))
   }
 }
 
-export function sendNewMessage(text) {
+export function addMessageToWaitingList(message) {
+  return {
+    type: ADD_MSSAGE_TO_WAITING_LIST,
+    payload: message,
+  }
+}
+
+export function removeMessagesFromWaitingList(messages) {
+  return {
+    type: REMOVE_MESSAGES_FROM_WAITING_LIST,
+    payload: messages.map(message => {return message.clientSideId}),
+  }
+}
+
+export function sendNewMessage(processedText, sourceText) {
   return async (dispatch, getState) => {
     try {
       const token = await getUserToken()
@@ -86,18 +105,26 @@ export function sendNewMessage(text) {
 
       dispatch(messageWasReceived(false))
 
+      const clientSideId = createGuid()
       const time = new Date().getTime()
       const authorEmail = getState().currentUser.email
       const authorName = getState().currentUser.name
       const chatId = getState().currentChat._id
 
       const message = {
+        _id: null,
+        clientSideId,
         chatId,
         time,
         authorEmail,
         authorName,
-        text,
+        text: processedText,
       }
+
+      dispatch(addMessageToWaitingList({
+        ...message,
+        text: sourceText,
+      }))
 
       const response = await fetch(serverLocation + messageSendPath, {
         method: 'POST',
@@ -114,11 +141,9 @@ export function sendNewMessage(text) {
       if (data.status) {
         dispatch(handleServerError(data))
         message.wasMessageReceived = false
-        dispatch(addNewMessage(message))
         localStorage.removeItem('token')
       } else {
         message.wasMessageReceived = true
-        //dispatch(addNewMessage(message))
         dispatch(messageWasReceived(true))
       }
     } catch (error) {
@@ -163,7 +188,7 @@ export function fetchMessagesList(chatId, oldestMessageTime) {
 }
 
 export function fetchNewMessages(chatId, newestMessageTime) {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     try {
       const token = await getUserToken()
 
@@ -204,6 +229,7 @@ export function applyBackwardPreprocessorFunctionAndPushMessage(messages) {
     }
 
     dispatch(pushNewMessages(messages))
+    dispatch(removeMessagesFromWaitingList(messages))
   }
 }
 
