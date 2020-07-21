@@ -1,3 +1,6 @@
+@import "../ActiveFocusNoBorder.sass"
+@import "../SimpleButton.sass"
+    
 $vertical-input-field-size: 30px
 $font-color: #233527
 $smallFont-size: 14px
@@ -21,7 +24,9 @@ $no-border: 0px solid white
             font-size: $smallFont-size
             border: $no-border
             background: #e1ffe7
+            @include activeFocusNoBorder
         >button
+            @include simpleButton
             height: $vertical-input-field-size + 2px
             padding-right: 25px
             padding-left: 20px
@@ -29,6 +34,3 @@ $no-border: 0px solid white
             border: $no-border
             font-size: $smallFont-size
             color: $font-color
-            background: linear-gradient(to bottom, #c7e6dc, #97d4ba)
-        >button:hover
-            background: linear-gradient(to top, #c7e6ce, #97d4a5)

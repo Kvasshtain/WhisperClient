@@ -10,6 +10,10 @@ class SimpleDataForm extends React.Component {
 
   onSubmit = event => {
     event.preventDefault()
+    
+    if(this.state.newData.trim() == ''){
+      return
+    }
 
     this.props.onSubmitNewData(this.state.newData)
 
