@@ -3,12 +3,40 @@ import PropTypes from 'prop-types'
 import { MessageTimestamp } from './__MessageTimestamp/MessageFrame-MessageTimestamp'
 import { AuthorNameLabel } from './__AuthorNameLabel/MessageFrame-AuthorNameLabel'
 import { MessageTextField } from './__MessageTextField/MessageFrame-MessageTextField'
+import { statusRenderingDelay } from '../../applicationSettings'
 
 import './MessageFrame.sass'
 import './_user/MessageFrame_user_another.sass'
 import './_user/MessageFrame_user_current.sass'
+import '../RotatingImage/_RotatingImage.sass'
+
+import waitingIcon from '../../resources/BlueWaitingIcon.png'
 
 class MessageFrame extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = { isStatusRenderingEnabled: false }
+  }
+
+  componentDidMount = () => {
+    const { hasServerReceivedMessage } = this.props
+
+    if (hasServerReceivedMessage){
+      return
+    }
+
+    this.statusRenderingDelayId = setTimeout(() => this.enableStatusRendering(), statusRenderingDelay)
+  }
+
+  enableStatusRendering = () => {
+    this.setState({ isStatusRenderingEnabled: true })
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.statusRenderingDelayId)
+  }
+
   renderAuthorName = () => {
     const { message, currentUserEmail } = this.props
 
@@ -16,6 +44,18 @@ class MessageFrame extends React.Component {
       return
     } else {
       return <AuthorNameLabel authorName={message.authorName} />
+    }
+  }
+
+  renderMessageStatus() {
+    const { hasServerReceivedMessage } = this.props
+
+    if (!hasServerReceivedMessage && this.state.isStatusRenderingEnabled) {
+      return (
+        <div className="messageStatus">
+          <img className="RotatingImage" src={waitingIcon}></img>
+        </div>
+      )
     }
   }
 
@@ -31,12 +71,17 @@ class MessageFrame extends React.Component {
 
     return (
       <div className={messageFrameClass}>
-        <div>{this.renderAuthorName()}</div>
         <div>
-          <MessageTextField text={message.text} />
+          {this.renderMessageStatus()}
         </div>
         <div>
-          <MessageTimestamp time={message.time} />
+          <div>{this.renderAuthorName()}</div>
+          <div>
+            <MessageTextField text={message.text} />
+          </div>
+          <div>
+            <MessageTimestamp time={message.time} />
+          </div>
         </div>
       </div>
     )
@@ -46,6 +91,7 @@ class MessageFrame extends React.Component {
 MessageFrame.propTypes = {
   message: PropTypes.exact({
     _id: PropTypes.string,
+    clientSideId: PropTypes.string,
     chatId: PropTypes.string.isRequired,
     authorName: PropTypes.string.isRequired,
     authorEmail: PropTypes.string.isRequired,
@@ -57,6 +103,8 @@ MessageFrame.propTypes = {
     text: PropTypes.string.isRequired,
     wasMessageReceived: PropTypes.bool,
   }),
+  currentUserEmail: PropTypes.string,
+  hasServerReceivedMessage: PropTypes.bool,
 }
 
 export { MessageFrame }

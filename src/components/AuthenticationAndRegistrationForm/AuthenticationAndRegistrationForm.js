@@ -5,6 +5,7 @@ import { InputField } from '../InputField/InputField'
 
 import './AuthenticationAndRegistrationForm.sass'
 import '../SubmitButton/SubmitButton.sass'
+import './__Label/AuthenticationAndRegistrationForm-Label.sass'
 
 class AuthenticationAndRegistrationForm extends React.Component {
   state = {
@@ -79,6 +80,14 @@ class AuthenticationAndRegistrationForm extends React.Component {
     )
   }
 
+  renderLabel = () => {
+    return (
+      <div className="authenticationAndRegistrationForm-Label" align="center">
+        <img src={require("../../resources/Whisper.png")}></img>
+      </div>
+    )
+  }
+
   renderUserNameInputField = () => {
     if (this.state.isRegistrationMode) {
       return (
@@ -116,6 +125,7 @@ class AuthenticationAndRegistrationForm extends React.Component {
         <input type="checkbox" name="changeMode" onClick={this.changeMode} />
         <span>Registration</span>
         <form onSubmit={this.onSubmit}>
+          {this.renderLabel()}
           <div align="center">{this.renderHeader()}</div>
           {this.renderUserNameInputField()}
           <InputField

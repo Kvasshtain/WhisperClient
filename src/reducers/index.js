@@ -1,5 +1,11 @@
 import { combineReducers } from 'redux'
-import { messages, wasMessageReceived } from './messageListData'
+
+import {
+  messages,
+  messagesWaitingList,
+  wasMessageReceived
+} from './messageListData'
+
 import {
   currentUser,
   currentChat,
@@ -12,6 +18,7 @@ import {
 export default combineReducers({
   messages,
   wasMessageReceived,
+  messagesWaitingList,
   currentUser,
   currentChat,
   chatsList,

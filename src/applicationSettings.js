@@ -13,3 +13,4 @@ export const addNewUserToChatPath = 'chats/addNewUser/'
 
 export const fetchMessagesCount = 15
 export const updateInterval = 10000
+export const statusRenderingDelay = 1000

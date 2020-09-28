@@ -20,15 +20,21 @@
   },
   "scripts": {
     "start-js": "react-scripts start",
-    "backend-start": "NODE_ENV=production node ../server/app.js",
+    "backend-start": "run-script-os",
+    "backend-start:linux": "NODE_ENV=production node ../WhisperServer/app.js",
+    "backend-start:win32": "cross-env NODE_ENV=production node ..\\WhisperServer\\app.js",
     "start": "concurrently \"npm-run-all -p start-js backend-start\"",
     "just-build": "react-scripts build",
-    "copy": "cp -r ./build ../server/static",
+    "copy": "run-script-os",
+    "copy:linux": "cp -r ./build ../WhisperServer/static",
+    "copy:win32": "xcopy .\\build ..\\WhisperServer\\static /H /Y /C /R /S",
     "build": "npm run just-build && npm run copy",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "precommit": "lint-staged",
-    "eslint": "node_modules/.bin/eslint src/"
+    "eslint": "run-script-os",
+    "eslint:linux": "node_modules/.bin/eslint src/",
+    "eslint:win32": "node_modules\\.bin\\eslint src\\"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -46,6 +52,7 @@
     ]
   },
   "devDependencies": {
+    "cross-env": "^7.0.2",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.3",
     "eslint-plugin-react-hooks": "^2.5.1",
@@ -53,7 +60,8 @@
     "lint-staged": "^10.1.7",
     "npm-run-all": "^4.1.5",
     "prettier": "^1.19.1",
-    "redux-mock-store": "^1.5.4"
+    "redux-mock-store": "^1.5.4",
+    "run-script-os": "^1.1.1"
   },
   "lint-staged": {
     "*.{js, jsx}": [

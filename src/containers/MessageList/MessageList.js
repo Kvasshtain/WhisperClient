@@ -10,7 +10,6 @@ import {
 
 import { MessageFrame } from '../../components/MessageFrame/MessageFrame'
 import { ScrollDownButton } from './__ScrollDownButton/MessageList-ScrollDownButton'
-//import { updateInterval } from '../applicationSettings'
 
 import './MessageList.sass'
 import './__Item/MessageList-Item.sass'
@@ -39,19 +38,10 @@ class MessageList extends React.Component {
       subscribeForNewMessages(this.props.currentChat._id)
     }
     this.fetchMessages()
-    //this.initializeMessagesListUpdateTimer()
   }
-
-  // initializeMessagesListUpdateTimer = () => {
-  //   this.timerID = setInterval(() => {
-  //     this.fetchNewMessages()
-  //     this.tryLoadMessagesUntilScrollAppears()
-  //   }, updateInterval)
-  // }
 
   componentWillUnmount() {
     this.props.unsubscribeForNewMessages()
-    //clearInterval(this.timerID)
   }
 
   componentDidUpdate = () => {
@@ -197,15 +187,15 @@ class MessageList extends React.Component {
     }
   }
 
-  renderMessageList = () => {
-    const { messages, currentUser } = this.props
+  renderMessageList = (messages, hasServerReceivedMessage) => {
+    const { currentUser } = this.props
     const messagesLength = messages.length
 
     if (messages && messagesLength) {
       return messages.map(function(item, index) {
         return (
           <div className="item" key={index}>
-            <MessageFrame message={item} currentUserEmail={currentUser.email} />
+            <MessageFrame hasServerReceivedMessage={hasServerReceivedMessage} message={item} currentUserEmail={currentUser.email} />
           </div>
         )
       })
@@ -239,6 +229,8 @@ class MessageList extends React.Component {
       'text/html'
     ).body.textContent
 
+    const { messages, waitingMessages } = this.props
+
     return (
       <React.Fragment>
         <div
@@ -246,7 +238,8 @@ class MessageList extends React.Component {
           className="messageList"
           onScroll={this.onScroll}
         >
-          {this.renderMessageList()}
+          {this.renderMessageList(messages, true)}
+          {this.renderMessageList(waitingMessages, false)}
         </div>
         {this.renderScrollDownButton()}
         {this.renderChatNameCaption()}
@@ -258,6 +251,7 @@ class MessageList extends React.Component {
 const mapStateToProps = state => {
   return {
     messages: state.messages,
+    waitingMessages: state.messagesWaitingList,
     currentChat: state.currentChat,
     currentUser: state.currentUser,
   }

@@ -5,6 +5,8 @@ import {
   UNSHIFT_PREVIOUS_MESSAGES,
   PUSH_NEW_MESSAGES,
   CLEAR_MESSAGES,
+  ADD_MSSAGE_TO_WAITING_LIST,
+  REMOVE_MESSAGES_FROM_WAITING_LIST,
 } from '../actions/messageListActions'
 
 export function messages(state = [], action) {
@@ -21,6 +23,17 @@ export function messages(state = [], action) {
     case PUSH_NEW_MESSAGES:
       const newMessages = action.payload
       return [...state, ...newMessages]
+    default:
+      return state
+  }
+}
+
+export function messagesWaitingList(state = [], action) {
+  switch (action.type) {
+    case ADD_MSSAGE_TO_WAITING_LIST:
+      return [...state, action.payload]
+    case REMOVE_MESSAGES_FROM_WAITING_LIST:
+      return state.filter(message => !action.payload.includes(message.clientSideId))
     default:
       return state
   }
