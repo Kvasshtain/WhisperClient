@@ -137,32 +137,38 @@ export function addNewSpecialMessagesPreprocessor(file) {
       return
     }
 
-    const preprocessor = JSON.parse(preprocessorString)
+    let createTextMutators
 
-    if (!preprocessor.forward || !preprocessor.backward) {
+    try {
+      eval(preprocessorString)
+    } catch (err) {
       dispatch(setLastError({ message: 'File has wrong format' }))
       return
     }
 
-    const forwardPreprocessorFunction = new Function(
-      'text',
-      preprocessor.forward
-    )
-    const backwardPreprocessorFunction = new Function(
-      'text',
-      preprocessor.backward
-    )
+    if (typeof createTextMutators !== 'function') {
+      dispatch(setLastError({ message: 'File has wrong format' }))
+      return
+    }
+
+    const mutators = createTextMutators()
+
+    if (!mutators) {
+      dispatch(setLastError({ message: 'File has wrong format' }))
+      return
+    }
+
+    const { forward, backward } = mutators
+    if (typeof forward !== 'function' || typeof backward !== 'function') {
+      dispatch(setLastError({ message: 'File has wrong format' }))
+      return
+    }
 
     const { currentChat } = getState()
 
     localStorage.setItem(currentChat._id, preprocessorString)
 
-    dispatch(
-      addNewSpecialMessagesPreprocessorFunction(
-        forwardPreprocessorFunction,
-        backwardPreprocessorFunction
-      )
-    )
+    dispatch(addNewSpecialMessagesPreprocessorFunction(forward, backward))
   }
 }
 
@@ -170,26 +176,36 @@ export function tryGetPreprocessorAndСhangeCurrentChat(chat) {
   return dispatch => {
     const preprocessorString = localStorage.getItem(chat._id)
 
-    let forwardPreprocessorFunction, backwardPreprocessorFunction
-
-    if (preprocessorString) {
-      const preprocessor = JSON.parse(preprocessorString)
-
-      forwardPreprocessorFunction = new Function('text', preprocessor.forward)
-      backwardPreprocessorFunction = new Function('text', preprocessor.backward)
-    }
-
     dispatch(changeCurrentChat(chat))
     dispatch(clearMessages())
 
-    if (forwardPreprocessorFunction && backwardPreprocessorFunction) {
-      dispatch(
-        addNewSpecialMessagesPreprocessorFunction(
-          forwardPreprocessorFunction,
-          backwardPreprocessorFunction
-        )
-      )
+    let createTextMutators
+
+    if (preprocessorString) {
+      try {
+        eval(preprocessorString)
+      } catch (err) {
+        return
+      }
     }
+
+    if (typeof createTextMutators !== 'function') {
+      return
+    }
+
+    const mutators = createTextMutators()
+
+    if (!mutators) {
+      return
+    }
+
+    const { forward, backward } = mutators
+
+    if (typeof forward !== 'function' || typeof backward !== 'function') {
+      return
+    }
+
+    dispatch(addNewSpecialMessagesPreprocessorFunction(forward, backward))
   }
 }
 

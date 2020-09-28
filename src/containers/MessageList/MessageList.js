@@ -183,7 +183,7 @@ class MessageList extends React.Component {
     this.setState({
       showScrollDownButton:
         scrollHeight - scrollTop >= clientHeight + scrollDownButtonThreshold,
-      needScrollDown: scrollHeight - scrollTop == clientHeight,
+      needScrollDown: scrollHeight - scrollTop === clientHeight,
     })
 
     if (this.state.suspendMessagesFetching) return
