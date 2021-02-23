@@ -5,7 +5,7 @@ import { addLeadZero } from '../../helper'
 import './MessageFrame-MessageTimestamp.sass'
 
 function MessageTimestamp(props) {
-  const date = new Date(props.time)
+  const date = new Date(+props.time)
   let hours = addLeadZero(date.getHours())
   let minutes = addLeadZero(date.getMinutes())
   let day = addLeadZero(date.getDate())
